@@ -1,0 +1,110 @@
+blockquote, body, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5,
+	h6, hr, input, legend, li, ol, p, pre, td, textarea, th, ul {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-size: 14px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+ul li {
+	list-style: none;
+}
+
+img {
+	border: 0 none;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+.eloginbg {
+	width: 796px;
+	position: relative;
+	left: 50%;
+	margin-left: -398px;
+	margin-top: 100px;
+}
+
+.eloginbgtop {
+	width: 796px;
+	height: 67px;
+	padding-left: 250px;
+	background: url(/ERP-NBEmail/img/login/logtop.jpg) no-repeat;
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 67px;
+	color: #fff;
+	box-sizing: content-box;
+}
+
+.eloginmain {
+	width: 796px;
+	height: 354px;
+	background: url(/ERP-NBEmail/img/login/loginmb.jpg) no-repeat;
+}
+
+.eloginmcon {
+	width: 280px;
+	padding: 70px 0 0 251px;
+}
+
+.eloginmc_t {
+	width: 230px;
+	margin: 0px 0 0 10px;
+}
+
+.eloginmc_td1 {
+	font-size: 14px;
+	padding-top: 9px;
+	text-align: left;
+}
+
+.eloginmci {
+	width: 153px;
+	height: 26px;
+	padding: 3px 6px;
+	border: 1px solid #c6ccd8;
+	border-radius: 3px;
+	margin-top: 10px;
+}
+
+.eloginmcre {
+	display: inline-block;
+	width: 58px;
+	color: #1d65d3;
+	text-deoration: underline;
+	margin: 25px 20px 0 38px;
+}
+
+.eloginmcre:hover {
+	color: #6cb0d7;
+	text-decoretion: underline;
+}
+
+.eloginmcbtn {
+	width: 95px;
+	height: 27px;
+	display: inline-block;
+	background: url(/ERP-NBEmail/img/login/basebtn.jpg) 0 0 no-repeat;
+	color: #fff;
+	line-height: 27px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.eloginmcbtn:hover {
+	background-position: -96px 0;
+}
+
+.logdengbtn {
+	border: 0;
+}
+
+.eloginmanaa {
+	color: #00afff;
+	text-decoretion: none;
+}

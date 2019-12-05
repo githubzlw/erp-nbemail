@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ERP-NBEmail">
+    <output-path>$PROJECT_DIR$/out/artifacts/ERP-NBEmail</output-path>
+    <root id="archive" name="ERP-NBEmail.war">
+      <element id="artifact" artifact-name="ERP-NBEmail:war exploded" />
+    </root>
+  </artifact>
+</component>

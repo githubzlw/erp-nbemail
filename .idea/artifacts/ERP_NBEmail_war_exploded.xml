@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="ERP-NBEmail:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/ERP-NBEmail/jsp/login.jsp</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="ERP-NBEmail/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="ERP-NBEmail" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
