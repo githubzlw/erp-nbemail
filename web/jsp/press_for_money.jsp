@@ -236,8 +236,14 @@ var withdraw =function(id,sign){
 										<c:when test="${cus.checktype==3 }">支付其他</c:when>
 
 									</c:choose>${cus.geldObject }</td>
-								<td style="border: 1px solid #BBBABA;">${cus.stateDate != null ?fn:substring(cus.stateDate,0,fn:indexOf(cus.stateDate,":")):cus.stateDate}
-									<br />${cus.facMoney }RMB
+								<td style="border: 1px solid #BBBABA;">${cus.stateDate != null ?fn:substring(cus.stateDate,0,fn:indexOf(cus.stateDate," ")):cus.stateDate}
+									<br />${cus.facMoney }<c:choose>
+                                    <c:when test="${cus.moneytype1==1 }">美金</c:when>
+                                    <c:when test="${cus.moneytype1==2 }">人民币</c:when>
+                                    <c:when test="${cus.moneytype1==3 }">欧元</c:when>
+                                    <c:when test="${cus.moneytype1==5 }">英镑</c:when>
+
+                                    </c:choose>
 								</td>
 
 								<td style="border: 1px solid #BBBABA; width: 160px;"><c:if
@@ -264,21 +270,28 @@ var withdraw =function(id,sign){
 								<td style="border: 1px solid #BBBABA; width: 80px;">项目备注： <input
 									type="text" style="width: 150px;" id="projectnote${i.count}"
 									value="${cus.projectnote }" title="${cus.projectnote }"></td>
-								<td style="border: 1px solid #BBBABA; width: 80px;"><c:if test="${cus.facMoney<=4000 }">快速通道付款理由： <input
+								<td style="border: 1px solid #BBBABA; width: 80px;"><c:if test="${cus.moneytype1==2}"><c:if test="${cus.facMoney<=6000 }">快速通道付款理由： <input
 										type="text" style="width: 150px;" id="fastTrackReasons${i.count}"
 										value="${cus.fastTrackReasons }" title="${cus.fastTrackReasons }">
-								</c:if>
+								</c:if></c:if>
+                                    <c:if test="${cus.moneytype1==1}"><c:if test="${cus.facMoney<=858 }">快速通道付款理由： <input
+                                            type="text" style="width: 150px;" id="fastTrackReasons${i.count}"
+                                            value="${cus.fastTrackReasons }" title="${cus.fastTrackReasons }">
+                                    </c:if></c:if>
 								</td>
 								<td style="border: 1px solid #BBBABA;"><input type="button"
 									value="提交备注"
 									onclick="updatecustomerremarks('projectnote${i.count}','${cus.caseNo }',${cus.id });"
 									class="emanagergetdel"
 									style="text-align: center; background: #fff;" />
-									<c:if test="${cus.state!=3 }"><c:if test="${cus.expressLane!=1}"><c:if test="${cus.facMoney<=4000 }"><input type="button"
+                                    <c:if test="${cus.moneytype1==1}"><c:if test="${cus.state!=3 }"><c:if test="${cus.expressLane!=1}"><c:if test="${cus.facMoney<=858 }"><input type="button"
 										   value="快速通道付款"
 										   onclick="updateAll('fastTrackReasons${i.count}','${cus.caseNo }',${cus.id },'signa${i.count }');"
-										   class="emanagergetdel"
-																									  style="text-align: center; background: #fff;" /></c:if></c:if></c:if>
+										   class="emanagergetdel" style="text-align: center; background: #fff;" /></c:if></c:if></c:if></c:if>
+                                    <c:if test="${cus.moneytype1==2}"><c:if test="${cus.state!=3 }"><c:if test="${cus.expressLane!=1}"><c:if test="${cus.facMoney<=6000 }"><input type="button"
+                                                                                                                                                                                  value="快速通道付款"
+                                                                                                                                                                                  onclick="updateAll('fastTrackReasons${i.count}','${cus.caseNo }',${cus.id },'signa${i.count }');"
+                                                                                                                                                                                  class="emanagergetdel" style="text-align: center; background: #fff;" /></c:if></c:if></c:if></c:if>
 									<br />
 								<input type="button"
 									onclick="updateMoney('${cus.id }','sign${i.count }');"

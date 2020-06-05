@@ -4538,6 +4538,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 		sql += " order by express_lane desc,State1 , a.StateDate desc ";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
+
 			while(rs.next()) {
 				double ifmoney=0.0;
 				int imoneytype1=0;
@@ -4689,6 +4690,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 					}
 					SQLDBhelper.returnConnection(conn3);
 				}
+                int moneytype=0;
 				int moneytype2=0;
 				double OtherMoney=0.0;
 				String sql4 = "select moneytype,OtherMoney,friFacDate from FactoryFund where CaseNo=? and OtherMoney is not null";
@@ -4702,6 +4704,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 				rs4 = stmt4.executeQuery();
 					while(rs4.next()) {
 						moneytype2=rs4.getInt("moneytype");
+
 						String	date=rs4.getString("friFacDate");
 							if(date!=null&&!"".equals(date)){
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -4888,6 +4891,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 			   BigDecimal   b2   =   new   BigDecimal(profitmargin);
 				   f2   =   b2.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
 				}
+
 				MoneyCheckUp info =  new MoneyCheckUp();
 				info.setMerchandising(rs.getString("Merchandising"));
 			    info.setMerchandManager1(rs.getString("MerchandManager1"));
@@ -4921,6 +4925,15 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 				info.setFastTrackReasons(rs.getString("fast_track_reasons"));
 				info.setExpressLane(rs.getInt("express_lane"));
 				info.setExpressLaneApproval(rs.getInt("express_lane_approval"));
+				String type=rs.getString("mtype");
+				if("人民币".equals(type)){
+					info.setMoneytype1(2);
+				}else if("RMB".equals(type)){
+					info.setMoneytype1(2);
+				}
+				if("美金".equals(type)){
+					info.setMoneytype1(1);
+				}
 				list.add(info);
 			}
 
@@ -5149,6 +5162,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 					}
 					SQLDBhelper.returnConnection(conn3);
 				}
+                int moneytype=0;
 				int moneytype2=0;
 				double OtherMoney=0.0;
 				String sql4 = "select moneytype,OtherMoney,friFacDate from FactoryFund where CaseNo=? and OtherMoney is not null";
@@ -5162,6 +5176,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 				rs4 = stmt4.executeQuery();
 					while(rs4.next()) {
 						moneytype2=rs4.getInt("moneytype");
+                        moneytype=moneytype2;
 						String	date=rs4.getString("friFacDate");
 							if(date!=null&&!"".equals(date)){
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -5249,7 +5264,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 				rs5 = stmt5.executeQuery();
 					while(rs5.next()) {
 						moneyType3=rs5.getInt("moneyType");
-
+                        moneytype=moneyType3;
 							String	date=rs5.getString("wuliudate");
 							if(date!=null&&!"".equals(date)){
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -5380,6 +5395,15 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 				info.setFastTrackReasons(rs.getString("fast_track_reasons"));
 				info.setExpressLane(rs.getInt("express_lane"));
 				info.setExpressLaneApproval(rs.getInt("express_lane_approval"));
+				String type=rs.getString("mtype");
+				if("人民币".equals(type)){
+					info.setMoneytype1(2);
+				}else if("RMB".equals(type)){
+					info.setMoneytype1(2);
+				}
+				if("美金".equals(type)){
+					info.setMoneytype1(1);
+				}
 				list.add(info);
 			}
 
@@ -8569,6 +8593,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 					}
 					SQLDBhelper.returnConnection(conn3);
 				}
+                int moneytype=0;
 				int moneytype2=0;
 				double OtherMoney=0.0;
 				String sql4 = "select moneytype,OtherMoney,friFacDate from FactoryFund where CaseNo=? and OtherMoney is not null";
@@ -8582,6 +8607,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 					rs4 = stmt4.executeQuery();
 					while(rs4.next()) {
 						moneytype2=rs4.getInt("moneytype");
+                        moneytype=moneytype2;
 						String	date=rs4.getString("friFacDate");
 						if(date!=null&&!"".equals(date)){
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -8669,7 +8695,7 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 					rs5 = stmt5.executeQuery();
 					while(rs5.next()) {
 						moneyType3=rs5.getInt("moneyType");
-
+                        moneytype=moneyType3;
 						String	date=rs5.getString("wuliudate");
 						if(date!=null&&!"".equals(date)){
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -8800,6 +8826,15 @@ public class CheckUpDao implements ICheckUpDaoImpl{
 				info.setFastTrackReasons(rs.getString("fast_track_reasons"));
 				info.setExpressLane(rs.getInt("express_lane"));
 				info.setExpressLaneApproval(rs.getInt("express_lane_approval"));
+				String type=rs.getString("mtype");
+				if("人民币".equals(type)){
+					info.setMoneytype1(2);
+				}else if("RMB".equals(type)){
+					info.setMoneytype1(2);
+				}
+				if("美金".equals(type)){
+					info.setMoneytype1(1);
+				}
 				list.add(info);
 			}
 

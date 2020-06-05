@@ -77,7 +77,7 @@ public class ProjectCustomerDao implements IProjectCustomerDaoImpl{
 		ResultSet rs = null;
 		
         String sql = "select it.CaseNo,it.ProductDescC,it.ProductDescE,it.CustomerManager,it.customercode,it.MerchandManager1"
-        		+ ",it.CreateTime,cus.name from itemCase it left join Customer cus on it.customercode=cus.id where it.id=9745";
+        		+ ",it.CreateTime,cus.name from itemCase it left join Customer cus on it.customercode=cus.id where it.id=21571";
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);

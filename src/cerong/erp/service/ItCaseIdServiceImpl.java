@@ -635,7 +635,7 @@ public List<ItemCase2> invoiceDocumentarySaleOwnedToUs(ItemCase2 it);
  */
 public List<ItemCase2> invoiceDocumentaryPurchaseOwnedToUs(ItemCase2 it);
 /**
- * @param empEName 
+ * @param
  * 
  * @Title:ItCaseIdServiceImpl
  * @Description:尾款已清，尚未收回发票金额
@@ -737,4 +737,51 @@ public ItemCase getStartTime();
 	 * @param list
 	 */
     void updateDividendBalance(List<Bonusdata> list);
+
+	/**
+	 * 下单客户
+	 * @param user
+	 * @return
+	 */
+    List<ItemCase1> getOrderCustomerList(EmailUser user);
+
+	/**
+	 * 未下单客户
+	 * @param user
+	 * @return
+	 */
+	List<ItemCase1> getNoOrderCustomerList(EmailUser user);
+
+	/**
+	 * 2018全部A、B级客户
+	 * @param user
+	 * @return
+	 */
+	List<ItemCase1> getallCustomerList(EmailUser user);
+	/**
+	 * 规定时间A/B级，新客户A、B级项目
+	 * @param user
+	 * @return
+	 */
+	List<ItemCase1> getnewCustomerList(EmailUser user);
+	/**
+	 * 规定时间A/B级项目
+	 * @param user
+	 * @return
+	 */
+	List<ItemCase1> getfixedTimeCustomersList(EmailUser user);
+
+	/**
+	 * 根据时间获取全部指定全部项目
+	 * @param it
+	 * @return
+	 */
+    List<ItemCase> getAllProjectNo(ItemCase it);
+
+	/**
+	 * 查询扣款列表
+	 * @param itcase
+	 * @return
+	 */
+	ItemCase getProjectStatistics(ItemCase itcase);
 }

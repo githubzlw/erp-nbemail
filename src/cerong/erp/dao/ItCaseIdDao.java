@@ -101,7 +101,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-	
+
 			stmt.setString(1, strProjectId);
 			result = stmt.executeUpdate();
 		} catch (Exception e) {
@@ -136,7 +136,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			stmt.setString(1, strProjectId);
 			result = stmt.executeUpdate();
 		} catch (Exception e) {
@@ -170,14 +170,14 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		
+
 		String sql = "insert into itemCase(CaseNo,ProductDescE,ProductDescC,ProductSort"
 				+ ",CustomerManager,MerchandManager1,EmailContent,CreateTime,UpdateTime,customercode,BackSingleCase,DeliveryTime,CaseStatus,Upload,Engineer1) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		conn = SQLDBhelper.getConnection();
 		//conn = DBHelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			stmt.setString(1, caseNo);
 			stmt.setString(2,projectDesce );
 			stmt.setString(3,projectDescc );
@@ -194,9 +194,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setString(14,file1 );
 			stmt.setString(15,quotername );
           result = stmt.executeUpdate();
-			
-         
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -231,7 +231,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			rs = stmt.executeQuery();
 			if(rs.next()) {
 				result = rs.getString(1);
@@ -255,15 +255,15 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
+
+
         String strNum =result;
-        
+
         //strNum = "00000" + strNum;
 
-       
-        
-      
+
+
+
        str = "SHS" + strNum;
         return str;
 	}
@@ -275,7 +275,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		
+
 		String sql = "insert into postback(caseno,title,content,empname"
 				+ ",posttime,uploadfile) values(?,?,?,?,?,?)";
 		conn = SQLDBhelper.getConnection();
@@ -287,11 +287,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setString(4,empName );
 			stmt.setString(5,time );
 			stmt.setString(6,file1 );
-			
+
           result = stmt.executeUpdate();
-			
-			
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -350,9 +350,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return result;
 	}
 
@@ -365,14 +365,14 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		
+
 		String sql = "insert into itemCase(CaseNo,ProductDescE,ProductDescC"
 				+ ",CustomerManager,MerchandManager1,EmailContent,CreateTime,UpdateTime,customercode,BackSingleCase,DeliveryTime,CaseStatus,Engineer1) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		conn = SQLDBhelper.getConnection();
 		//conn = DBHelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			stmt.setString(1, caseNo);
 			stmt.setString(2,projectDesce );
 			stmt.setString(3,projectDescc );
@@ -386,11 +386,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setString(11,time );
 			stmt.setInt(12,0 );
 			stmt.setString(13,quotername );
-			
+
           result = stmt.executeUpdate();
-			
-          
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -425,7 +425,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				CaseStatus=rs.getInt("CaseStatus");
@@ -452,9 +452,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return projectId;
 	}
 
@@ -469,7 +469,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				itcase=new ItemCase();
@@ -500,9 +500,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -519,7 +519,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				itcase=new ItemCase1();
@@ -534,7 +534,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				ResultSet rs2 = null;
 				String sql2 = "select iSum from InvoiceInfo  where iCaseNo=?   ";
 				conn2 = SQLDBhelper.getConnection();
-				
+
 				try {
 					stmt2 = conn2.prepareStatement(sql2);
 					stmt2.setString(1, orderid);
@@ -560,19 +560,19 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper1.close(conn2,stmt2,rs2);
-					
+
 				}
 				String project=rs.getString("CaseNo");
 				String project1="SHS-"+project.replaceAll("SHS", "");
 				Connection conn1 = null;
 				PreparedStatement stmt1 = null;
-				
+
 				ResultSet rs1 = null;
 				String sql1 = "select saildate from products where nonum  like ? ";
 				conn1 = SQLDBhelper1.getConnection();
-				
+
 				try {
-					
+
 					stmt1 = conn1.prepareStatement(sql1);
 					stmt1.setString(1, "%"+project1+"%");
 					rs1 = stmt1.executeQuery();
@@ -597,9 +597,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper1.close(conn1,stmt1,rs1);
-					
+
 				}
-				
+
 				itcase.setAmount(money);
 				itcase.setSaildate(time);
 				list.add(itcase);
@@ -623,9 +623,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -673,9 +673,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -714,9 +714,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return total;
 	}
 
@@ -772,9 +772,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return itcase;
 	}
 
@@ -823,7 +823,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-	
+
 			stmt.setString(1, strProjectId);
 			result = stmt.executeUpdate();
 		} catch (Exception e) {
@@ -867,7 +867,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setEid(rs.getInt("customercode"));
 				info.setEmailcontent(rs.getString("EmailContent"));
 				info.setCustomermanager(rs.getString("CustomerManager"));
-				
+
 				info.setMerchandmanager1(rs.getString("MerchandManager1"));
 				info.setName(rs.getString("name"));
 				info.setProductdescc(rs.getString("ProductDescC"));
@@ -892,9 +892,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return info;
 	}
 
@@ -904,12 +904,12 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+
         String sql = "select * from itemCase where YEAR(CreateTime)=2017 and month(followtime)=9 and DAY(followtime)>13 ";
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				ItemCase2 info=new ItemCase2();
@@ -945,9 +945,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -985,9 +985,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return id;
 	}
 
@@ -1038,32 +1038,32 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         		 +" left join (select CaseNo ,max(DateSample)DateSample from Bargain  where DateSample>'2000-01-01' group by CaseNo)d on b.caseno=d.caseno left join (select CaseNo,min(inputDate)statetime from  FactoryFund group by CaseNo)a on a.CaseNo=b.CaseNo"
         		 +" left join (select icaseno,min(ifdate)ifdate from invoiceinfo where ifmoney is not null and ifmoney!=0 group by icaseno )ii on ii.icaseno=b.caseno)c "
         		 +" on c.caseno=it.caseno  where ( it.CaseStatus=14 or it.CaseStatus=0)   and it.CreateTime>?";
-        		
+
 		 Connection conn  = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,year+"" );
 			rs = stmt.executeQuery();
 			while(rs.next()) {
-				Date date = new Date(); 
+				Date date = new Date();
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String time=format.format(date);
 				Long millionSeconds1=format.parse(time).getTime();
 				Long millionSeconds2=millionSeconds1-7200000;
 				String updatetime=rs.getString("followtime");
-				Long millionSeconds3=format.parse(updatetime).getTime(); 
+				Long millionSeconds3=format.parse(updatetime).getTime();
 				if(millionSeconds3>millionSeconds2&&millionSeconds3<millionSeconds1){
 				ItemCase2 info=new ItemCase2();
 				info.setCaseNo(rs.getString("CaseNo"));
 				String MerchandManager1=rs.getString("MerchandManager1");
-				
+
 				String Merchandising=rs.getString("Merchandising");
 				if(Merchandising!=null&&!"".equals(Merchandising)){
 					info.setMerchandManager1(Merchandising);
 				}else{
 					info.setMerchandManager1(MerchandManager1);
 				}
-				
+
 				info.setMerchandManager2(rs.getString("MerchandManager2"));
 				info.setProjectDescc(rs.getString("ProductDescC"));
 				info.setProjectDesce(rs.getString("ProductDescE"));
@@ -1077,7 +1077,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setDateSample(rs.getString("DateSample"));
 				info.setDateSampleUploading(rs.getString("statetime"));
 				list.add(info);
-				
+
 				}
 			}
 		} catch (Exception e) {
@@ -1099,9 +1099,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -1111,7 +1111,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+
         String sql = "select * from itemCase it left join(select MIN(b.FactoryName) FactoryName,a.CaseNo from FactoryFund AS a   LEFT JOIN FactoryInfo AS b ON a.fid = b.id group by a.CaseNo) m on m.CaseNo=it.CaseNo where it.CaseNo=?";
         conn = SQLDBhelper.getConnection();
         try {
@@ -1119,14 +1119,14 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setString(1,projectId );
 			rs = stmt.executeQuery();
 			while(rs.next()) {
-				Date date = new Date(); 
+				Date date = new Date();
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				
+
 				String time=format.format(date);
 				Long millionSeconds1=format.parse(time).getTime();
 				Long millionSeconds2=millionSeconds1-3600000;
 				String updatetime=rs.getString("followtime");
-				Long millionSeconds3=format.parse(updatetime).getTime(); 
+				Long millionSeconds3=format.parse(updatetime).getTime();
 				if(millionSeconds3>millionSeconds2&&millionSeconds3<millionSeconds1){
 				ItemCase2 info=new ItemCase2();
 				info.setCaseNo(rs.getString("CaseNo"));
@@ -1136,8 +1136,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				String Engineer1=rs.getString("Engineer1");
 				String Engineer2=rs.getString("Engineer2");
 				String Engineer3=rs.getString("Engineer3");
-				
-				
+
+
 				String s2 = "LynnYuanannazhuElaineShengIvyWuKathyPanSherryZhouminniewuellazhuShirleyYurosegaoThomasChenjennyguoKristinemeiJanezhouRitajiangNataliaLijennyguoRitajiang";
 				Boolean index5=false;
 				Boolean index6=false;
@@ -1151,7 +1151,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							if(index6!=false){
 							info.setMerchandManager1(rs.getString("MerchandManager1"));
 							}
-						}	
+						}
 					}
 				}else{
 					if(MerchandManager1!=null&&!"".equals(MerchandManager1)){
@@ -1159,13 +1159,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						if(index6!=false){
 						info.setMerchandManager1(rs.getString("MerchandManager1"));
 						}
-					}	
+					}
 				}
-				
-				
-				
-				
-				
+
+
+
+
+
 				String s1 = "HouQiangMichealYinBensonzhangThomasChensunjinshuxuweixupingzhaoqiangRogerQiu";
 				Boolean index1=false;
 				Boolean index2=false;
@@ -1174,7 +1174,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				if(MerchandManager2!=null&&!"".equals(MerchandManager2)){
 				index1 = s1.toLowerCase().contains(MerchandManager2.toLowerCase());
 				if(index1!=false){
-					info.setMerchandManager2(rs.getString("MerchandManager2"));	
+					info.setMerchandManager2(rs.getString("MerchandManager2"));
 				}else{
 					if(Engineer1!=null&&!"".equals(Engineer1)){
 					index2 = s1.toLowerCase().contains(Engineer1.toLowerCase());
@@ -1191,9 +1191,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									if(index2!=false){
 										info.setMerchandManager2(rs.getString("Engineer3"));
 									}
-									}	
+									}
 							}
-							}	
+							}
 					}
 					}else{
 						if(Engineer2!=null&&!"".equals(Engineer2)){
@@ -1206,7 +1206,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									if(index2!=false){
 										info.setMerchandManager2(rs.getString("Engineer3"));
 									}
-									}	
+									}
 							}
 						}else{
 							if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -1214,10 +1214,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 								if(index2!=false){
 									info.setMerchandManager2(rs.getString("Engineer3"));
 								}
-								}	
+								}
 						}
 					}
-					
+
 				}
 				}else{
 					if(Engineer1!=null&&!"".equals(Engineer1)){
@@ -1235,7 +1235,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 										if(index2!=false){
 											info.setMerchandManager2(rs.getString("Engineer3"));
 										}
-										}	
+										}
 								}
 								}else{
 									if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -1243,8 +1243,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 										if(index2!=false){
 											info.setMerchandManager2(rs.getString("Engineer3"));
 										}
-										}	
-								}	
+										}
+								}
 						}
 					}else{
 						if(Engineer2!=null&&!"".equals(Engineer2)){
@@ -1257,7 +1257,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									if(index2!=false){
 										info.setMerchandManager2(rs.getString("Engineer3"));
 									}
-									}	
+									}
 							}
 						}else{
 							if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -1268,10 +1268,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 								}
 						}
 					}
-				} 
+				}
 				if((info.getMerchandManager1()!=null&&!"".equals(info.getMerchandManager1()))
 						||(info.getMerchandManager2()!=null&&!"".equals(info.getMerchandManager2()))){
-				
+
 				info.setProjectDescc(rs.getString("ProductDescC"));
 				info.setProjectDesce(rs.getString("ProductDescE"));
 				info.setFactoryName(rs.getString("FactoryName"));
@@ -1298,15 +1298,15 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
 	@Override
 	public List<ItemCase> getAllItem(ItemCase it) {
-		
+
 		List<ItemCase>list =new ArrayList<ItemCase>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -1333,22 +1333,22 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				POupload po1=new	POupload();
 				String CaseNo= rs1.getString("CaseNo");
 				String type=rs1.getString("type");
-				if("JIANYANBAOGAO".equals(type)){		
-				po1.setCaseNo(rs1.getString("CaseNo"));	
-				po1.setIntro(rs1.getString("intro"));	
+				if("JIANYANBAOGAO".equals(type)){
+				po1.setCaseNo(rs1.getString("CaseNo"));
+				po1.setIntro(rs1.getString("intro"));
 				po1.setUrl(rs1.getString("url"));
 				po1.setUploadtime(rs1.getString("uploadtime"));
 				po1.setType(rs1.getString("type"));
 				po1.setStatus(1);
 				accessories1.add(po1);
 				}else if("JIANYANJIHUAZJ".equals(type)){
-					po1.setCaseNo(rs1.getString("CaseNo"));	
-					po1.setIntro(rs1.getString("intro"));	
+					po1.setCaseNo(rs1.getString("CaseNo"));
+					po1.setIntro(rs1.getString("intro"));
 					po1.setUrl(rs1.getString("url"));
 					po1.setUploadtime(rs1.getString("uploadtime"));
 					po1.setType(rs1.getString("type"));
 					po1.setStatus(0);
-					accessories1.add(po1);	
+					accessories1.add(po1);
 				}
 				List<TuZhi>lisy1=new ArrayList<TuZhi>();
 				Connection conna = null;
@@ -1374,9 +1374,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							tuZhi.setEname(rsa.getString("yingwen"));
 							tuZhi.setName(rsa.getString("name"));
 							lisy1.add(tuZhi);
-						 
-						
-						
+
+
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1414,7 +1414,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						itcase.setCreateTime(rs1.getString("CreateTime"));
 						itcase.setZhijian1(rs1.getString("zhijian1"));
 						itcase.setZhijian2(rs1.getString("zhijian2"));
-						list.add(itcase);	
+						list.add(itcase);
 		        }
 				}
 						} catch (Exception e) {
@@ -1436,7 +1436,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							}
 							SQLDBhelper.close(conn1,stmt1,rs1);
 						}
-				     
+
 				}else if(it.getInspectionRequirements()!=0){
 					 sql = "select it.CaseNo,it.CreateTime,it.zhijian1,it.zhijian2 from itemCase it left join(select sum(inv.iimoney)iimoney,iCaseNo from "
 			        		+ " InvoiceInfo inv group by iCaseNo )inv on inv.iCaseNo=it.CaseNo where  "
@@ -1446,7 +1446,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			        conn = SQLDBhelper.getConnection();
 			        try {
 						stmt = conn.prepareStatement(sql);
-						
+
 						rs = stmt.executeQuery();
 						while(rs.next()) {
 							itcase=new ItemCase();
@@ -1458,11 +1458,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							POupload po=null;
 							String sql1="";
 							if(it.getInspectionRequirements()==1){
-								sql1 = "select CaseNo,intro,url,type,CONVERT(varchar(100), uploadtime, 23)uploadtime from POupload where CaseNo=? and type !='JIANYANJIHUAZJ'  ";	
+								sql1 = "select CaseNo,intro,url,type,CONVERT(varchar(100), uploadtime, 23)uploadtime from POupload where CaseNo=? and type !='JIANYANJIHUAZJ'  ";
 							}else if(it.getInspectionRequirements()==2){
-								sql1 = "select CaseNo,intro,url,type,CONVERT(varchar(100), uploadtime, 23)uploadtime from POupload where CaseNo=? and type !='JIANYANBAOGAO' ";	
+								sql1 = "select CaseNo,intro,url,type,CONVERT(varchar(100), uploadtime, 23)uploadtime from POupload where CaseNo=? and type !='JIANYANBAOGAO' ";
 							}
-					       
+
 					        conn1 = SQLDBhelper.getConnection();
 					        try {
 								stmt1 = conn1.prepareStatement(sql1);
@@ -1471,24 +1471,24 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 								while(rs1.next()) {
 								po=new	POupload();
 								String type=rs1.getString("type");
-								if("JIANYANBAOGAO".equals(type)){		
-								po.setCaseNo(rs1.getString("CaseNo"));	
-								po.setIntro(rs1.getString("intro"));	
+								if("JIANYANBAOGAO".equals(type)){
+								po.setCaseNo(rs1.getString("CaseNo"));
+								po.setIntro(rs1.getString("intro"));
 								po.setUrl(rs1.getString("url"));
 								po.setUploadtime(rs1.getString("uploadtime"));
 								po.setType(rs1.getString("type"));
 								po.setStatus(1);
 								accessories.add(po);
 								}else if("JIANYANJIHUAZJ".equals(type)){
-									po.setCaseNo(rs1.getString("CaseNo"));	
-									po.setIntro(rs1.getString("intro"));	
+									po.setCaseNo(rs1.getString("CaseNo"));
+									po.setIntro(rs1.getString("intro"));
 									po.setUrl(rs1.getString("url"));
 									po.setUploadtime(rs1.getString("uploadtime"));
 									po.setType(rs1.getString("type"));
 									po.setStatus(0);
-									accessories.add(po);	
+									accessories.add(po);
 								}
-								
+
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -1531,13 +1531,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									}
 									    tuZhi.setCname(rsa.getString("zhongwen"));
 										tuZhi.setEname(rsa.getString("yingwen"));
-										
+
 										tuZhi.setName(rsa.getString("name"));
-										
+
 										lisy1.add(tuZhi);
-									 
-									
-									
+
+
+
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -1557,7 +1557,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									}
 								}
 								SQLDBhelper.close(conna,stmta,rsa);
-							}	
+							}
 					        if(it.getDrawingPicture()==2){
 						        if(lisy1.size()>0){
 						        itcase.setTuzhi(lisy1);
@@ -1575,10 +1575,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 										itcase.setCreateTime(rs.getString("CreateTime"));
 										itcase.setZhijian1(rs.getString("zhijian1"));
 										itcase.setZhijian2(rs.getString("zhijian2"));
-										list.add(itcase);	
+										list.add(itcase);
 						        }
 								}
-						
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
@@ -1598,11 +1598,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 						SQLDBhelper.close(conn,stmt,rs);
 					}
-					
+
 					}
-				
-				
-			
+
+
+
 		}else{
         String sql = "select it.CaseNo,it.CreateTime,it.zhijian1,it.zhijian2 from itemCase it left join(select sum(inv.iimoney)iimoney,iCaseNo from "
         		+ " InvoiceInfo inv group by iCaseNo )inv on inv.iCaseNo=it.CaseNo where  "
@@ -1612,7 +1612,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				itcase=new ItemCase();
@@ -1631,22 +1631,22 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					while(rs1.next()) {
 					po=new	POupload();
 					String type=rs1.getString("type");
-					if("JIANYANBAOGAO".equals(type)){		
-					po.setCaseNo(rs1.getString("CaseNo"));	
-					po.setIntro(rs1.getString("intro"));	
+					if("JIANYANBAOGAO".equals(type)){
+					po.setCaseNo(rs1.getString("CaseNo"));
+					po.setIntro(rs1.getString("intro"));
 					po.setUrl(rs1.getString("url"));
 					po.setUploadtime(rs1.getString("uploadtime"));
 					po.setType(rs1.getString("type"));
 					po.setStatus(1);
 					accessories.add(po);
 					}else if("JIANYANJIHUAZJ".equals(type)){
-						po.setCaseNo(rs1.getString("CaseNo"));	
-						po.setIntro(rs1.getString("intro"));	
+						po.setCaseNo(rs1.getString("CaseNo"));
+						po.setIntro(rs1.getString("intro"));
 						po.setUrl(rs1.getString("url"));
 						po.setUploadtime(rs1.getString("uploadtime"));
 						po.setType(rs1.getString("type"));
 						po.setStatus(0);
-						accessories.add(po);	
+						accessories.add(po);
 					}
 					}
 				} catch (Exception e) {
@@ -1668,7 +1668,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
 				}
-		        
+
 		        List<TuZhi>lisy1=new ArrayList<TuZhi>();
 				Connection conna = null;
 				PreparedStatement stmta = null;
@@ -1691,13 +1691,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 						    tuZhi.setCname(rsa.getString("zhongwen"));
 							tuZhi.setEname(rsa.getString("yingwen"));
-							
+
 							tuZhi.setName(rsa.getString("name"));
-							
+
 							lisy1.add(tuZhi);
-						 
-						
-						
+
+
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1717,7 +1717,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conna,stmta,rsa);
-				}	
+				}
 		        if(it.getDrawingPicture()==2){
 			        if(lisy1.size()>0){
 			        itcase.setTuzhi(lisy1);
@@ -1735,10 +1735,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							itcase.setCreateTime(rs.getString("CreateTime"));
 							itcase.setZhijian1(rs.getString("zhijian1"));
 							itcase.setZhijian2(rs.getString("zhijian2"));
-							list.add(itcase);	
+							list.add(itcase);
 			        }
 					}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -1758,17 +1758,17 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
+
 		}
 		return list;
 	}
 
 	@Override
 	public List<ItemCase> getprojectContract(ItemCase it) {
-		Calendar now = Calendar.getInstance(); 
-		int year = now.get(Calendar.YEAR);  
+		Calendar now = Calendar.getInstance();
+		int year = now.get(Calendar.YEAR);
 
-		 int month = now.get(Calendar.MONTH)+1;   
+		 int month = now.get(Calendar.MONTH)+1;
        List<ItemCase>list =new ArrayList<ItemCase>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -1785,9 +1785,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         	}else if(it.getInspectionRequirements()==2){
         		sql +=" order by ii.iCaseNo desc";
         	}
-        	
+
 			stmt = conn.prepareStatement(sql);
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				itcase=new ItemCase();
@@ -1840,14 +1840,14 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					stmt2.setString(1,CaseNo );
 					rs2 = stmt2.executeQuery();
 					while(rs2.next()) {
-					
-						
+
+
 						itcase.setProjectContractNote(rs2.getString("projectContractNote"));
 						itcase.setMerchandManager1(rs2.getString("MerchandManager1"));
 						itcase.setMerchandManager2(rs2.getString("MerchandManager2"));
 						itcase.setMerchandising(rs2.getString("Merchandising"));
-						
-					
+
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1868,8 +1868,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					}
 					SQLDBhelper.close(conn2,stmt2,rs2);
 				}
-		        
-		        
+
+
 		        if(it.getCid()!=0&&!"".equals(it.getCid())){
 		        if(it.getCid()==1){
 		        itcase.setContract(accessories);
@@ -1881,23 +1881,23 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		        		itcase.setContract(accessories);
 						itcase.setCaseNo(rs.getString("iCaseNo"));
 						itcase.setCreateTime(rs.getString("ifdate"));
-						list.add(itcase);	
+						list.add(itcase);
 		        	}
 		        }else if(it.getCid()==3){
 		        	if(BargainUrl!=null&&!"".equals(BargainUrl)){}else{
 		        		itcase.setContract(accessories);
 						itcase.setCaseNo(rs.getString("iCaseNo"));
 						itcase.setCreateTime(rs.getString("ifdate"));
-						list.add(itcase);	
+						list.add(itcase);
 		        	}
 		        }
 		        }else{
-		        	
+
 		        	itcase.setContract(accessories);
 					itcase.setCaseNo(rs.getString("iCaseNo"));
 					itcase.setCreateTime(rs.getString("ifdate"));
 					list.add(itcase);
-		        }  
+		        }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1918,9 +1918,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -1961,8 +1961,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 	@Override
 	public List<TuZhi> viewAllDrawings(ItemCase it) {
-		
-		   Calendar now = Calendar.getInstance();  
+
+		   Calendar now = Calendar.getInstance();
 	       List<TuZhi>list1 =new ArrayList<TuZhi>();
 			Connection conn1 = null;
 				PreparedStatement stmt1 = null;
@@ -1976,7 +1976,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		        conn1 = SQLDBhelper.getConnection();
 		        try {
 					stmt1 = conn1.prepareStatement(sql1);
-					
+
 					rs1 = stmt1.executeQuery();
 					while(rs1.next()) {
 						TuZhi tuZhi=new TuZhi();
@@ -1998,7 +1998,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							list1.add(tuZhi);
 						 }else{
 							 if(index!=false){
-								
+
 							}else{
 								tuZhi.setIsDelete(0);
 								tuZhi.setId(rs1.getInt("id"));
@@ -2008,10 +2008,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 								tuZhi.setUploadtime(rs1.getString("UploadDate"));
 								tuZhi.setName(rs1.getString("name"));
 								list1.add(tuZhi);
-							} 
+							}
 						 }
-						
-						
+
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -2031,17 +2031,17 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
-				}	
-				
-		        
-		     
+				}
+
+
+
 		        return list1;
-				
+
 	}
 
 	@Override
 	public List<MeetingRecord> viewConferenceRecords(MeetingRecord it) {
-		Calendar now = Calendar.getInstance();  
+		Calendar now = Calendar.getInstance();
 	       List<MeetingRecord>list1 =new ArrayList<MeetingRecord>();
 	       MeetingRecord mr=null;
 	       String conferenceMessage="";
@@ -2054,22 +2054,22 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					if(it.getNewProjectTime()!=null&&!"".equals(it.getConferenceMessage())){
 					sql1="select it.* from  itemcase it where  it.conferenceMessage like ? and it.conferenceMessage like ?";
 					}else{
-						sql1="select it.* from  itemcase it where  it.conferenceMessage like ?";	
+						sql1="select it.* from  itemcase it where  it.conferenceMessage like ?";
 					}
 				}else{
 					if(it.getNewProjectTime()!=null&&!"".equals(it.getConferenceMessage())){
-						sql1="select it.* from  itemcase it where  it.conferenceMessage like ?";	
+						sql1="select it.* from  itemcase it where  it.conferenceMessage like ?";
 					}else{
 				if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
 					sql1 = "select it.* from  itemcase it where it.Caseno like ? ";
 				}else{
-					sql1 = "select a.*,it.conferenceMessage,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Merchandising from (select iCaseNo,min(ifdate)ifdate from InvoiceInfo   group by iCaseNo)a left join itemcase it on it.caseno=a.iCaseNo where DATEDIFF(day,ifdate,getdate())<150   ";	
+					sql1 = "select a.*,it.conferenceMessage,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Merchandising from (select iCaseNo,min(ifdate)ifdate from InvoiceInfo   group by iCaseNo)a left join itemcase it on it.caseno=a.iCaseNo where DATEDIFF(day,ifdate,getdate())<150   ";
 				}
 				}
 				}
 				conn1 = SQLDBhelper.getConnection();
 		        try {
-		        	
+
 					stmt1 = conn1.prepareStatement(sql1);
 					if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
 						i++;
@@ -2089,23 +2089,23 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						 conferenceMessage=rs1.getString("conferenceMessage");
 						mr.setConferenceMessage(conferenceMessage);
 						 String caseNo="";
-						
+
 						mr.setMerchandManager1(rs1.getString("MerchandManager1"));
-						mr.setMerchandising(rs1.getString("Merchandising")); 
-						 
-						 
+						mr.setMerchandising(rs1.getString("Merchandising"));
+
+
 						 if(it.getConferenceMessage()!=null&&!"".equals(it.getConferenceMessage())){
-							 
-							 caseNo=rs1.getString("CaseNo"); 
+
+							 caseNo=rs1.getString("CaseNo");
 						 }else{
 							 if(it.getNewProjectTime()!=null&&!"".equals(it.getConferenceMessage())){
-								 caseNo=rs1.getString("CaseNo"); 
+								 caseNo=rs1.getString("CaseNo");
 							 }else{
-						 
+
 						if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
-							 caseNo=rs1.getString("CaseNo");  
+							 caseNo=rs1.getString("CaseNo");
 						 }else{
-					       caseNo=rs1.getString("iCaseNo"); 
+					       caseNo=rs1.getString("iCaseNo");
 						 }
 							 }
 						 }
@@ -2113,7 +2113,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						String sql = "select mr.* from MeetingRecord mr  where  CaseNo = ?";
 						Connection conn = null;
 						ResultSet rs = null;
-						
+
 						PreparedStatement stmt = null;
 						conn = SQLDBhelper.getConnection();
 						try {
@@ -2121,7 +2121,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							stmt.setString(1, caseNo);
 							rs = stmt.executeQuery();
 							while(rs.next()) {
-							
+
 						     int num=rs.getInt("mState");
 						     if(num==3){
 						    	mr.setNewProject(1);
@@ -2136,10 +2136,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						    	mr.setMassQualityConference(1);
 						    	mr.setMassQualityConferenceTime(rs.getString("CreateDate"));
 						     }else if(num==9){
-						    	mr.setSmallQuantity(1); 
+						    	mr.setSmallQuantity(1);
 						    	mr.setSmallQuantityTime(rs.getString("CreateDate"));
 						     }
-								
+
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -2175,10 +2175,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						if(mr.getSmallQuantity()!=1){
 							mr.setSmallQuantity(0);
 						}
-						
-						
+
+
 						list1.add(mr);
-						
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -2198,12 +2198,12 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
-				}	
-				
-		        
-		     
+				}
+
+
+
 		        return list1;
-				
+
 	}
 
 	@Override
@@ -2244,17 +2244,17 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 	@Override
 	public List<MeetingRecord> viewConferenceRecords1(MeetingRecord it) {
-		Calendar now = Calendar.getInstance();  
+		Calendar now = Calendar.getInstance();
 	       List<MeetingRecord>list1 =new ArrayList<MeetingRecord>();
-	      
+
 	       String conferenceMessage="";
 	        Connection conn1 = null;
 			PreparedStatement stmt1 = null;
 				ResultSet rs1 = null;
 				String sql1=null;
-			
+
 				sql1="select mr.*,it.CustomerManager,it.MerchandManager1,it.conferenceMessage from MeetingRecord mr left join itemCase it on it.CaseNo=mr.CaseNo  where mState=?  and CreateDate=? ";
-					
+
 				conn1 = SQLDBhelper.getConnection();
 		        try {
 		        	stmt1 = conn1.prepareStatement(sql1);
@@ -2281,7 +2281,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 										if(index6!=false){
 											mr.setMerchandManager1(rs1.getString("MerchandManager1"));
 										}
-									}	
+									}
 								}
 							}else{
 								if(MerchandManager1!=null&&!"".equals(MerchandManager1)){
@@ -2289,17 +2289,17 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									if(index6!=false){
 										mr.setMerchandManager1(rs1.getString("MerchandManager1"));
 									}
-								}	
+								}
 							}
-						 
-						 
-						 
-						  
-					    caseNo=rs1.getString("CaseNo"); 
-						 
+
+
+
+
+					    caseNo=rs1.getString("CaseNo");
+
 						mr.setCaseNo(caseNo);
-						
-							
+
+
 						     int num=rs1.getInt("mState");
 						     if(num==3){
 						    	mr.setNewProject(1);
@@ -2314,17 +2314,17 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						    	mr.setMassQualityConference(1);
 						    	mr.setMassQualityConferenceTime(rs1.getString("CreateDate"));
 						     }else if(num==9){
-						    	mr.setSmallQuantity(1); 
+						    	mr.setSmallQuantity(1);
 						    	mr.setSmallQuantityTime(rs1.getString("CreateDate"));
 						     }
-								
-							
-						
-						
-						
-						
+
+
+
+
+
+
 						list1.add(mr);
-						
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -2344,10 +2344,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
-				}	
-				
-		        
-		     
+				}
+
+
+
 		        return list1;
 	}
 
@@ -2359,16 +2359,16 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		ResultSet rs = null;
 		ItemCase itcase=null;
 		String sql=null;
-		if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){	
+		if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
 			sql = "select * from itemCase where 1=1   ";
 		}else{
-		 sql = "select * from itemCase where datediff(day,CreateTime,getdate())<90   ";	
+		 sql = "select * from itemCase where datediff(day,CreateTime,getdate())<90   ";
 		}
-        
+
         conn = SQLDBhelper.getConnection();
         try {
         	if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
-        	sql+="  and caseno like ?";	
+        	sql+="  and caseno like ?";
         	}
         	sql+=" ORDER BY CreateTime DESC ";
 			stmt = conn.prepareStatement(sql);
@@ -2454,7 +2454,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,factory );
-			
+
 			stmt.setString(2, projectId);
 			result = stmt.executeUpdate();
 		} catch (Exception e) {
@@ -2514,9 +2514,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return result;
 	}
 
@@ -2526,18 +2526,18 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		
+
 		String sql = "INSERT INTO tuzhi (caseno,zhongwen,yingwen,remark,UploadDate,name)  select distinct '" + caseNo + "', zhongwen,yingwen,remark,UploadDate,name from tuzhi where caseno like  '" + backsingleCase + "%'";
 		conn = SQLDBhelper.getConnection();
-		
+
 		try {
 			stmt = conn.prepareStatement(sql);
-			
-			
+
+
           result = stmt.executeUpdate();
-			
-			
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2556,7 +2556,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}
 			}
 			SQLDBhelper.close(conn,stmt,rs);
-			
+
 		}
 		return result;
 	}
@@ -2567,18 +2567,18 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		
+
 		String sql = "INSERT INTO POupload (caseno,url,type,intro,uploadtime,uploader)  select distinct '" + caseNo + "',url,type,intro,uploadtime,uploader from POupload where caseno like  '" + backsingleCase + "%' and type='JIANYANJIHUAZJ'";
 		conn = SQLDBhelper.getConnection();
-		
+
 		try {
 			stmt = conn.prepareStatement(sql);
-			
-			
+
+
           result = stmt.executeUpdate();
-			
-			
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2597,7 +2597,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}
 			}
 			SQLDBhelper.close(conn,stmt,rs);
-			
+
 		}
 		return result;
 	}
@@ -2608,18 +2608,18 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		
+
 		String sql = "INSERT INTO QuotePrice (caseno,EmployeeName,CurrentStatus,UpdateTime,Upload,msgtype,color)  select distinct '" + caseNo + "',EmployeeName,CurrentStatus,UpdateTime,Upload,msgtype,color from QuotePrice where caseno like  '" + backsingleCase + "%' ";
 		conn = SQLDBhelper.getConnection();
-		
+
 		try {
 			stmt = conn.prepareStatement(sql);
-			
-			
+
+
           result = stmt.executeUpdate();
-			
-			
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2638,7 +2638,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}
 			}
 			SQLDBhelper.close(conn,stmt,rs);
-			
+
 		}
 		return result;
 	}
@@ -2653,7 +2653,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		int team=0;
 		String CreateName="";
 		String url="";
-		
+
 		int result=0;
 		String str;
         String sql = "select state,team,cast(content as varchar(4000)) as content,CreateName,url from QuotationAnalysis   where state=5 and   CaseNo like '" + backsingleCase + "%' group by state,team,cast(content as varchar(4000)),CreateName,url ";
@@ -2695,15 +2695,15 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 	    ResultSet rs1 = null;
 		String sql1 = "INSERT INTO QuotationAnalysis (caseno,state,team,content,CreateName,CreateDate,url)  values ('" + caseNo + "'," + state+ ","  + team + ",'" + content + "','" + CreateName + "',getdate(),'" + url + "')";
 		conn1 = SQLDBhelper.getConnection();
-		
+
 		try {
 			stmt1 = conn1.prepareStatement(sql1);
-			
-			
+
+
           result = stmt1.executeUpdate();
-			
-			
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2722,8 +2722,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}
 			}
 			SQLDBhelper.close(conn1,stmt1,rs1);
-			
-		}	
+
+		}
 		return result;
 	}
 
@@ -2741,7 +2741,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setString(1, caseNo1);
 			rs = stmt.executeQuery();
 			if(rs.next()) {
-			
+
 				String sql1 = "update itemCase set zhijian1=?,zhijian2=?,MerchandManager2=?,Engineer1=?,Engineer2=?,Engineer3=? where CaseNo = ?";
 				Connection conn1 = null;
 				ResultSet rs1 = null;
@@ -2777,8 +2777,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
 				}
-				
-				
+
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2804,31 +2804,31 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 	@Override
 	public List<Factory> factoryUnpaidStatistics(Factory it) {
-		Calendar now = Calendar.getInstance();  
+		Calendar now = Calendar.getInstance();
 	       List<Factory>list1 =new ArrayList<Factory>();
 	       Factory info=null;
-	  
+
 	        Connection conn1 = null;
 	        int i=0;
 			PreparedStatement stmt1 = null;
 				ResultSet rs1 = null;
 				String sql1=null;
-				
+
 				sql1="  select fac.friMoney,fac.CaseNo,fac.friFacDate,fac.State,fain.FactoryName,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Engineer1,it.Engineer2,it.Engineer3,it.Merchandising from FactoryFund fac left join itemCase it on it.CaseNo=fac.CaseNo left join FactoryInfo fain on fac.fid=fain.id where (State ='计划已保存' or State='<font color=blue>正在审批中</font>' ) and friMoney is not null and friMoney!=0 ";
 				if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
-		        	sql1+="  and caseno like ?";	
+		        	sql1+="  and caseno like ?";
 		        	}
 				if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
-		        	sql1+="  and friFacDate > ? ";	
+		        	sql1+="  and friFacDate > ? ";
 		        }
 				if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
-		        	sql1+="  and friFacDate <? ";	
-		        }	
-				sql1+=" order by fac.friFacDate desc";	
+		        	sql1+="  and friFacDate <? ";
+		        }
+				sql1+=" order by fac.friFacDate desc";
 				conn1 = SQLDBhelper.getConnection();
 		        try {
-		        	
-		        	
+
+
 					stmt1 = conn1.prepareStatement(sql1);
 					if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
 						i++;
@@ -2836,17 +2836,17 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			        	}
 					if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
 						i++;
-						stmt1.setString(i,it.getStartTime() );	
+						stmt1.setString(i,it.getStartTime() );
 			        }
 					if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
 						i++;
-						stmt1.setString(i,it.getOutTime() );	
+						stmt1.setString(i,it.getOutTime() );
 			        }
 					rs1 = stmt1.executeQuery();
 					while(rs1.next()) {
 						 info=new Factory();
-						 
-						 info.setMerchandising(rs1.getString("Merchandising"));  
+
+						 info.setMerchandising(rs1.getString("Merchandising"));
 						info.setMerchandManager1(rs1.getString("MerchandManager1"));
 						info.setMerchandManager2(rs1.getString("MerchandManager2"));
 						info.setCaseNo(rs1.getString("caseno"));
@@ -2855,7 +2855,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						info.setMoney(rs1.getDouble("friMoney"));
 						info.setTime(rs1.getString("friFacDate"));
 						list1.add(info);
-						
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -2875,10 +2875,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
-				}	
-				
-		        
-		     
+				}
+
+
+
 		        return list1;
 	}
 
@@ -2892,19 +2892,19 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		int i=0;
 		sql1="  select sum(friMoney)friMoney from FactoryFund fac left join itemCase it on it.CaseNo=fac.CaseNo left join FactoryInfo fain on fac.fid=fain.id where  State='<font color=blue>正在审批中</font>' and friMoney is not null and friMoney!=0 ";
 		if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
-        	sql1+="  and caseno like ?";	
+        	sql1+="  and caseno like ?";
         	}
 		if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
-        	sql1+="  and friFacDate > ? ";	
+        	sql1+="  and friFacDate > ? ";
         }
 		if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
-        	sql1+="  and friFacDate <? ";	
-        }	
-		
+        	sql1+="  and friFacDate <? ";
+        }
+
 		conn1 = SQLDBhelper.getConnection();
         try {
-        	
-        	
+
+
 			stmt1 = conn1.prepareStatement(sql1);
 			if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
 				i++;
@@ -2912,16 +2912,16 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 	        	}
 			if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
 				i++;
-				stmt1.setString(i,it.getStartTime() );	
+				stmt1.setString(i,it.getStartTime() );
 	        }
 			if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
 				i++;
-				stmt1.setString(i,it.getOutTime() );	
+				stmt1.setString(i,it.getOutTime() );
 	        }
 			rs1 = stmt1.executeQuery();
 			if(rs1.next()) {
 				amountApproved=rs1.getDouble("friMoney")/10000;
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2941,10 +2941,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}
 			}
 			SQLDBhelper.close(conn1,stmt1,rs1);
-		}	
-		
-        
-     
+		}
+
+
+
         return amountApproved;
 	}
 
@@ -2958,19 +2958,19 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		int i=0;
 		sql1="  select sum(friMoney)friMoney from FactoryFund fac left join itemCase it on it.CaseNo=fac.CaseNo left join FactoryInfo fain on fac.fid=fain.id where  State='计划已保存' and friMoney is not null and friMoney!=0 ";
 		if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
-        	sql1+="  and caseno like ?";	
+        	sql1+="  and caseno like ?";
         	}
 		if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
-        	sql1+="  and friFacDate > ? ";	
+        	sql1+="  and friFacDate > ? ";
         }
 		if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
-        	sql1+="  and friFacDate <? ";	
-        }	
-			
+        	sql1+="  and friFacDate <? ";
+        }
+
 		conn1 = SQLDBhelper.getConnection();
         try {
-        	
-        	
+
+
 			stmt1 = conn1.prepareStatement(sql1);
 			if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
 				i++;
@@ -2978,16 +2978,16 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 	        	}
 			if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
 				i++;
-				stmt1.setString(i,it.getStartTime() );	
+				stmt1.setString(i,it.getStartTime() );
 	        }
 			if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
 				i++;
-				stmt1.setString(i,it.getOutTime() );	
+				stmt1.setString(i,it.getOutTime() );
 	        }
 			rs1 = stmt1.executeQuery();
 			if(rs1.next()) {
 				planSave=rs1.getDouble("friMoney")/10000;
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -3007,10 +3007,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}
 			}
 			SQLDBhelper.close(conn1,stmt1,rs1);
-		}	
-		
-        
-     
+		}
+
+
+
         return planSave;
 	}
 
@@ -3092,9 +3092,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return result;
 	}
 
@@ -3133,39 +3133,39 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return id;
 	}
 
 	@Override
 	public List<invoiceinfo> CustomerPaymentStatistics(invoiceinfo it) {
-		Calendar now = Calendar.getInstance();  
+		Calendar now = Calendar.getInstance();
 	       List<invoiceinfo>list1 =new ArrayList<invoiceinfo>();
 	       invoiceinfo info=null;
-	  
+
 	        Connection conn1 = null;
 	        int i=0;
 			PreparedStatement stmt1 = null;
 				ResultSet rs1 = null;
 				String sql1=null;
-				
+
 				sql1="    select it.GrossProfit,b.ifmoney,b.ifdate,b.imoneytype,b.iCaseNo,b.iimoney,b.iidate,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Engineer1,it.Engineer2,it.Engineer3,cus.name from InvoiceInfo b "
                +" left join itemcase it on it.CaseNo=b.iCaseNo left join customer cus on cus.id=it.customercode where b.ifmoney is not null  and b.iimoney!=0   ";
 				if(it.getCaseno()!=null&&!"".equals(it.getCaseno())){
-		        	sql1+="  and (b.icaseno like ? or cus.name like ? or it.CustomerManager like ? or it.MerchandManager1 like ? or it.MerchandManager2 like ? or it.Engineer1 like ? or it.Engineer2 like ? or it.Engineer3 like ? or cus.id like ? )  ";	
+		        	sql1+="  and (b.icaseno like ? or cus.name like ? or it.CustomerManager like ? or it.MerchandManager1 like ? or it.MerchandManager2 like ? or it.Engineer1 like ? or it.Engineer2 like ? or it.Engineer3 like ? or cus.id like ? )  ";
 		        	}
 				if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
-		        	sql1+="  and  b.ifdate>?  ";	
+		        	sql1+="  and  b.ifdate>?  ";
 		        	}
 				if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
-		        	sql1+="  and  b.ifdate<?  ";	
+		        	sql1+="  and  b.ifdate<?  ";
 		        	}
 				conn1 = SQLDBhelper.getConnection();
 		        try {
 		        	sql1+="   order by b.ifdate desc ";
-		        	
+
 					stmt1 = conn1.prepareStatement(sql1);
 					if(it.getCaseno()!=null&&!"".equals(it.getCaseno())){
 						i++;
@@ -3187,16 +3187,16 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			        	   i++;
 			        	   stmt1.setString(i,"'"+it.getCaseno()+"'" );
 			        	}
-					
+
 					if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
 						i++;
-						stmt1.setString(i,it.getStartTime() );	
+						stmt1.setString(i,it.getStartTime() );
 			        	}
 					if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
 						i++;
 						stmt1.setString(i,it.getOutTime());
 			        	}
-					
+
 					rs1 = stmt1.executeQuery();
 					while(rs1.next()) {
 						 info=new invoiceinfo();
@@ -3219,7 +3219,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 										if(index6!=false){
 										info.setMerchandManager1(rs1.getString("MerchandManager1"));
 										}
-									}	
+									}
 								}
 							}else{
 								if(MerchandManager1!=null&&!"".equals(MerchandManager1)){
@@ -3227,13 +3227,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									if(index6!=false){
 									info.setMerchandManager1(rs1.getString("MerchandManager1"));
 									}
-								}	
+								}
 							}
-							
-							
-							
-							
-							
+
+
+
+
+
 							String sa1 = "ChouchendongzhaoshuhaoHouQiangBensonzhangsunjinshuxuweixupingzhaoqiangRogerQiu";
 							Boolean indexa1=false;
 							Boolean index2=false;
@@ -3242,7 +3242,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							if(MerchandManager2!=null&&!"".equals(MerchandManager2)){
 							indexa1 = sa1.toLowerCase().contains(MerchandManager2.toLowerCase());
 							if(indexa1!=false){
-								info.setMerchandManager2(rs1.getString("MerchandManager2"));	
+								info.setMerchandManager2(rs1.getString("MerchandManager2"));
 							}else{
 								if(Engineer1!=null&&!"".equals(Engineer1)){
 								index2 = sa1.toLowerCase().contains(Engineer1.toLowerCase());
@@ -3259,9 +3259,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 												if(index2!=false){
 													info.setMerchandManager2(rs1.getString("Engineer3"));
 												}
-												}	
+												}
 										}
-										}	
+										}
 								}
 								}else{
 									if(Engineer2!=null&&!"".equals(Engineer2)){
@@ -3274,7 +3274,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 												if(index2!=false){
 													info.setMerchandManager2(rs1.getString("Engineer3"));
 												}
-												}	
+												}
 										}
 									}else{
 										if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -3282,10 +3282,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 											if(index2!=false){
 												info.setMerchandManager2(rs1.getString("Engineer3"));
 											}
-											}	
+											}
 									}
 								}
-								
+
 							}
 							}else{
 								if(Engineer1!=null&&!"".equals(Engineer1)){
@@ -3303,7 +3303,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 													if(index2!=false){
 														info.setMerchandManager2(rs1.getString("Engineer3"));
 													}
-													}	
+													}
 											}
 											}else{
 												if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -3311,8 +3311,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 													if(index2!=false){
 														info.setMerchandManager2(rs1.getString("Engineer3"));
 													}
-													}	
-											}	
+													}
+											}
 									}
 								}else{
 									if(Engineer2!=null&&!"".equals(Engineer2)){
@@ -3325,7 +3325,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 												if(index2!=false){
 													info.setMerchandManager2(rs1.getString("Engineer3"));
 												}
-												}	
+												}
 										}
 									}else{
 										if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -3337,9 +3337,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									}
 								}
 							}
-						
-						 
-						 
+
+
+
 						info.setGrossProfit(rs1.getString("GrossProfit"));
 						info.setCaseno(rs1.getString("icaseno"));
 						info.setImoneytype(rs1.getInt("imoneytype"));
@@ -3349,7 +3349,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						info.setIfdate(rs1.getString("ifdate"));
 						info.setCustomerName(rs1.getString("name"));
 						list1.add(info);
-						
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -3369,10 +3369,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
-				}	
-				
-		        
-		     
+				}
+
+
+
 		        return list1;
 	}
 
@@ -3386,19 +3386,19 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		int i=0;
 		sql1="  select sum(friMoney)friMoney from FactoryFund fac left join itemCase it on it.CaseNo=fac.CaseNo left join FactoryInfo fain on fac.fid=fain.id where  State='<font color=green>已完成款项</font>' and friMoney is not null and friMoney!=0 ";
 		if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
-        	sql1+="  and caseno like ?";	
+        	sql1+="  and caseno like ?";
         	}
 		if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
-        	sql1+="  and friFacDate > ? ";	
+        	sql1+="  and friFacDate > ? ";
         }
 		if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
-        	sql1+="  and friFacDate <? ";	
-        }	
-		
+        	sql1+="  and friFacDate <? ";
+        }
+
 		conn1 = SQLDBhelper.getConnection();
         try {
-        	
-        	
+
+
 			stmt1 = conn1.prepareStatement(sql1);
 			if(it.getCaseNo()!=null&&!"".equals(it.getCaseNo())){
 				i++;
@@ -3406,16 +3406,16 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 	        	}
 			if(it.getStartTime()!=null&&!"".equals(it.getStartTime())){
 				i++;
-				stmt1.setString(i,it.getStartTime() );	
+				stmt1.setString(i,it.getStartTime() );
 	        }
 			if(it.getOutTime()!=null&&!"".equals(it.getOutTime())){
 				i++;
-				stmt1.setString(i,it.getOutTime() );	
+				stmt1.setString(i,it.getOutTime() );
 	        }
 			rs1 = stmt1.executeQuery();
 			if(rs1.next()) {
 				amountApproved=rs1.getDouble("friMoney")/10000;
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -3435,10 +3435,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}
 			}
 			SQLDBhelper.close(conn1,stmt1,rs1);
-		}	
-		
-        
-     
+		}
+
+
+
         return amountApproved;
 	}
 
@@ -3448,23 +3448,23 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+
         String sql = "select it.*,c.completiontime,c.statetime,c.DateSample,ii.ifdate,m.FactoryName from itemCase it left join(select MIN(b.FactoryName) FactoryName,a.CaseNo from FactoryFund AS a   LEFT JOIN FactoryInfo AS b ON a.fid = b.id group by a.CaseNo) m on m.CaseNo=it.CaseNo"
         		+ " left join (select a.CaseNo,completiontime,DateSample,statetime from (select max(completiontime)completiontime,CaseNo  from Bargain where datediff(day,completiontime,'2000-01-01')<0  group by CaseNo )b  left join (select CaseNo,min(inputDate)statetime from  FactoryFund group by CaseNo)a on a.CaseNo=b.CaseNo"
         		+ "  left join(select CaseNo ,max(DateSample)DateSample from Bargain where datediff(day,DateSample,'2000-01-01')<0  group by CaseNo)d on d.CaseNo=b.CaseNo"
         		+ ""
         		+ ")c"
         		+ " on c.caseno=it.caseno left join (select icaseno,min(ifdate)ifdate from invoiceinfo where ifmoney is not null and ifmoney!=0 group by icaseno )ii on ii.icaseno=it.caseno  where it.caseno=?";
-        		
+
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,projectId );
 			rs = stmt.executeQuery();
 			while(rs.next()) {
-				
+
 				info=new ItemCase2();
-				
+
 				info.setFirstPaymentDate(rs.getString("ifdate"));
 				info.setCaseNo(rs.getString("CaseNo"));
 				String CustomerManager=rs.getString("CustomerManager");
@@ -3487,10 +3487,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setCompletionTime(rs.getString("completiontime"));
 				info.setDateSample(rs.getString("DateSample"));
 				info.setDateSampleUploading(rs.getString("statetime"));
-				
-				
+
+
 				}
-			
+
 		} catch (Exception e) {
 			//e.printStackTrace();
 		} finally {
@@ -3510,9 +3510,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return info;
 	}
 
@@ -3522,18 +3522,18 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+
         String sql = "select * from itemCase it left join(select MIN(b.FactoryName) FactoryName,a.CaseNo from FactoryFund AS a   LEFT JOIN FactoryInfo AS b ON a.fid = b.id group by a.CaseNo) m on m.CaseNo=it.CaseNo"
         		+ " left join (select a.CaseNo,completiontime,DateSample,statetime from (select max(completiontime)completiontime,CaseNo ,max(DateSample)DateSample from Bargain group by CaseNo)b  left join (select CaseNo,min(inputDate)statetime from  FactoryFund group by CaseNo)a on a.CaseNo=b.CaseNo)c"
         		+ " on c.caseno=it.caseno where datediff(day,it.followtime,getdate())<8";
-        		
+
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
-				
+
 				ItemCase2 info=new ItemCase2();
 				info.setCaseNo(rs.getString("CaseNo"));
 				String CustomerManager=rs.getString("CustomerManager");
@@ -3542,8 +3542,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				String Engineer1=rs.getString("Engineer1");
 				String Engineer2=rs.getString("Engineer2");
 				String Engineer3=rs.getString("Engineer3");
-				
-				
+
+
 				  String s2 = "LynnYuanannazhuElaineShengIvyWuKathyPanSherryZhouminniewuellazhuShirleyYurosegaoThomasChenjennyguoKristinemeiJanezhouRitajiangNataliaLijennyguoRitajiang";
 					Boolean index5=false;
 					Boolean index6=false;
@@ -3557,7 +3557,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 								if(index6!=false){
 								info.setMerchandManager1(rs.getString("MerchandManager1"));
 								}
-							}	
+							}
 						}
 					}else{
 						if(MerchandManager1!=null&&!"".equals(MerchandManager1)){
@@ -3565,13 +3565,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							if(index6!=false){
 							info.setMerchandManager1(rs.getString("MerchandManager1"));
 							}
-						}	
+						}
 					}
-					
-					
-					
-					
-					
+
+
+
+
+
 					String sa1 = "ChouchendongzhaoshuhaoHouQiangBensonzhangsunjinshuxuweixupingzhaoqiangRogerQiu";
 					Boolean indexa1=false;
 					Boolean index2=false;
@@ -3580,7 +3580,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					if(MerchandManager2!=null&&!"".equals(MerchandManager2)){
 					indexa1 = sa1.toLowerCase().contains(MerchandManager2.toLowerCase());
 					if(indexa1!=false){
-						info.setMerchandManager2(rs.getString("MerchandManager2"));	
+						info.setMerchandManager2(rs.getString("MerchandManager2"));
 					}else{
 						if(Engineer1!=null&&!"".equals(Engineer1)){
 						index2 = sa1.toLowerCase().contains(Engineer1.toLowerCase());
@@ -3597,9 +3597,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 										if(index2!=false){
 											info.setMerchandManager2(rs.getString("Engineer3"));
 										}
-										}	
+										}
 								}
-								}	
+								}
 						}
 						}else{
 							if(Engineer2!=null&&!"".equals(Engineer2)){
@@ -3612,7 +3612,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 										if(index2!=false){
 											info.setMerchandManager2(rs.getString("Engineer3"));
 										}
-										}	
+										}
 								}
 							}else{
 								if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -3620,10 +3620,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 									if(index2!=false){
 										info.setMerchandManager2(rs.getString("Engineer3"));
 									}
-									}	
+									}
 							}
 						}
-						
+
 					}
 					}else{
 						if(Engineer1!=null&&!"".equals(Engineer1)){
@@ -3641,7 +3641,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 											if(index2!=false){
 												info.setMerchandManager2(rs.getString("Engineer3"));
 											}
-											}	
+											}
 									}
 									}else{
 										if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -3649,8 +3649,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 											if(index2!=false){
 												info.setMerchandManager2(rs.getString("Engineer3"));
 											}
-											}	
-									}	
+											}
+									}
 							}
 						}else{
 							if(Engineer2!=null&&!"".equals(Engineer2)){
@@ -3663,7 +3663,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 										if(index2!=false){
 											info.setMerchandManager2(rs.getString("Engineer3"));
 										}
-										}	
+										}
 								}
 							}else{
 								if(Engineer3!=null&&!"".equals(Engineer3)){
@@ -3686,9 +3686,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setDateSample(rs.getString("DateSample"));
 				info.setDateSampleUploading(rs.getString("statetime"));
 				list.add(info);
-				
+
 				}
-			
+
 		} catch (Exception e) {
 			//e.printStackTrace();
 		} finally {
@@ -3708,9 +3708,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -3721,7 +3721,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		
+
 		String sql = "insert into poupload(CaseNo,minimalistTask,type,intro"
 				+ ",uploadtime,uploader) values(?,?,?,?,?,?)";
 		conn = SQLDBhelper.getConnection();
@@ -3734,11 +3734,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setString(4,reason );
 			stmt.setString(5,createtime );
 			stmt.setString(6,uploader );
-			
+
           result = stmt.executeUpdate();
-			
-         
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -3764,16 +3764,16 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 	@Override
 	public List<invoiceinfo> nonPaymentCustomers(invoiceinfo it) {
-		Calendar now = Calendar.getInstance();  
+		Calendar now = Calendar.getInstance();
 	       List<invoiceinfo>list1 =new ArrayList<invoiceinfo>();
 	       invoiceinfo info=null;
-	  
+
 	        Connection conn1 = null;
 	        int i=0;
 			PreparedStatement stmt1 = null;
 				ResultSet rs1 = null;
 				String sql1=null;
-				
+
 				sql1=" select allArrears,discrepancy,uploads,iid,ifmoney,ifdate,imoneytype,iCaseNo,iimoney,iidate,CustomerManager,MerchandManager1,MerchandManager2,Engineer1,Engineer2,Engineer3,Merchandising,outstandingNotes,name"
 						+ ",AmountMoney,QualityDeductions,ReasonsWithholding,explain,createTime,ContractNumber,reason,sort "
 						+ "from  (select isnull(c.iimoney1-c.ifmoney1,0)allArrears,isnull(b.iimoney-b.ifmoney,0)discrepancy,b.sort,b.uploads,b.iid,b.reason,b.ifmoney,b.ifdate,b.imoneytype,b.iCaseNo,b.iimoney,b.iidate,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Engineer1,it.Engineer2,it.Engineer3,it.Merchandising,cus.name,b.outstandingNotes,"
@@ -3781,22 +3781,22 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
                +" left join itemcase it on it.CaseNo=b.iCaseNo left join customer cus on cus.id=it.customercode left join ContractDeductionForm con on con.QualityId=b.iid "
                + " left join (select isnull(a.iimoney1,0)iimoney1,isnull(a.ifmoney1,0)ifmoney1,a.icaseno from(select sum(iimoney)iimoney1,sum(ifmoney)ifmoney1,icaseno from InvoiceInfo group by iCaseNo)a)c on b.iCaseNo=c.iCaseNo where  iid not in (  select iid from InvoiceInfo where ifmoney is not null and iimoney-ifmoney<50) and  b.iimoney!=0   ";
 				if(it.getCaseno()!=null&&!"".equals(it.getCaseno())){
-		        	sql1+="  and (b.icaseno like ? or cus.name like ? or b.uploads like ? or cus.id like ? )  ";	
+		        	sql1+="  and (b.icaseno like ? or cus.name like ? or b.uploads like ? or cus.id like ? )  ";
 		        	}
 				if(it.getIidate()!=null&&!"".equals(it.getIidate())){
-		        	sql1+="  and  b.iidate <=?  ";	
+		        	sql1+="  and  b.iidate <=?  ";
 		        	}
 				if(it.getReason()!=0){
-		        	sql1+="  and  b.reason  =?  ";	
+		        	sql1+="  and  b.reason  =?  ";
 		        	}
 				if(it.getDiscrepancy()!=0){
 					sql1+="  and  b.iimoney-b.ifmoney >?  ";
 				}
-				
+
 				conn1 = SQLDBhelper.getConnection();
 		        try {
 		        	sql1+=" )a where a.allArrears>200  order by a.sort  ,a.iidate desc ";
-		        	
+
 					stmt1 = conn1.prepareStatement(sql1);
 					if(it.getCaseno()!=null&&!"".equals(it.getCaseno())){
 						i++;
@@ -3807,7 +3807,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			        	   stmt1.setString(i,"%"+it.getCaseno()+"%" );
 			        	   i++;
 			        	   stmt1.setString(i,"%"+it.getCaseno()+"%" );
-			        	   
+
 			        	}
 					if(it.getIidate()!=null&&!"".equals(it.getIidate())){
 						i++;
@@ -3815,7 +3815,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			        	}
 					if(it.getReason()!=0){
 						i++;
-						stmt1.setInt(i,it.getReason() );	
+						stmt1.setInt(i,it.getReason() );
 			        	}
 					if(it.getDiscrepancy()!=0){
 						i++;
@@ -3864,11 +3864,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 								}
 							}
 						 info.setIid(rs1.getInt("iid"));
-						 info.setMerchandManager1(rs1.getString("MerchandManager1"));  
+						 info.setMerchandManager1(rs1.getString("MerchandManager1"));
 						 info.setMerchandManager2(rs1.getString("MerchandManager2"));
 						 info.setMerchandising(rs1.getString("Merchandising"));
 						info.setOutstandingNotes(rs1.getString("outstandingNotes"));
-						
+
 						info.setImoneytype(rs1.getInt("imoneytype"));
 						info.setIimoney(rs1.getDouble("iimoney"));
 						info.setIfmoney(rs1.getDouble("ifmoney"));
@@ -3886,7 +3886,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						info.setContractNumber(rs1.getString("contractNumber"));
 						info.setAllArrears(rs1.getDouble("allArrears"));
 						list1.add(info);
-						
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -3906,10 +3906,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
-				}	
-				
-		        
-		     
+				}
+
+
+
 		        return list1;
 	}
 
@@ -3919,7 +3919,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		if(i==1){
 		  sql= "update itemCase set CustomerManager=? where customercode = ?";
 		}else if(i==2){
-			sql= "update itemCase set MerchandManager1=? where customercode = ?";	
+			sql= "update itemCase set MerchandManager1=? where customercode = ?";
 		}
 		Connection conn = null;
 		ResultSet rs = null;
@@ -3963,7 +3963,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-	
+
 			stmt.setString(1, strProjectId);
 			result = stmt.executeUpdate();
 		} catch (Exception e) {
@@ -3998,7 +3998,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-	
+
 			stmt.setString(1, saleName1);
 			stmt.setString(2, strProjectId);
 			result = stmt.executeUpdate();
@@ -4026,16 +4026,16 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 	@Override
 	public List<invoiceinfo> nonPaymentCustomers1(invoiceinfo it) {
-		Calendar now = Calendar.getInstance();  
+		Calendar now = Calendar.getInstance();
 	       List<invoiceinfo>list1 =new ArrayList<invoiceinfo>();
 	       invoiceinfo info=null;
-	  
+
 	        Connection conn1 = null;
 	        int i=0;
 			PreparedStatement stmt1 = null;
 				ResultSet rs1 = null;
 				String sql1=null;
-				
+
 				sql1=" select allArrears,discrepancy,uploads,iid,ifmoney,ifdate,imoneytype,iCaseNo,iimoney,iidate,CustomerManager,MerchandManager1,MerchandManager2,Engineer1,Engineer2,Engineer3,Merchandising,outstandingNotes,name"
 						+ ",AmountMoney,QualityDeductions,ReasonsWithholding,explain,createTime,ContractNumber,reason,sort "
 						+ "from  (select isnull(c.iimoney1-c.ifmoney1,0)allArrears,isnull(b.iimoney-b.ifmoney,0)discrepancy,b.uploads,b.sort,b.iid,b.reason,b.ifmoney,b.ifdate,b.imoneytype,b.iCaseNo,b.iimoney,b.iidate,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Engineer1,it.Engineer2,it.Engineer3,it.Merchandising,cus.name,b.outstandingNotes,"
@@ -4043,22 +4043,22 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
                +" left join itemcase it on it.CaseNo=b.iCaseNo left join customer cus on cus.id=it.customercode left join ContractDeductionForm con on con.QualityId=b.iid"
                + " left join (select isnull(a.iimoney1,0)iimoney1,isnull(a.ifmoney1,0)ifmoney1,a.icaseno from(select sum(iimoney)iimoney1,sum(ifmoney)ifmoney1,icaseno from InvoiceInfo group by iCaseNo)a)c on b.iCaseNo=c.iCaseNo where  iid not in (  select iid from InvoiceInfo where ifmoney is not null and iimoney-ifmoney<50)  and  b.iimoney!=0 ";
 				if(it.getCaseno()!=null&&!"".equals(it.getCaseno())){
-		        	sql1+="  and (b.icaseno like ? or cus.name like ? or b.uploads like ? or cus.id like ? )  ";	
+		        	sql1+="  and (b.icaseno like ? or cus.name like ? or b.uploads like ? or cus.id like ? )  ";
 		        	}
 				if(it.getIidate()!=null&&!"".equals(it.getIidate())){
-		        	sql1+="  and  b.iidate  <=?  ";	
+		        	sql1+="  and  b.iidate  <=?  ";
 		        	}
 				if(it.getReason()!=0){
-		        	sql1+="  and  b.reason  =?  ";	
+		        	sql1+="  and  b.reason  =?  ";
 		        	}
 				if(it.getDiscrepancy()!=0){
-					sql1+="  and  b.iimoney-b.ifmoney  >?  ";	
+					sql1+="  and  b.iimoney-b.ifmoney  >?  ";
 				}
 				sql1+=" and (it.CustomerManager like ? or it.MerchandManager1 like ? or it.MerchandManager2 like ? or it.Engineer1 like ? or it.Engineer2 like ? or it.Engineer3 like ? or it.Merchandising like ?)";
 				conn1 = SQLDBhelper.getConnection();
 		        try {
 		        	sql1+=")a where a.allArrears>200   order by a.sort ,a.iidate desc ";
-		        	
+
 					stmt1 = conn1.prepareStatement(sql1);
 					if(it.getCaseno()!=null&&!"".equals(it.getCaseno())){
 						i++;
@@ -4069,7 +4069,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			        	   stmt1.setString(i,"%"+it.getCaseno()+"%" );
 			        	   i++;
 			        	   stmt1.setString(i,"%"+it.getCaseno()+"%" );
-			        	  
+
 			        	}
 					if(it.getIidate()!=null&&!"".equals(it.getIidate())){
 						i++;
@@ -4077,11 +4077,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			        	}
 					if(it.getReason()!=0){
 						i++;
-						stmt1.setInt(i,it.getReason() );	
+						stmt1.setInt(i,it.getReason() );
 			        	}
 					if(it.getDiscrepancy()!=0){
 						i++;
-						stmt1.setInt(i,it.getDiscrepancy() );	
+						stmt1.setInt(i,it.getDiscrepancy() );
 					}
 					stmt1.setString(i+1,it.getMerchandManager1());
 					stmt1.setString(i+2,it.getMerchandManager1());
@@ -4133,7 +4133,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 								}
 							}
 						 info.setIid(rs1.getInt("iid"));
-						 info.setMerchandManager1(rs1.getString("MerchandManager1"));  
+						 info.setMerchandManager1(rs1.getString("MerchandManager1"));
 						 info.setMerchandManager2(rs1.getString("MerchandManager2"));
 						 info.setMerchandising(rs1.getString("Merchandising"));
 						info.setOutstandingNotes(rs1.getString("outstandingNotes"));
@@ -4155,7 +4155,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						info.setContractNumber(rs1.getString("contractNumber"));
 						info.setAllArrears(rs1.getDouble("allArrears"));
 						list1.add(info);
-						
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -4175,10 +4175,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
-				}	
-				
-		        
-		     
+				}
+
+
+
 		        return list1;
 	}
 
@@ -4302,13 +4302,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
                 + "DrawingName1,intro,uploader,uploadtime,intro1,intro2,uploader2,uploadtime2,zhongwen,yingwen,BargainNo"
                 + ",EmployeeName1,EmployeeName2,EmployeeName3,UpdateTime1,UpdateTime2,UpdateTime3,ProjectLevel,potime,caseno,"
                 + "ProductDescC,ProductDescE,CustomerManager,MerchandManager1,MerchandManager2,ProductState,QIC,zhongwen1,remarks)x ";
-               
+
                 	if(it.getDrawingPicture()==1){
-                	sql+=" where zhongwen is null ";	
+                	sql+=" where zhongwen is null ";
                 	}else if(it.getDrawingPicture()==2){
                 	sql+=" where zhongwen  is not null ";
                 	}
-                
+
                 sql+= "order by caseno";
         conn = SQLDBhelper.getConnection();
         try {
@@ -4323,9 +4323,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			    ResultSet rs1 = null;
 			    Connection conn1 = null;
 			   String sql1 = " SELECT icaseno,sum(iimoney)iimoney,min(imoneytype)imoneytype  FROM invoiceinfo  WHERE iCaseNo = ? group by icaseno";
-				
+
 				conn1 = SQLDBhelper.getConnection();
-				
+
 				try {
 					stmt1 = conn1.prepareStatement(sql1);
 					stmt1.setString(1, caseno);
@@ -4334,7 +4334,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						money=rs1.getDouble("iimoney");
 					    type=rs1.getInt("imoneytype");
 					}
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
@@ -4353,7 +4353,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}
 					}
 					SQLDBhelper.close(conn1,stmt1,rs1);
-					
+
 				}
                 String UpdateTime1="";
 				String meeting_inputer="";
@@ -4408,7 +4408,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}else{
 							itcase.setQpId2("3");
 						}
-						
+
 					}else {
 						Boolean judgePrice=judgePrice(type,money);
 						if(judgePrice!=false){
@@ -4416,12 +4416,12 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						}else {
 							itcase.setQpId2("3");
 						}
-						
+
 					}
 					}
-				
-				
-				
+
+
+
 			    itcase.setCaseNo(rs.getString("caseNo"));
 				itcase.setProjectDescc(rs.getString("ProductDescC"));
 				itcase.setProjectDesce(rs.getString("ProductDescE"));
@@ -4430,11 +4430,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				itcase.setMerchandManager2(rs.getString("merchandManager2"));
 				itcase.setPo(rs.getString("PObiao"));
 				itcase.setRemarks(rs.getString("remarks"));
-				itcase.setProjectLevel(rs.getInt("projectLevel")); 
+				itcase.setProjectLevel(rs.getInt("projectLevel"));
 				itcase.setPotime(rs.getString("potime"));
 				itcase.setPdId1(rs.getString("DrawingName1"));
-				
-				
+
+
 				String yingwen=rs.getString("yingwen");
 				String zhongwen=rs.getString("zhongwen");
 				if(zhongwen!=null&&!"".equalsIgnoreCase(zhongwen)){
@@ -4444,21 +4444,21 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}else{
 					itcase.setRemark(null);
 				}
-				
+
 				String intro=rs.getString("intro1");
 				if(intro!=null&&!"".equalsIgnoreCase(intro)){
-					itcase.setPoId(intro+"["+rs.getString("uploader")+"/"+rs.getString("uploadtime")+"]");	
+					itcase.setPoId(intro+"["+rs.getString("uploader")+"/"+rs.getString("uploadtime")+"]");
 				}else{
 					itcase.setPoId(null);
 				}
 				String intro2=rs.getString("intro2");
 				if(intro2!=null&&!"".equalsIgnoreCase(intro2)){
-					itcase.setPoId2(intro2+"["+rs.getString("uploader2")+"/"+rs.getString("uploadtime2")+"]");	
+					itcase.setPoId2(intro2+"["+rs.getString("uploader2")+"/"+rs.getString("uploadtime2")+"]");
 				}else{
 					itcase.setPoId2(null);
 				}
-				
-				
+
+
 				//String UpdateTime1= rs.getString("UpdateTime1");
 				if(UpdateTime1!=null&&!"".equalsIgnoreCase(UpdateTime1)){
 					itcase.setQpId(meeting_inputer +UpdateTime1);
@@ -4471,8 +4471,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}else{
 					itcase.setQpId1(null);
 				}
-				
-				
+
+
 				itcase.setPdId(rs.getInt("pdId"));
 				itcase.setCompletiontime(rs.getString("completiontime"));
 				itcase.setDateSample(rs.getString("dateSample"));
@@ -4501,9 +4501,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -4528,7 +4528,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		int result = 0;
-		
+
 		String sql = "insert into BJneibufile(CaseNo,url,uploader,uploadtime,team,f_id,p_num,is_PF,price,p_txt) "
 				+ "values(?,?,?,getdate(),?,?,?,?,?,'')";
 		conn = SQLDBhelper.getConnection();
@@ -4542,9 +4542,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setInt(6, 0);
 			stmt.setInt(7, 1);
 			stmt.setInt(8, 1);
-		
-		
-			
+
+
+
 			result = stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4591,7 +4591,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				itcase.setCaseNo(rs.getString("CaseNo"));
 				itcase.setSaleName1(rs.getString("CustomerManager"));
 				itcase.setSaleName2(rs.getString("MerchandManager1"));
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4612,48 +4612,48 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return itcase;
 	}
 
 	@Override
 	public int updateAll(ItemCase2 item) {
 		String sql = "update itemCase set updateTime=getDATE()";
-			if(item.getCustomerManager()!=null){	
+			if(item.getCustomerManager()!=null){
 				sql+=" ,CustomerManager=?  ";
 			}
-			if(item.getMerchandManager1()!=null){	
+			if(item.getMerchandManager1()!=null){
 				sql+=" ,MerchandManager1=?  ";
 			}
-			if(item.getMerchandManager2()!=null){	
+			if(item.getMerchandManager2()!=null){
 				sql+=" ,MerchandManager2=?  ";
 			}
-			if(item.getMerchandising()!=null){	
+			if(item.getMerchandising()!=null){
 				sql+=" ,Merchandising=? ";
 			}
-			if(item.getMaturePurchase()!=null){	
+			if(item.getMaturePurchase()!=null){
 				sql+=" ,MaturePurchase=? ";
 			}
-			if(item.getOriginalPurchase()!=null){	
+			if(item.getOriginalPurchase()!=null){
 				sql+=" ,OriginalPurchase=? ";
 			}
-			if(item.getZhijian1()!=null){	
+			if(item.getZhijian1()!=null){
 				sql+=" ,Zhijian1=? ";
 			}
-			if(item.getZhijian2()!=null){	
+			if(item.getZhijian2()!=null){
 				sql+=" ,Zhijian2=? ";
 			}
-			
-			if(item.getProjectLevel()!=0){	
+
+			if(item.getProjectLevel()!=0){
 				sql+=" ,ProjectLevel=? ";
 			}
-			if(item.getTechnicalSupport1()!=null){	
+			if(item.getTechnicalSupport1()!=null){
 				sql+=" ,technical_support1=? ";
 			}
-			
-			
+
+
 				sql+= "where CaseNo = ?";
 		Connection conn = null;
 		ResultSet rs = null;
@@ -4663,35 +4663,35 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-			if(item.getCustomerManager()!=null){	
+			if(item.getCustomerManager()!=null){
 				i++;
 				stmt.setString(i, item.getCustomerManager());
 			}
-			if(item.getMerchandManager1()!=null){	
+			if(item.getMerchandManager1()!=null){
 				i++;
 				stmt.setString(i, item.getMerchandManager1());
 			}
-			if(item.getMerchandManager2()!=null){	
+			if(item.getMerchandManager2()!=null){
 				i++;
 				stmt.setString(i, item.getMerchandManager2());
 			}
-			if(item.getMerchandising()!=null){	
+			if(item.getMerchandising()!=null){
 				i++;
 				stmt.setString(i, item.getMerchandising());
 			}
-			if(item.getMaturePurchase()!=null){	
+			if(item.getMaturePurchase()!=null){
 				i++;
 				stmt.setString(i, item.getMaturePurchase());
 			}
-			if(item.getOriginalPurchase()!=null){	
+			if(item.getOriginalPurchase()!=null){
 				i++;
 				stmt.setString(i, item.getOriginalPurchase());
 			}
-			if(item.getZhijian1()!=null){	
+			if(item.getZhijian1()!=null){
 				i++;
 				stmt.setString(i, item.getZhijian1());
 			}
-			if(item.getZhijian2()!=null){	
+			if(item.getZhijian2()!=null){
 				i++;
 				stmt.setString(i, item.getZhijian2());
 			}
@@ -4699,7 +4699,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				i++;
 				stmt.setInt(i, item.getProjectLevel());
 			}
-			if(item.getTechnicalSupport1()!=null){	
+			if(item.getTechnicalSupport1()!=null){
 				i++;
 				stmt.setString(i, item.getTechnicalSupport1());
 			}
@@ -4733,19 +4733,19 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		
+
 		String sql = "insert into relational_correspondence_table(FastManufacturingPlantId,FastManufacturingFactoryName) values(?,?)";
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, factoryId);
 			stmt.setString(2,factoryName );
-			
-			
+
+
           result = stmt.executeUpdate();
-			
-			
-			
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -4797,7 +4797,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         		}
         		sql+= "and it.caseno not like '%-%' "
         		+ " and (it.CustomerManager=? or it.MerchandManager1=? or it.MerchandManager2=? or it.zhijian1=? or it.zhijian2=? or it.Merchandising=? or it.MaturePurchase=? or it.OriginalPurchase=?)"
-                
+
         		+ " union select start.CaseNo from itemcase it left join tab_StateDate start on it.caseno=start.caseno  where ( CaseStatus=0 or  CaseStatus=14)  ";
         		if(it.getStartTime()!=null&&!"".equalsIgnoreCase(it.getStartTime())){
         			sql+= " and  start.shengchanzhunbei> '"+it.getStartTime()+"'" ;
@@ -4807,7 +4807,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         		}
         		sql+= " and it.caseno not like '%-%' "
         		+ " and (it.CustomerManager=? or it.MerchandManager1=? or it.MerchandManager2=? or it.zhijian1=? or it.zhijian2=? or it.Merchandising=? or it.MaturePurchase=? or it.OriginalPurchase=?)"
-                        
+
                 + " union select start.CaseNo from itemcase it left join tab_StateDate start on it.caseno=start.caseno  where ( CaseStatus=0 or  CaseStatus=14)  ";
         		if(it.getStartTime()!=null&&!"".equalsIgnoreCase(it.getStartTime())){
         			sql+= " and  start.gendan> '"+it.getStartTime() +"'";
@@ -4817,7 +4817,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
         		}
                 sql+= " and it.caseno not like '%-%' "
                 + " and (it.CustomerManager=? or it.MerchandManager1=? or it.MerchandManager2=? or it.zhijian1=? or it.zhijian2=? or it.Merchandising=? or it.MaturePurchase=? or it.OriginalPurchase=?)"
-                        
+
                 + ")m";
                 if(it.getCaseNo()!=null&&!"".equalsIgnoreCase(it.getCaseNo())){
         			sql+= " where caseno like '%"+it.getCaseNo() +"%'";
@@ -4847,7 +4847,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
                 + " left join (select max(DrawingName1)DrawingName1 ,caseno from( select isnull(DrawingName,'')DrawingName1,caseno from ProjectDrawings where  remark not like '%生产计划%' and remark not like '%第三方质检报告%' and DrawingName like '%项目需求汇总%')a group by caseno )"
                 + " y on a.caseno=y.caseno "
                 + " left join  po on po.caseno=a.caseno )cc "
-               
+
                 + " group by PObiao,DateSample,completiontime,pdId,"
                 + "DrawingName1,intro,uploader,uploadtime,intro1,intro2,uploader2,uploadtime2,zhongwen,yingwen,BargainNo"
                 + ",EmployeeName1,EmployeeName2,EmployeeName3,UpdateTime1,UpdateTime2,UpdateTime3,ProjectLevel,potime,caseno,"
@@ -4879,7 +4879,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setString(22, it.getCustomerManager());
 			stmt.setString(23, it.getCustomerManager());
 			stmt.setString(24, it.getCustomerManager());
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 			    itcase=new ItemCase();
@@ -4892,7 +4892,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				itcase.setMerchandManager2(rs.getString("merchandManager2"));
 				itcase.setPo(rs.getString("PObiao"));
 				itcase.setRemarks(rs.getString("remarks"));
-				itcase.setProjectLevel(rs.getInt("projectLevel")); 
+				itcase.setProjectLevel(rs.getInt("projectLevel"));
 				itcase.setPotime(rs.getString("potime"));
 				itcase.setPdId1(rs.getString("DrawingName1"));
 				itcase.setIntro(rs.getString("intro"));
@@ -4905,16 +4905,16 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}else{
 					itcase.setRemark(null);
 				}
-				
+
 				String intro=rs.getString("intro1");
 				if(intro!=null&&!"".equalsIgnoreCase(intro)){
-					itcase.setPoId(intro+"["+rs.getString("uploader")+"/"+rs.getString("uploadtime")+"]");	
+					itcase.setPoId(intro+"["+rs.getString("uploader")+"/"+rs.getString("uploadtime")+"]");
 				}else{
 					itcase.setPoId(null);
 				}
 				String intro2=rs.getString("intro2");
 				if(intro2!=null&&!"".equalsIgnoreCase(intro2)){
-					itcase.setPoId2(intro2+"["+rs.getString("uploader2")+"/"+rs.getString("uploadtime2")+"]");	
+					itcase.setPoId2(intro2+"["+rs.getString("uploader2")+"/"+rs.getString("uploadtime2")+"]");
 				}else{
 					itcase.setPoId2(null);
 				}
@@ -4972,7 +4972,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}else{
 					itcase.setQpId2(null);
 				}
-				
+
 				itcase.setPdId(rs.getInt("pdId"));
 				itcase.setCompletiontime(rs.getString("completiontime"));
 				itcase.setDateSample(rs.getString("dateSample"));
@@ -5001,9 +5001,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return list;
 	}
 
@@ -5067,8 +5067,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn1,stmt1,rs1);
 		}
-		
-		
+
+
 		return result;
 	}
 
@@ -5104,8 +5104,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn1,stmt1,rs1);
 		}
-		
-		
+
+
 		return result;
 	}
 
@@ -5116,7 +5116,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		int result = 0;
-		
+
 		String sql = "insert into BJduiwai(CaseNo,title,url,creater,creattime,lirun) "
 				+ "values(?,?,?,?,getdate(),?)";
 		conn = SQLDBhelper.getConnection();
@@ -5127,9 +5127,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt.setString(3, fileName);
 			stmt.setString(4, userName);
 			stmt.setInt(5, 10);
-		
-		
-			
+
+
+
 			result = stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5181,7 +5181,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		+ " sum( CAST(rmb AS decimal(11,0)))rmb,max(CONVERT(datetime,saildate,20))timeDate 	 from contract con left join products "
 		+ " p on p.id=con.proId	 where year(CONVERT(datetime,saildate,20))=year('"+time+"') and "
 		+ " month(CONVERT(datetime,saildate,20))>=month('"+time+"')   group by purno, factory)a "
-		+"		  left join (select bargainNo,fid from  factoryfund  where   caseno  in ( select a.CaseNo from( " 
+		+"		  left join (select bargainNo,fid from  factoryfund  where   caseno  in ( select a.CaseNo from( "
 		+"  select sum(friMoney)friMoney1,caseno from factoryfund a WHERE friMoney is not null group by caseno "
         +"  )a left join (select sum(friMoney)friMoney,caseno from factoryfund where friMoney is not null "
         +"  and state='<font color=green>已完成款项</font>' group by caseno )b on a.caseno=b.CaseNo where "
@@ -5365,7 +5365,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					}
 				sql+= "   group by CaseNo,kingdee)b left join (select Case_No,sum(a.Pay_Moeny)Pay_Moeny,"
 				+ "sum(a.Get_Moeny)Get_Moeny,max(createtime)createtime"
-		
+
 		 +"  from  (select bargain_no,Case_No,max(Factory_id)Factory_id,sum(Pay_Moeny)Pay_Moeny,sum(a.Get_Moeny)Get_Moeny,"
 		 + "max(createtime)createtime from Tab_Factory_Money a left join factoryinfo info on info.id=a.Factory_id where info.kingdee=? "
 		 +" group by bargain_no,Case_No ) a left join factoryinfo info on info.id=a.Factory_id where info.kingdee=?";
@@ -5401,7 +5401,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						sql+= " group by sb.caseno) d on d.caseno=a.Case_No"
 						+ " )x "
 				+ " where 1=1";
-		
+
 		if(itemcase.getCustomerManager()!=null&&!"".equalsIgnoreCase(itemcase.getCustomerManager())){
 			sql+=" and (CustomerManager like ?  or MerchandManager1 like ? or MerchandManager2 like ?  "
 					+ "or Merchandising like ?  or MaturePurchase like ?  or OriginalPurchase like ?)  ";
@@ -5413,15 +5413,15 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			sql+=" and MerchandManager2 like ? ";
 		}
 		if(itemcase.getUnderInvoice()==0){
-			
+
 		}else if(itemcase.getUnderInvoice()==-1){
-	        sql+=" and friMoney!=Get_Moeny+amount_customs_declaration+rmb" ;	
+	        sql+=" and friMoney!=Get_Moeny+amount_customs_declaration+rmb" ;
 		}else if(itemcase.getUnderInvoice()==1){
 			 sql+=" and friMoney=Get_Moeny+amount_customs_declaration+rmb" ;
 		}else if(itemcase.getUnderInvoice()==2){
 			 sql+=" and friMoney=friMoney1 and friMoney!=Get_Moeny+amount_customs_declaration+rmb " ;
 		}
-		
+
         conn = SQLDBhelper.getConnection();
         sql+=" order by friMoney-Get_Moeny-amount_customs_declaration-rmb desc ";
         try {
@@ -5445,7 +5445,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				i++;
 				stmt.setString(i+2, itemcase.getDateSampleUploading());
 				}
-			
+
 			i++;
 			stmt.setInt(i+2, itemcase.getKingdee());
 			if(itemcase.getDateSampleUploading()!=null&&!"".equalsIgnoreCase(itemcase.getDateSampleUploading())){
@@ -5462,7 +5462,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				i++;
 				stmt.setString(i+2, itemcase.getDateSampleUploading());
 				}
-			
+
 			if(itemcase.getCustomerManager()!=null&&!"".equalsIgnoreCase(itemcase.getCustomerManager())){
 				for(int j=0;j<6;j++){
 					i++;
@@ -5477,7 +5477,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				i++;
 				stmt.setString(i+2, "%"+itemcase.getMerchandManager2()+"%");
 			}
-			
+
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				FactoryReconciliation con=new FactoryReconciliation();
@@ -5539,12 +5539,12 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
          +" )a left join (select sum(friMoney)friMoney,caseno from factoryfund where friMoney is not null and"
          + " state='<font color=green>已完成款项</font>' group by caseno )b "
          +"  on a.caseno=b.CaseNo where a.friMoney1=b.friMoney) ";
-		
+
          if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
         	sql+=" and(it.CustomerManager =? or it.MerchandManager1 =? or it.MerchandManager2 =? "
-        			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)"; 
+        			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)";
          }
-          
+
          sql+=" )y group by kingdee,MerchandManager1)x "
 		 +"  )s group by kingdee,MerchandManager1)a "
 		 + "left join ("
@@ -5563,7 +5563,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
          + " and kingdee is not null";
          if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
          	sql+=" and(it.CustomerManager =? or it.MerchandManager1 =? or it.MerchandManager2 =? "
-         			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)"; 
+         			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)";
           }
          sql+= " )y  group by kingdee,MerchandManager1)x "
 		 + " )s group by kingdee,MerchandManager1"
@@ -5579,7 +5579,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		 + "left join itemcase it on it.caseno=a.case_no where 1=1 ";
 		 if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
 	         	sql+=" and(it.CustomerManager =? or it.MerchandManager1 =? or it.MerchandManager2 =? "
-	         			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)"; 
+	         			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)";
 	          }
 		 sql+= " )f group by kingdee,MerchandManager1)v)z group by kingdee,MerchandManager1  )c "
          + " on a.kingdee=c.kingdee and a.MerchandManager1=c.MerchandManager1  "
@@ -5637,7 +5637,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setCustomerManager(it.getCustomerManager());
 				list.add(info);
 				}
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5755,10 +5755,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setKingdee(rs.getInt("kingdee"));
 				info.setFactoryName(rs.getString("FactoryName"));
 				info.setPayment2007(rs.getDouble("Factory_yue_Money"));
-				
+
 				list.add(info);
 				}
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5803,7 +5803,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				+ " from factoryfund a WHERE friMoney is not null group by caseno )a left join "
 				+ " (select sum(friMoney)friMoney,caseno from factoryfund  where friMoney is not null "
 				+ " and state='<font color=green>已完成款项</font>' group by caseno )b  on a.CaseNo=b.CaseNo where a.friMoney1=b.friMoney) ";
-				
+
 				if(itemcase.getDateSampleUploading()!=null&&!"".equalsIgnoreCase(itemcase.getDateSampleUploading())){
 					 sql+= " and  datediff(m,friFacDate,?)=0  and  datediff(yyyy,friFacDate,?)=0 ";
 					}
@@ -5816,7 +5816,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				+ "sum(a.Get_Moeny)Get_Moeny,max(createtime)createtime from Tab_Factory_Money a left join factoryinfo info on "
 				+ "info.id=a.Factory_id where info.kingdee=? group by bargain_no,Case_No ) a left join factoryinfo info on info.id=a.Factory_id "
                 + "  where info.kingdee=? and Case_No  in ( select a.CaseNo from( "
-                + " select sum(friMoney)friMoney1,caseno from factoryfund a WHERE friMoney is not null group by caseno " 
+                + " select sum(friMoney)friMoney1,caseno from factoryfund a WHERE friMoney is not null group by caseno "
                 + " )a left join (select sum(friMoney)friMoney,caseno from factoryfund "
                 + "where friMoney is not null and state='<font color=green>已完成款项</font>' group by caseno )b "
                 + " on a.CaseNo=b.CaseNo where a.friMoney1=b.friMoney)";
@@ -5836,14 +5836,14 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		 		+ " on fund.BargainNo=a.purno left join FactoryInfo info on info.id=fund.fid )x "
 		 		+ " where x.kingdee=? group by kingdee,CaseNo)z)z on   z.caseno =b.caseno  "
        		+ " left join itemcase it on it.caseno=a.case_no "
-    		    
+
 				+ "   left join (select sum(fu.friMoney)friMoney1,CaseNo from factoryfund fu left join "
 				+ "factoryinfo info on fu.fid=info.id where info.kingdee=?  "
 				+ " and CaseNo  in ( select a.CaseNo from(  select sum(friMoney)friMoney1,caseno "
 				+ " from factoryfund a  group by caseno )a left join "
 				+ " (select sum(friMoney)friMoney,caseno from factoryfund  where friMoney is not null "
 				+ " and state='<font color=green>已完成款项</font>' group by caseno )b  on a.CaseNo=b.CaseNo where a.friMoney1=b.friMoney) ";
-				
+
 				if(itemcase.getDateSampleUploading()!=null&&!"".equalsIgnoreCase(itemcase.getDateSampleUploading())){
 					 sql+= " and  datediff(m,friFacDate,?)=0  and  datediff(yyyy,friFacDate,?)=0 ";
 					}
@@ -5857,7 +5857,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 							}
 						sql+= " group by sb.caseno) d on d.caseno=a.Case_No"
 						+ " )x "
-				
+
        		+ " where 1=1 ";
         conn = SQLDBhelper.getConnection();
         if(itemcase.getCustomerManager()!=null&&!"".equalsIgnoreCase(itemcase.getCustomerManager())){
@@ -5871,9 +5871,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
     			sql+=" and MerchandManager2 like ? ";
     		}
     		if(itemcase.getUnderInvoice()==0){
-    			
+
     		}else if(itemcase.getUnderInvoice()==-1){
-    	        sql+=" and friMoney!=Get_Moeny+amount_customs_declaration+rmb" ;	
+    	        sql+=" and friMoney!=Get_Moeny+amount_customs_declaration+rmb" ;
     		}else if(itemcase.getUnderInvoice()==1){
     			 sql+=" and friMoney=Get_Moeny+amount_customs_declaration+rmb" ;
     		}else if(itemcase.getUnderInvoice()==2){
@@ -5994,7 +5994,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
                 + " and state='<font color=green>已完成款项</font>' group by caseno )b "
                 + " on a.caseno=b.CaseNo where a.friMoney1=b.friMoney )a "
                 + "   where Datediff(day,friFacDate,getdate())>119 and Datediff(day,friFacDate,getdate())<1095)";
-               
+
                		if(itemcase.getDateSampleUploading()!=null&&!"".equalsIgnoreCase(itemcase.getDateSampleUploading())){
    					 sql+= " and  datediff(m,friFacDate,?)=0  and  datediff(yyyy,friFacDate,?)=0 ";
    					}
@@ -6019,7 +6019,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		if(itemcase.getDateSampleUploading()!=null&&!"".equalsIgnoreCase(itemcase.getDateSampleUploading())){
 				 sql+= " and  datediff(m,friFacDate,?)=0  and  datediff(yyyy,friFacDate,?)=0 ";
 				}
-      		
+
                sql+= " group by kingdee,Case_No)a "
             		   + "	   on a.Case_No=b.CaseNo "
             		   + "	left join "
@@ -6033,8 +6033,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
        		 		+ " on fund.BargainNo=a.purno left join FactoryInfo info on info.id=fund.fid )x "
        		 		+ " where x.kingdee=? group by kingdee,CaseNo)z)z on   z.caseno =b.caseno  "
                		+ " left join itemcase it on it.caseno=a.case_no"
-       		 		
-               		
+
+
                		+ " left join (select sum(fu.friMoney)friMoney1,CaseNo from factoryfund fu left join "
                		+ " factoryinfo info on fu.fid=info.id where info.kingdee=? and friMoney is not null "
                		+ "and CaseNo  in ( select CaseNo from ( "
@@ -6064,23 +6064,23 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
             			sql+=" and (x.CustomerManager like ?  or x.MerchandManager1 like ? or x.MerchandManager2 like ?  "
             			+ "or x.Merchandising like ?  or x.MaturePurchase like ?  or x.OriginalPurchase like ? ) ";
             		}
-                    
+
 
                    if(itemcase.getDateSampleUploading()!=null&&!"".equalsIgnoreCase(itemcase.getDateSampleUploading())){
     		      sql+= " and  datediff(m,Date_time,?)=0  and  datediff(yyyy,Date_time,?)=0 ";
     		        }
                    if(itemcase.getUnderInvoice()==0){
-           			
+
            		}else if(itemcase.getUnderInvoice()==-1){
-           	        sql+=" and friMoney!=Get_Moeny+amount_customs_declaration+rmb" ;	
+           	        sql+=" and friMoney!=Get_Moeny+amount_customs_declaration+rmb" ;
            		}else if(itemcase.getUnderInvoice()==1){
            			 sql+=" and friMoney=Get_Moeny+amount_customs_declaration+rmb" ;
            		}else if(itemcase.getUnderInvoice()==2){
            			 sql+=" and friMoney=friMoney1 and friMoney!=Get_Moeny+amount_customs_declaration+rmb " ;
            		}
 
-     
-        
+
+
                    sql+=" order by friMoney-Get_Moeny-amount_customs_declaration-rmb desc ";
         conn = SQLDBhelper.getConnection();
         try {
@@ -6179,17 +6179,37 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = " select name,projectId,customerId,kingdee,kingName from ArrivalAccountCorrespondenceTable";
+		String sql = " select name,projectId,customerId,kingdee,kingName,country,abbreviation from ArrivalAccountCorrespondenceTable where 1=1";
         if(it.getName()!=null&&!"".equalsIgnoreCase(it.getName())){
-        	sql+=" where name like ?";
+        	sql+=" and (name like ? or abbreviation like ? or kingName like ?)";
         }
-
+		if(it.getCustomerId()!=0){
+			sql+=" and customerId=?";
+		}
+		if(it.getProjectId()!=null&&!"".equalsIgnoreCase(it.getProjectId())){
+			sql+=" and projectId like ?";
+		}
         conn = SQLDBhelper.getConnection();
         try {
+        	int i=0;
 			stmt = conn.prepareStatement(sql);
 			if(it.getName()!=null&&!"".equalsIgnoreCase(it.getName())){
-				stmt.setString(1, "%"+it.getName()+"%");
+				i++;
+				stmt.setString(i, "%"+it.getName()+"%");
+				i++;
+				stmt.setString(i, "%"+it.getName()+"%");
+				i++;
+				stmt.setString(i, "%"+it.getName()+"%");
+
 	        }
+			if(it.getCustomerId()!=0){
+				i++;
+				stmt.setInt(i, it.getCustomerId());
+			}
+			if(it.getProjectId()!=null&&!"".equalsIgnoreCase(it.getProjectId())){
+				i++;
+				stmt.setString(i, it.getProjectId());
+			}
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				ArrivalAccountCorrespondenceTable con=new ArrivalAccountCorrespondenceTable();
@@ -6198,6 +6218,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setName(rs.getString("name"));
 				con.setKingdee(rs.getInt("kingdee"));
 				con.setKingName(rs.getString("kingName"));
+				con.setCountry(rs.getInt("country"));
+				con.setAbbreviation(rs.getString("abbreviation"));
 				list.add(con);
 			}
 		} catch (Exception e) {
@@ -6243,12 +6265,12 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
          +" )a left join (select sum(friMoney)friMoney,caseno from factoryfund where friMoney is not null and"
          + " state='<font color=green>已完成款项</font>' group by caseno )b "
          +"  on a.caseno=b.CaseNo where a.friMoney1=b.friMoney) ";
-		
+
          if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
         	sql+=" and(it.CustomerManager =? or it.MerchandManager1 =? or it.MerchandManager2 =? "
-        			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)"; 
+        			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)";
          }
-          
+
          sql+=" )y group by kingdee,MerchandManager1)x "
 		 +"  )s group by kingdee,MerchandManager1)a "
 		 + "left join ("
@@ -6267,7 +6289,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
          + " on a.caseno=b.CaseNo where a.friMoney1=b.friMoney)";
          if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
          	sql+=" and(it.CustomerManager =? or it.MerchandManager1 =? or it.MerchandManager2 =? "
-         			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)"; 
+         			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)";
           }
          sql+= "  and  Case_No not in (select case_no from Tab_Factory_Money where "
          + "datediff(day,createtime,getdate())<119 and Pay_Moeny!=0) "
@@ -6285,7 +6307,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		 + "left join itemcase it on it.caseno=a.case_no where 1=1 ";
 		 if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
 	         	sql+=" and(it.CustomerManager =? or it.MerchandManager1 =? or it.MerchandManager2 =? "
-	         			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)"; 
+	         			+ "or it.Merchandising =? or it.MaturePurchase =? or it.OriginalPurchase =?)";
 	          }
 		 sql+= " )f group by kingdee,MerchandManager1)v)z group by kingdee,MerchandManager1  )c "
          + " on a.kingdee=c.kingdee and a.MerchandManager1=c.MerchandManager1  "
@@ -6343,7 +6365,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setCustomerManager(it.getCustomerManager());
 				list.add(info);
 				}
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -6525,9 +6547,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-        
-     
+
+
+
         return table;
 	}
 
@@ -6563,8 +6585,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 			SQLDBhelper.close(conn,stmt,rs);
 		}
-		
-		
+
+
 	}
 
 	@Override
@@ -6581,7 +6603,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			if(rs.next()) {
 				it=new ItemCase();
 				it.setStartTime(rs.getString("waybill_month"));
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -6720,6 +6742,602 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			}
 
 		}
+	}
+
+	@Override
+	public List<ItemCase1> getOrderCustomerList(EmailUser user) {
+		List<ItemCase1> list=new ArrayList<ItemCase1>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno   where ifmoney is not null and ifmoney!=0 " +
+				" and datediff(day,'"+user.getStartTime()+"',ifdate)>0 and datediff(day,'"+user.getEndTime()+"',ifdate)<0  and (CustomerManager=? or Merchandising=? or MerchandManager1=?) " +
+				" and customercode not in (select id from customer where customer_loss=1)"+
+				" group by icaseno,customercode ";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,user.getUserName() );
+			stmt.setString(2,user.getUserName() );
+			stmt.setString(3,user.getUserName() );
+			rs = stmt.executeQuery();
+            while(rs.next()) {
+				ItemCase1 it=new ItemCase1();
+                it.setOrderId(rs.getString("icaseno"));
+                it.setCustomerId(rs.getInt("customercode"));
+                list.add(it);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+}
+
+	@Override
+	public List<ItemCase1> getNoOrderCustomerList(EmailUser user) {
+		List<ItemCase1> list=new ArrayList<ItemCase1>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select * from( " +
+				" select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno   where ifmoney is not null and ifmoney!=0 " +
+				" and datediff(day,'"+user.getStartTime()+"',ifdate)>0 and datediff(day,'"+user.getEndTime()+"',ifdate)<0    and (CustomerManager=? or Merchandising=? or MerchandManager1=?) " +
+				" and customercode not in (select id from customer where customer_loss=1)"+
+				" group by icaseno,customercode " +
+				" )a where customercode not in ( " +
+				" select customercode from ( " +
+				" select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno   where ifmoney is not null and ifmoney!=0 " +
+				" and datediff(day,'"+user.getEndTime()+"',ifdate)>0   and (CustomerManager=? or Merchandising=? or MerchandManager1=?) " +
+				" and customercode not in (select id from customer where customer_loss=1)"+
+				" group by icaseno,customercode)a " +
+				" ) ";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,user.getUserName() );
+			stmt.setString(2,user.getUserName() );
+			stmt.setString(3,user.getUserName() );
+			stmt.setString(4,user.getUserName() );
+			stmt.setString(5,user.getUserName() );
+			stmt.setString(6,user.getUserName() );
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				ItemCase1 it=new ItemCase1();
+				it.setOrderId(rs.getString("icaseno"));
+				it.setCustomerId(rs.getInt("customercode"));
+				list.add(it);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+	@Override
+	public List<ItemCase1> getallCustomerList(EmailUser user) {
+		List<ItemCase1> list=new ArrayList<ItemCase1>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno left join customer cus on cus.id=it.customercode   where ifmoney is not null and ifmoney!=0 " +
+				" and (CustomerManager=? or Merchandising=? or MerchandManager1=?) " +
+				"    and cus.customergrade  in(1,2) and datediff(day,'"+user.getStartTime1()+"',ifdate)>0 " +
+				"group by icaseno,customercode; ";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,user.getUserName() );
+			stmt.setString(2,user.getUserName() );
+			stmt.setString(3,user.getUserName() );
+
+			rs = stmt.executeQuery();
+            while(rs.next()) {
+				ItemCase1 it=new ItemCase1();
+				it.setOrderId(rs.getString("icaseno"));
+				it.setCustomerId(rs.getInt("customercode"));
+				list.add(it);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+	@Override
+	public List<ItemCase1> getnewCustomerList(EmailUser user) {
+		List<ItemCase1> list=new ArrayList<ItemCase1>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select * from(select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno left join customer cus on cus.id=it.customercode   where ifmoney is not null and ifmoney!=0\n" +
+				" and datediff(day,'"+user.getStartTimea()+"',ifdate)>0 and datediff(day,'"+user.getEndTimea()+"',ifdate)<0  and  (CustomerManager=? or Merchandising=? or MerchandManager1=?)\n" +
+				" and cus.customergrade  in(1,2) )a " +
+				" where  customercode not in ( " +
+				" " +
+				"select it.customercode from invoiceinfo inv left join itemcase it on inv.icaseno=it.caseno where datediff(day,'"+user.getStartTimea()+"',ifdate)<0 and customercode is not null\n" +
+				" " +
+				" ) " +
+				"group by icaseno,customercode";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,user.getUserName() );
+			stmt.setString(2,user.getUserName() );
+			stmt.setString(3,user.getUserName() );
+
+			rs = stmt.executeQuery();
+            while(rs.next()) {
+				ItemCase1 it=new ItemCase1();
+				it.setOrderId(rs.getString("icaseno"));
+				it.setCustomerId(rs.getInt("customercode"));
+				list.add(it);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+	@Override
+	public List<ItemCase1> getfixedTimeCustomersList(EmailUser user) {
+		List<ItemCase1> list=new ArrayList<ItemCase1>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno left join customer cus on cus.id=it.customercode   where ifmoney is not null and ifmoney!=0 " +
+				"    and datediff(day,'"+user.getStartTimea()+"',ifdate)>0 and datediff(day,'"+user.getEndTimea()+"',ifdate)<0  and (CustomerManager=? or Merchandising=? or MerchandManager1=?) " +
+				"     and cus.customergrade  in(1,2)" +
+				"group by icaseno,customercode; ";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,user.getUserName() );
+			stmt.setString(2,user.getUserName() );
+			stmt.setString(3,user.getUserName() );
+
+			rs = stmt.executeQuery();
+            while(rs.next()) {
+				ItemCase1 it=new ItemCase1();
+				it.setOrderId(rs.getString("icaseno"));
+				it.setCustomerId(rs.getInt("customercode"));
+
+				list.add(it);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+    @Override
+    public List<ItemCase> getAllProjectNo(ItemCase it) {
+		List<ItemCase> list=new ArrayList<ItemCase>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select pro.project_no,pro.project_status,pir.create_date,ifnull(pt.verification,0)verification,ifnull(pt.complaint_id,0)complaint_id from project pro " +
+				" left join (select min(complaint_id)complaint_id,min(verification)verification,project_no from project_task where complaint_id !=0 group by project_no)pt " +
+				" on pro.project_no=pt.project_no" +
+				" left join( select project_no,max(create_date)create_date from project_inspection_report where email_content is not null group by project_no) pir  " +
+				" on pro.project_no=pir.project_no  where 1=1    " +
+				" and ((  pro.project_status = 2 " +
+				"  and datediff(pro.finish_time,?) >0  and  pro.finish_time <?    " +
+				"  ) or (pro.project_status = 6 and " +
+				"     datediff(pro.sample_finish_time,?) >0  and pro.sample_finish_time  <?        " +
+				"  )or(pro.project_status = 1  and pro.create_date<?)"
+				+" or (pro.project_status = 0  and pro.create_date<?))"
+				+"   ";
+		conn = DBHelper.getConnection();
+		try {
+			if(it.getCaseNo()!=null&&!"".equalsIgnoreCase(it.getCaseNo())){
+				sql+=" and pro.project_no like ?";
+			}
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,it.getStartTime() );
+			stmt.setString(2,it.getEndTime() );
+			stmt.setString(3,it.getStartTime() );
+			stmt.setString(4,it.getEndTime() );
+			stmt.setString(5,it.getEndTime() );
+			stmt.setString(6,it.getEndTime() );
+			int i=0;
+			if(it.getCaseNo()!=null&&!"".equalsIgnoreCase(it.getCaseNo())){
+				i++;
+				stmt.setString(i+6,"%"+it.getCaseNo()+"%" );
+			}
+
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				ItemCase it1=new ItemCase();
+				it1.setCaseNo(rs.getString("project_no"));
+				it1.setProject_status(rs.getInt("project_status"));
+				it1.setCreateTime(rs.getString("create_date"));
+				it1.setComplaint_id(rs.getInt("complaint_id"));
+				it1.setVerification(rs.getInt("verification"));
+				list.add(it1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			DBHelper.returnConnection(conn);
+		}
+		return list;
+    }
+
+	@Override
+	public ItemCase getProjectStatistics(ItemCase it) {
+		ItemCase itcase=null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sql = "select * from(select isNull(PObiao,null)PObiao,isnull(DateSample,null)DateSample,isnull(completiontime,null)completiontime,isnull(pdId,null)pdId,isnull(DrawingName1,null)DrawingName1 "
+				+ " ,isnull(intro,null)intro,isnull(uploader,null)uploader,  "
+				+ "  isnull(uploadtime,null)uploadtime,isnull(intro1,null)intro1,isnull(intro2,null)intro2,isnull(uploader2,null)uploader2,isnull(uploadtime2,null)uploadtime2, "
+				+ "  isnull(zhongwen,null)zhongwen,isnull(zhongwen1,null)zhongwen1,isnull(yingwen,null)yingwen,isnull(BargainNo,null)BargainNo,isnull(EmployeeName1,null)EmployeeName1,isnull(EmployeeName2,null)EmployeeName2,isnull(EmployeeName3,null)EmployeeName3,isnull(UpdateTime1,null)UpdateTime1,"
+				+ " isnull(UpdateTime2,null)UpdateTime2,isnull(UpdateTime3,null)UpdateTime3,isnull(ProjectLevel,null)ProjectLevel,isnull(potime,null)potime,caseno,isnull(ProductDescC,null)ProductDescC,isnull(ProductDescE,null)ProductDescE, "
+				+ " isnull(CustomerManager,null)CustomerManager,isnull(MerchandManager1,null)MerchandManager1,isnull(MerchandManager2,null)MerchandManager2,Merchandising,OriginalPurchase,MaturePurchase,isnull(ProductState,null)ProductState,isnull(QIC,null)QIC,remarks,feedbacktime,quality_picture "
+				+ " from( "
+				+ "select po.PObiao,m.DateSample,m.completiontime,isnull(x.id,0)pdId,y.DrawingName1,c.intro,c.uploader,convert(varchar(10),c.uploadtime,120)uploadtime,c.intro1,"
+				+ " c.intro2,c.uploader2,convert(varchar(10),c.uploadtime2,120)uploadtime2,n.zhongwen,n.yingwen,yy.zhongwen1,m.BargainNo,qp.EmployeeName1,qp.EmployeeName2,qp.EmployeeName3"
+				+ ",convert(varchar(10),qp.UpdateTime1,120)UpdateTime1,convert(varchar(10),qp.UpdateTime2,120)UpdateTime2,convert(varchar(10),qp.UpdateTime3,120)UpdateTime3, "
+				+ " it.ProjectLevel,convert(nvarchar(10),it.potime,120)potime,a.caseno,it.ProductDescC,it.ProductDescE,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Merchandising,it.OriginalPurchase,it.MaturePurchase,it.ProductState,it.QIC,it.remarks,isnull(z.create_time,'')feedbacktime ,isnull(quality_picture,'')quality_picture from ("
+				+ " select caseno from ( select caseno from itemcase)m where caseno=?   )a "
+				+ "left join itemcase it on a.CaseNo=it.CaseNo left join QuotationAnalysis qa on qa.caseno=a.caseno "
+				+ " left join "
+				+ " ( select qp.CaseNo,a.EmployeeName1,a.UpdateTime1,qp1.EmployeeName2,qp1.UpdateTime2,qp2.EmployeeName3,qp2.UpdateTime3 from QuotePrice qp left join  ( select CaseNo,min(EmployeeName)EmployeeName1,min(UpdateTime)UpdateTime1 from QuotePrice where CurrentStatus like '%项目启动会%' group by CaseNo "
+				+ "  )a on a.CaseNo=qp.caseno left join (select CaseNo,min(EmployeeName)EmployeeName2,min(UpdateTime)UpdateTime2 from QuotePrice where CurrentStatus like '%样品分析会%' or CurrentStatus like '%样品验货会%' group by CaseNo )  qp1 on qp1.caseno=qp.CaseNo "
+				+ " left join (select CaseNo,min(EmployeeName)EmployeeName3,min(UpdateTime)UpdateTime3 from QuotePrice where CurrentStatus like '%大货分析会%' or CurrentStatus like '%大货验货会%' group by CaseNo )  qp2 on qp2.caseno=qp.CaseNo "
+				+ " )  qp on qp.caseno=a.CaseNo left join ( select a.caseno,a.zhongwen,a.yingwen from ( select caseno,min(tz.zhongwen)zhongwen,min(yingwen)yingwen from tuzhi tz where remark like '%受控版本%'  group by caseno "
+				+ " )a  "
+				+ " )n on n.caseno=a.CaseNo "
+				+ "  left join ( select xx.caseno,isnull(xx.zhongwen,xx.task_system_technical_documentation)zhongwen1 from ( select caseno,min(tz.zhongwen)zhongwen,min(tz.task_system_technical_documentation)task_system_technical_documentation from tuzhi tz where attribute =1  group by caseno "
+				+ " )xx  "
+				+ " )yy on yy.caseno=a.CaseNo"
+				+ " left join (select po.CaseNo,isnull(a.intro,null)intro1,a.uploader,a.uploadtime,e.intro2,e.uploader2,e.uploadtime2,f.intro from poupload po left join ( "
+				+ " select caseno,min(intro)intro,min(uploader)uploader,min(uploadtime)uploadtime from poupload where intro like  '%JIANYANJIHUAZJ%' group by caseno "
+				+ ")a  on a.caseno=po.CaseNo   left join (select caseno,min(intro)intro2,min(uploader)uploader2,min(uploadtime)uploadtime2 from poupload where intro like  '%采购B版%' group by caseno)e on e.CaseNo=po.CaseNo "
+				+ " left join (select caseno,min(intro)intro from poupload where type like  '%JIANYANBAOGAO%' group by caseno)f on f.CaseNo=po.CaseNo)c on c.CaseNo=a.CaseNo "
+				+ " left join (select a.CaseNo,a.BargainNo,b.DateSample,c.completiontime from( "
+				+ " select min(BargainNo)BargainNo,CaseNo from  bargain group by CaseNo "
+				+ " )a left join (select min(DateSample)DateSample,caseno from bargain where DateSample>'2017-01-01' group by caseno )b on a.CaseNo=b.CaseNo "
+				+ " left join (select min(completiontime)completiontime,caseno from bargain where completiontime>'2017-01-01' group by caseno )c on a.CaseNo=c.CaseNo "
+				+ " )m on m.caseno=a.CaseNo "
+				+ "  left join  (select min(id)id,caseno from (select id,caseno from ProjectDrawings where remark like '%生产计划%')a group by caseno)x on x.caseno= a.CaseNo "
+				+ " left join (select max(DrawingName1)DrawingName1 ,caseno from( select isnull(DrawingName,'')DrawingName1,caseno from ProjectDrawings where  remark not like '%生产计划%' and remark not like '%第三方质检报告%' and DrawingName like '%项目需求汇总%')a group by caseno )"
+				+ " y on a.caseno=y.caseno "
+				+ " left join  po on po.caseno=a.caseno left join (select max(create_time)create_time,max(quality_picture)quality_picture,caseno from quality_feedback_table group by caseno)z on a.caseno=z.caseno where 1=1" ;
+		if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
+			sql+=" and (CustomerManager=?  or MerchandManager1=?  or MerchandManager2=? or Merchandising =? or MaturePurchase=? or OriginalPurchase=?";
+			sql+=	   " or zhijian1=? or zhijian2=? )";
+		}
+		        sql+=")cc  " ;
+
+
+				sql+=" group by PObiao,DateSample,completiontime,pdId,"
+				+ "DrawingName1,intro,uploader,uploadtime,intro1,intro2,uploader2,uploadtime2,zhongwen,yingwen,BargainNo"
+				+ ",EmployeeName1,EmployeeName2,EmployeeName3,UpdateTime1,UpdateTime2,UpdateTime3,ProjectLevel,potime,caseno,"
+				+ "ProductDescC,ProductDescE,CustomerManager,MerchandManager1,MerchandManager2,Merchandising,OriginalPurchase,MaturePurchase,ProductState,QIC,zhongwen1,remarks,feedbacktime,quality_picture)x where 1=1  ";
+
+		if(it.getDrawingPicture()==1){
+			sql+=" and  zhongwen is null ";
+		}else if(it.getDrawingPicture()==2){
+			sql+=" and zhongwen  is not null ";
+		}
+
+		sql+= "  order by caseno";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			int i=0;
+			stmt.setString(1,it.getCaseNo() );
+			if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
+				i++;
+				stmt.setString(1+i,it.getCustomerManager() );
+				i++;
+				stmt.setString(1+i,it.getCustomerManager() );
+				i++;
+				stmt.setString(1+i,it.getCustomerManager() );
+				i++;
+				stmt.setString(1+i,it.getCustomerManager() );
+				i++;
+				stmt.setString(1+i,it.getCustomerManager() );
+				i++;
+				stmt.setString(1+i,it.getCustomerManager() );
+				i++;
+				stmt.setString(1+i,it.getCustomerManager() );
+				i++;
+				stmt.setString(1+i,it.getCustomerManager() );
+
+			}
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				itcase=new ItemCase();
+				String caseno=rs.getString("caseNo");
+				double money=0.00;
+				int type=0;
+				PreparedStatement stmt1 = null;
+				ResultSet rs1 = null;
+				Connection conn1 = null;
+				String sql1 = " SELECT icaseno,sum(iimoney)iimoney,min(imoneytype)imoneytype  FROM invoiceinfo  WHERE iCaseNo = ? group by icaseno";
+
+				conn1 = SQLDBhelper.getConnection();
+
+				try {
+					stmt1 = conn1.prepareStatement(sql1);
+					stmt1.setString(1, caseno);
+					rs1 = stmt1.executeQuery();
+					if(rs1.next()) {
+						money=rs1.getDouble("iimoney");
+						type=rs1.getInt("imoneytype");
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					if (stmt1 != null) {
+						try {
+							stmt1.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+					if (rs1 != null) {
+						try {
+							rs1.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+					SQLDBhelper.close(conn1,stmt1,rs1);
+
+				}
+				String UpdateTime1="";
+				String meeting_inputer="";
+				PreparedStatement stmt2 = null;
+				ResultSet rs2= null;
+				Connection conn2 = null;
+				String sql2 = " SELECT meeting_name,min(meeting_inputer)meeting_inputer  FROM meeting_record  WHERE project_no = ? and meeting_name='项目启动会' group by meeting_name ";
+				conn2= DBHelper.getConnection();
+				try {
+					stmt2 = conn2.prepareStatement(sql2);
+					stmt2.setString(1, caseno);
+					rs2 = stmt2.executeQuery();
+					if(rs2.next()) {
+						UpdateTime1=rs2.getString("meeting_name");
+						meeting_inputer=rs2.getString("meeting_inputer");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					if (stmt2 != null) {
+						try {
+							stmt2.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+					if (rs2 != null) {
+						try {
+							rs2.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+					DBHelper.returnConnection(conn2);
+
+				}
+				itcase.setIntro(rs.getString("intro"));
+				String introA=rs.getString("intro");
+				String UpdateTime3= rs.getString("UpdateTime3");
+				if(UpdateTime3!=null&&!"".equalsIgnoreCase(UpdateTime3)){
+					itcase.setQpId2(rs.getString("EmployeeName3") +UpdateTime3);
+				}else{
+					if(introA!=null&&!"".equalsIgnoreCase(introA)){
+						Boolean save=introA.toLowerCase().contains("没问题");
+						Boolean judgePrice=judgePrice(type,money);
+						if(save!=true&&judgePrice!=false){
+							itcase.setQpId2("0");//有问题，大于5000美元，未开
+						}else if(save!=false&&judgePrice!=false){
+							itcase.setQpId2("1");//大于5000美元，未开
+						}else if(save!=true&&judgePrice!=true){
+							itcase.setQpId2("2");//有问题，未开
+						}else{
+							itcase.setQpId2("3");
+						}
+
+					}else {
+						Boolean judgePrice=judgePrice(type,money);
+						if(judgePrice!=false){
+							itcase.setQpId2("1");
+						}else {
+							itcase.setQpId2("3");
+						}
+
+					}
+				}
+
+
+				itcase.setMerchandising(rs.getString("Merchandising"));
+				itcase.setCaseNo(rs.getString("caseNo"));
+				itcase.setProjectDescc(rs.getString("ProductDescC"));
+				itcase.setProjectDesce(rs.getString("ProductDescE"));
+				itcase.setCustomerManager(rs.getString("customerManager"));
+				itcase.setMerchandManager1(rs.getString("merchandManager1"));
+				itcase.setMerchandManager2(rs.getString("merchandManager2"));
+				itcase.setEngineer1(rs.getString("OriginalPurchase"));
+				itcase.setEngineer2(rs.getString("MaturePurchase"));
+				itcase.setPo(rs.getString("PObiao"));
+				itcase.setRemarks(rs.getString("remarks"));
+				itcase.setProjectLevel(rs.getInt("projectLevel"));
+				itcase.setPotime(rs.getString("potime"));
+				itcase.setPdId1(rs.getString("DrawingName1"));
+				itcase.setFeedbacktime(rs.getString("feedbacktime"));
+				itcase.setQuality_picture(rs.getString("quality_picture"));
+				String yingwen=rs.getString("yingwen");
+				String zhongwen=rs.getString("zhongwen");
+				if(zhongwen!=null&&!"".equalsIgnoreCase(zhongwen)){
+					itcase.setRemark(zhongwen);
+				}else if(yingwen!=null&&!"".equalsIgnoreCase(yingwen)){
+					itcase.setRemark(yingwen);
+				}else{
+					itcase.setRemark(null);
+				}
+
+				if(it.getProjectLevel()==1||it.getProjectLevel()==2||it.getProjectLevel()==0) {
+					if(it.getCreateTime()!=null&&!"".equalsIgnoreCase(it.getCreateTime())) {
+						String []time=it.getCreateTime().split(" ");
+						itcase.setPoId("阳工已上传，上传时间:"+time[0]);
+					}else{
+						itcase.setPoId("未上传");
+					}
+				}else{
+					itcase.setPoId("C级项目无需上传");
+				}
+				String intro2=rs.getString("intro2");
+				if(intro2!=null&&!"".equalsIgnoreCase(intro2)){
+					itcase.setPoId2(intro2+"["+rs.getString("uploader2")+"/"+rs.getString("uploadtime2")+"]");
+				}else{
+					itcase.setPoId2(null);
+				}
+
+
+				//String UpdateTime1= rs.getString("UpdateTime1");
+				if(UpdateTime1!=null&&!"".equalsIgnoreCase(UpdateTime1)){
+					itcase.setQpId(meeting_inputer +UpdateTime1);
+				}else{
+					itcase.setQpId(null);
+				}
+				String UpdateTime2= rs.getString("UpdateTime2");
+				if(UpdateTime2!=null&&!"".equalsIgnoreCase(UpdateTime2)){
+					itcase.setQpId1(rs.getString("EmployeeName2") +UpdateTime2);
+				}else{
+					itcase.setQpId1(null);
+				}
+
+
+				itcase.setPdId(rs.getInt("pdId"));
+				itcase.setCompletiontime(rs.getString("completiontime"));
+				itcase.setDateSample(rs.getString("dateSample"));
+				itcase.setBargainNo(rs.getString("bargainNo"));
+				itcase.setProductState(rs.getInt("productState"));
+				String zhongwen1=rs.getString("zhongwen1");
+				itcase.setTechnicalDocumentation(zhongwen1);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+       return itcase;
 	}
 
 

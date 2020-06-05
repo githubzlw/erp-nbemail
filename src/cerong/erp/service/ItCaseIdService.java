@@ -500,5 +500,41 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 		dao.updateDividendBalance(list);
 	}
 
+	@Override
+	public List<ItemCase1> getOrderCustomerList(EmailUser user) {
+		return dao.getOrderCustomerList(user);
+	}
+
+	@Override
+	public List<ItemCase1> getNoOrderCustomerList(EmailUser user) {
+		return dao.getNoOrderCustomerList(user);
+	}
+
+	@Override
+	public List<ItemCase1> getallCustomerList(EmailUser user) {
+		return dao.getallCustomerList(user);
+	}
+
+	@Override
+	public List<ItemCase1> getnewCustomerList(EmailUser user) {
+		return dao.getnewCustomerList(user);
+	}
+
+	@Override
+	public List<ItemCase1> getfixedTimeCustomersList(EmailUser user) {
+		return dao.getfixedTimeCustomersList(user);
+	}
+
+    @Override
+    public List<ItemCase> getAllProjectNo(ItemCase it) {
+
+		return dao.getAllProjectNo(it);
+    }
+
+	@Override
+	public ItemCase getProjectStatistics(ItemCase itcase) {
+		return dao.getProjectStatistics(itcase);
+	}
+
 
 }

@@ -152,8 +152,11 @@ public class CheckLoginFilter implements Filter {
 			chain.doFilter(req, res);
 			return;
 		}
-		
-		
+
+		if(action != null && action.equals("detailPage")) {//查看返单率
+			chain.doFilter(req, res);
+			return;
+		}
 		
 		if(action != null && action.equals("refundCompleted")) {//财务修改操作
 			chain.doFilter(req, res);

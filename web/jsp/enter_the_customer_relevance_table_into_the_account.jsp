@@ -15,7 +15,7 @@
 }
 .part_01{overflow: hidden;}
 .emanagergettable {
-	width: 800px;
+	width: 1200px;
 	border: 1px #7D7D7D solid;
 	border-collapse: collapse;
 }
@@ -47,7 +47,7 @@
 	background-color: #eaf5ff
 }
 .div_style {
-	width: 500px;
+	width: 1000px;
 	position: fixed;
 	top: 25%;
 	background: #fff;
@@ -84,10 +84,18 @@
             <form action="/ERP-NBEmail/helpServlet?action=enterTheCustomerRelevanceTableIntoTheAccount&className=InvoiceServlet"
 					  method="post" >
 					<table><tr>
-					<td class="usermatd3">进账客户名:</td>
+					<td class="usermatd3">客户名（进账、ERP、简称）:</td>
 							<td><input type="text"  id="name"
 								name="name" value="${name }"
 								 />
+						<td class="usermatd3">客户id:</td>
+						<td><input type="text"  id="customerId"
+								   name="customerId" value="${customerId }"
+						/>
+						<td class="usermatd3">项目号:</td>
+						<td><input type="text"  id="projectId"
+								   name="projectId" value="${projectId }"
+						/>
 								<td> <input type="submit" value="查询"
 								class="usersearchbtn">
 								
@@ -106,8 +114,10 @@
 					<td>ERP客户id</td>
 					<td>金蝶号</td>
 					<td>项目名</td>
-					
-					
+					<td>国家</td>
+					<td>简称</td>
+                    <c:if test="${EmpEName=='mandyman'}"><td>操作</td></c:if>
+
 				</tr>
 				<c:forEach items="${cusList}" var="cus" varStatus="i">
 					<tr>
@@ -116,8 +126,38 @@
 						<td>${cus.customerId }</td>
 						<td>${cus.kingdee }</td>
 						<td>${cus.projectId }</td>
-						
-						
+						<td><c:choose>
+							<c:when test="${cus.country==1 }">USA</c:when>
+							<c:when test="${cus.country==2 }">Canada</c:when>
+							<c:when test="${cus.country==3 }">France</c:when>
+							<c:when test="${cus.country==4 }">Germany</c:when>
+							<c:when test="${cus.country==5 }">Netherlands</c:when>
+							<c:when test="${cus.country==6 }">Israel</c:when>
+							<c:when test="${cus.country==7 }">Mexico</c:when>
+							<c:when test="${cus.country==8 }">Australia</c:when>
+							<c:when test="${cus.country==9 }">Italy</c:when>
+							<c:when test="${cus.country==10 }">Switzerland</c:when>
+							<c:when test="${cus.country==11 }">Finland</c:when>
+							<c:when test="${cus.country==12 }">Sweden</c:when>
+							<c:when test="${cus.country==13 }">UK</c:when>
+							<c:when test="${cus.country==14 }">Argentina</c:when>
+							<c:when test="${cus.country==15 }">Other</c:when>
+							<c:when test="${cus.country==16 }">Japan</c:when>
+							<c:when test="${cus.country==17 }">China</c:when>
+							<c:when test="${cus.country==18 }">Austria</c:when>
+							<c:when test="${cus.country==19 }">Saudi Arabia</c:when>
+							<c:when test="${cus.country==20 }">Belgium</c:when>
+							<c:when test="${cus.country==21 }">Spain</c:when>
+							<c:when test="${cus.country==22 }">New Zealand</c:when>
+							<c:when test="${cus.country==23 }">Slovenia</c:when>
+							<c:when test="${cus.country==24 }">Serbia</c:when>
+							<c:when test="${cus.country==25 }">Ireland</c:when>
+
+						</c:choose></td>
+						<td>${cus.abbreviation }</td>
+                        <c:if test="${EmpEName=='mandyman'}"><td>
+                            <input type="button" value="编辑"/>
+                          <input type="button" value="删除" onclick=""/></td></c:if>
 					</tr>
 				</c:forEach>
 			</table>

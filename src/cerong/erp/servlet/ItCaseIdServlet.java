@@ -1089,10 +1089,10 @@ public class ItCaseIdServlet extends HttpServlet {
 		}
 		
 		
-		/**startProjectStatistics
+		/**
 		 * 方法描述:调采购数据
 		 * author:wy
-		 * date:2017年6月5日
+		 * date:2017年6月5
 		 * @param request
 		 * @param response
 		 * @throws ServletException
@@ -1121,8 +1121,8 @@ public class ItCaseIdServlet extends HttpServlet {
 	     *            请求参数，Map类型。 
 	     * @return 远程响应结果 
 	     */  
-	    public static String sendPost(String url, Map<Object, String> map) {  
-	        String result = "";// 返回的结果  
+	    public static String sendPost(String url, Map<Object, String> map) {
+				        String result = "";// 返回的结果
 	        BufferedReader in = null;// 读取响应输入流  
 	        PrintWriter out = null;  
 	        StringBuffer sb = new StringBuffer();// 处理请求参数  
@@ -2730,6 +2730,7 @@ public class ItCaseIdServlet extends HttpServlet {
 					}
 				} 
 			}
+            SimpleDateFormat dft1 = new SimpleDateFormat("yyyy-MM-dd");
 			EmailUser user1=new EmailUser();
 			user1.setUserName(EmpEName);
 			user1.setPwd(EmpPWD);
@@ -2756,66 +2757,95 @@ public class ItCaseIdServlet extends HttpServlet {
 					}
 					String time1=request.getParameter("time1");
 					if(time1 != null && !"".equals(time1)){
-					it.setStartTime(time1);
-					request.setAttribute("starttime",time1);
+					it.setStartTime(time1+"-01");
+                    Date date=dft1.parse(time1+"-01");
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+                        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) +1);
+                        String time2=new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
+                        it.setEndTime(time2);
+                        request.setAttribute("starttime", time1 );
+
 					}
-					String time2=request.getParameter("time2");
-					if(time2 != null && !"".equals(time2)){
-						it.setEndTime(time2);
-						request.setAttribute("endtime",time2);
-					}
-					if(condition != null && !"".equals(condition)||time2 != null && !"".equals(time2)||time1 != null && !"".equals(time1)){
-					}else{
-					Date date = new Date();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-					String time=sdf.format(date);
-					it.setStartTime(time+"-01");
-					request.setAttribute("starttime",time+"-01" );	
-				    }
+
+                    if(condition != null && !"".equals(condition)||time1 != null && !"".equals(time1)){
+                    }else {
+                        Date date = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                        String time = sdf.format(date);
+                        it.setStartTime(time + "-01");
+                        Date date1=dft1.parse(time+"-01");
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date1);
+                        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) +1);
+
+						String time2=new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
+                        it.setEndTime(time2);
+                        request.setAttribute("starttime", time );
+                    }
 					if(s3.toLowerCase().contains(user1.getUserName().toLowerCase())!=false){
 						request.setAttribute("loginName","ninazhao" );
 					}
-					List<ItemCase> list=service.startProjectStatistics(it);//查看逻辑
-						for(int i=0;i<list.size();i++){
-						ItemCase itemCase=list.get(i);
-						int num=itemCase.getProjectLevel();
-						String projectNo="&&projectNo="+itemCase.getCaseNo();
-						String CaseNo=itemCase.getCaseNo();
-						String CaseNo1=CaseNo.substring(0,8);
-						ItemCase item=service.getall(itemCase.getCaseNo());
-						if(item.getCaseStatus()!=5&&item.getCaseStatus()!=10 &&item.getAllmoney()>10000){
-                          int number=service.getSalesContract(itemCase.getCaseNo());
-                          if(number>0){
-							  itemCase.setSalesContract(1);
-						  }else{
-							  itemCase.setSalesContract(2);
+					List<ItemCase>caseList=service.getAllProjectNo(it);
+                    List<ItemCase> list=new ArrayList<ItemCase>();
+                    for(int i=0;i<caseList.size();i++){
+                        ItemCase itcase=caseList.get(i);
+                        ItemCase itemCase=service.getProjectStatistics(itcase);
 
-						  }
-						}else{
-							itemCase.setSalesContract(0);
-						}
-                       if(num!=3){
-							try{
-						String returnNum=Client.sendPost1("http://117.144.21.74:10010/port/judgeDelay",projectNo);
-						returnNum=returnNum.replaceAll("\"", "");
-						if("null".equalsIgnoreCase(returnNum)){
-							itemCase.setDelay(0);
-						}else if("true".equalsIgnoreCase(returnNum)){
-							itemCase.setDelay(0);	
-						}else if("false".equalsIgnoreCase(returnNum)){
-							itemCase.setDelay(1);	
-						}	else{
-							itemCase.setDelay(0);	
-						}	
-								}catch(Exception e){
-									
-								}
-						}else{
-							itemCase.setDelay(0);	
-						}
-                      List<AllDrawings>allList=aservice.getAllDrawings(CaseNo1);//根据项目号获取图纸
-						itemCase.setPicture(allList);
-					}
+                       if(itemCase!=null) {
+						   itemCase.setComplaint_id(itcase.getComplaint_id());
+						   itemCase.setVerification(itcase.getVerification());
+                       	   if(itemCase.getMerchandising()!=null&&!"".equalsIgnoreCase(itemCase.getMerchandising())){
+							   itemCase.setMerchandManager1(itemCase.getMerchandising());
+						   }
+                       	   if(itemCase.getEngineer2()!=null&&!"".equalsIgnoreCase(itemCase.getEngineer2())){
+							   itemCase.setMerchandManager2(itemCase.getEngineer2());
+						   }else if(itemCase.getEngineer1()!=null&&!"".equalsIgnoreCase(itemCase.getEngineer1())){
+							   itemCase.setMerchandManager2(itemCase.getEngineer1());
+						   }
+						   itemCase.setProject_status(itcase.getProject_status());
+						   int num = itemCase.getProjectLevel();
+						   String projectNo = "&&projectNo=" + itemCase.getCaseNo();
+						   String CaseNo = itemCase.getCaseNo();
+						   String CaseNo1 = CaseNo.substring(0, 8);
+						   ItemCase item = service.getall(itemCase.getCaseNo());
+						   if (item.getCaseStatus() != 5 && item.getCaseStatus() != 10 && item.getAllmoney() > 10000) {
+							   int number = service.getSalesContract(itemCase.getCaseNo());
+							   if (number > 0) {
+								   itemCase.setSalesContract(1);
+							   } else {
+								   itemCase.setSalesContract(2);
+
+							   }
+						   } else {
+							   itemCase.setSalesContract(0);
+						   }
+						   if (num != 3) {
+							   try {
+								   String returnNum = Client.sendPost1("http://117.144.21.74:10010/port/judgeDelay", projectNo);
+								   returnNum = returnNum.replaceAll("\"", "");
+								   if ("null".equalsIgnoreCase(returnNum)) {
+									   itemCase.setDelay(0);
+								   } else if ("true".equalsIgnoreCase(returnNum)) {
+									   itemCase.setDelay(0);
+								   } else if ("false".equalsIgnoreCase(returnNum)) {
+									   itemCase.setDelay(1);
+								   } else {
+									   itemCase.setDelay(0);
+								   }
+							   } catch (Exception e) {
+
+							   }
+						   } else {
+							   itemCase.setDelay(0);
+						   }
+						   List<AllDrawings> allList = aservice.getAllDrawings(CaseNo1);//根据项目号获取图纸
+						   itemCase.setPicture(allList);
+						   list.add(itemCase);
+					   }
+                    }
+
+
 					
 					new ExportPenaltyProcessDataThread(list).start();
 					request.setAttribute("cusList",list );
@@ -2830,66 +2860,93 @@ public class ItCaseIdServlet extends HttpServlet {
 					}
 					String time1=request.getParameter("time1");
 					if(time1 != null && !"".equals(time1)){
-					it.setStartTime(time1);
-					request.setAttribute("starttime",time1 );
+						it.setStartTime(time1+"-01");
+						Date date=dft1.parse(time1+"-01");
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(date);
+						calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) +1);
+                        String time2=new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
+                        it.setEndTime(time2);
+                        request.setAttribute("starttime", time1 );
 					}
-					String time2=request.getParameter("time2");
-					if(time2 != null && !"".equals(time2)){
+
+					if(condition != null && !"".equals(condition)||time1 != null && !"".equals(time1)){
+					}else {
+						Date date = new Date();
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+						String time = sdf.format(date);
+						it.setStartTime(time + "-01");
+						Date date1=dft1.parse(time+"-01");
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(date1);
+						calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) +1);
+
+						String time2=new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
 						it.setEndTime(time2);
-						request.setAttribute("endtime",time2 );
+						request.setAttribute("starttime", time );
 					}
-					if(condition != null && !"".equals(condition)||time2 != null && !"".equals(time2)||time1 != null && !"".equals(time1)){
-					}else{
-					Date date = new Date();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-					String time=sdf.format(date);
-					it.setStartTime(time+"-01");
-					request.setAttribute("starttime",time+"-01" );	
-				}
-					List<ItemCase> list=service.startProjectStatistics1(it);//查看逻辑
-					
-					for(int i=0;i<list.size();i++){
-						ItemCase itemCase=list.get(i);
-						int num=itemCase.getProjectLevel();
-						String projectNo="&& "+itemCase.getCaseNo();
-						String CaseNo=itemCase.getCaseNo();
-						String CaseNo1=CaseNo.substring(0,8);
-						ItemCase item=service.getall(itemCase.getCaseNo());
-						if(item.getCaseStatus()!=5&&item.getCaseStatus()!=10 &&item.getAllmoney()>10000){
-							int number=service.getSalesContract(itemCase.getCaseNo());
-							if(number>0){
-								itemCase.setSalesContract(1);
-							}else{
-								itemCase.setSalesContract(2);
+                    List<ItemCase>caseList=service.getAllProjectNo(it);
+                         List<ItemCase> list=new ArrayList<ItemCase>();
+                    for(int i=0;i<caseList.size();i++){
+						ItemCase itcase=caseList.get(i);
+						itcase.setCustomerManager(EmpEName);
 
-							}
-						}else{
-							itemCase.setSalesContract(0);
-						}
+						if(!itcase.getCaseNo().toLowerCase().contains("-")) {
+							ItemCase itemCase = service.getProjectStatistics(itcase);
 
-						if(num!=3){
-							try{
-								String returnNum=Client.sendPost1("http://117.144.21.74:10010/port/judgeDelay",projectNo);
-								returnNum=returnNum.replaceAll("\"", "");
-								if("null".equalsIgnoreCase(returnNum)){
+							if (itemCase != null) {
+								if(itemCase.getMerchandising()!=null&&!"".equalsIgnoreCase(itemCase.getMerchandising())){
+									itemCase.setMerchandManager1(itemCase.getMerchandising());
+								}
+								if(itemCase.getEngineer2()!=null&&!"".equalsIgnoreCase(itemCase.getEngineer2())){
+									itemCase.setMerchandManager2(itemCase.getEngineer2());
+								}else if(itemCase.getEngineer1()!=null&&!"".equalsIgnoreCase(itemCase.getEngineer1())){
+									itemCase.setMerchandManager2(itemCase.getEngineer1());
+								}
+								itemCase.setComplaint_id(itcase.getComplaint_id());
+								itemCase.setVerification(itcase.getVerification());
+								itemCase.setProject_status(itcase.getProject_status());
+								int num = itemCase.getProjectLevel();
+								String projectNo = "&&projectNo=" + itemCase.getCaseNo();
+								String CaseNo = itemCase.getCaseNo();
+								String CaseNo1 = CaseNo.substring(0, 8);
+								ItemCase item = service.getall(itemCase.getCaseNo());
+								if (item.getCaseStatus() != 5 && item.getCaseStatus() != 10 && item.getAllmoney() > 10000) {
+									int number = service.getSalesContract(itemCase.getCaseNo());
+									if (number > 0) {
+										itemCase.setSalesContract(1);
+									} else {
+										itemCase.setSalesContract(2);
+
+									}
+								} else {
+									itemCase.setSalesContract(0);
+								}
+								if (num != 3) {
+									try {
+										String returnNum = Client.sendPost1("http://117.144.21.74:10010/port/judgeDelay", projectNo);
+										returnNum = returnNum.replaceAll("\"", "");
+										if ("null".equalsIgnoreCase(returnNum)) {
+											itemCase.setDelay(0);
+										} else if ("true".equalsIgnoreCase(returnNum)) {
+											itemCase.setDelay(0);
+										} else if ("false".equalsIgnoreCase(returnNum)) {
+											itemCase.setDelay(1);
+										} else {
+											itemCase.setDelay(0);
+										}
+									} catch (Exception e) {
+
+									}
+								} else {
 									itemCase.setDelay(0);
-								}else if("true".equalsIgnoreCase(returnNum)){
-									itemCase.setDelay(0);	
-								}else if("false".equalsIgnoreCase(returnNum)){
-									itemCase.setDelay(1);	
 								}
-								else{
-									itemCase.setDelay(0);	
-								}
-							}catch(Exception e){
-								
+								List<AllDrawings> allList = aservice.getAllDrawings(CaseNo1);//根据项目号获取图纸
+								itemCase.setPicture(allList);
+								list.add(itemCase);
 							}
-						}else{
-							itemCase.setDelay(0);	
 						}
-						List<AllDrawings>allList=aservice.getAllDrawings(CaseNo1);//根据项目号获取图纸
-						itemCase.setPicture(allList);
-					}
+                    }
 					request.setAttribute("cusList",list );
 					request.getRequestDispatcher("jsp/start_project_statistics.jsp").forward(request, response);
 				}
@@ -3218,5 +3275,101 @@ public class ItCaseIdServlet extends HttpServlet {
 		}
 
 	}
+
+	/**
+	 * 跟单进账详情页
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void detailPage(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+		PrintWriter out = response.getWriter();
+		String EmpEName=null;
+		String EmpPWD=null;
+		Cookie c[]=request.getCookies();
+		if(c!=null)
+		{
+			for(int x=0;x<c.length;x++){
+				if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
+					EmpPWD=c[x].getValue();
+				}
+
+				if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
+				{
+					EmpEName=c[x].getValue();
+				}
+			}
+		}
+		String starttime=request.getParameter("starttime");
+		String endtime=request.getParameter("endtime");
+		String starttime1=request.getParameter("starttime1");
+		String starttime2=request.getParameter("starttime2");
+		String starttime3=request.getParameter("starttime3");
+		String starttimea=request.getParameter("starttimea");
+		String endtimea=request.getParameter("endtimea");
+		String userName=request.getParameter("userName");
+		request.setAttribute("starttime",starttime);
+		request.setAttribute("endtime",endtime);
+		request.setAttribute("starttime1",starttime1);
+		request.setAttribute("starttime2",starttime2);
+		request.setAttribute("starttimea",starttimea);
+		request.setAttribute("endtimea",endtimea);
+		EmailUser user1=new EmailUser();
+		user1.setUserName(EmpEName);
+		user1.setPwd(EmpPWD);
+		EmailUser user =new EmailUser();
+		user.setUserName(userName);
+		user.setStartTime1(starttime1);
+		user.setEndTime(endtime);
+		user.setStartTime(starttime);
+		user.setStartTimea(starttimea);
+		user.setStartTime2(starttime2);
+		user.setStartTime3(starttime3);
+		user.setEndTimea(endtimea);
+		String s1 = "edwardfanemmaxieninazhaoandsjerrylongninazhao";
+		Boolean index1=false;
+		index1 = s1.toLowerCase().contains(user1.getUserName().toLowerCase());
+		if(index1!=false){
+			List<ItemCase1>orderCustomerList=service.getOrderCustomerList(user);
+			List<ItemCase1>noOrderCustomerList=service.getNoOrderCustomerList(user);
+			List<ItemCase1>allCustomerList=service.getallCustomerList(user);
+			List<ItemCase1>newCustomerList=service.getnewCustomerList(user);
+			List<ItemCase1>fixedTimeCustomersList=service.getfixedTimeCustomersList(user);
+			request.setAttribute("userName",userName);
+			request.setAttribute("orderCustomerList",orderCustomerList);
+			request.setAttribute("noOrderCustomerList",noOrderCustomerList);
+			request.setAttribute("allCustomerList",allCustomerList);
+			request.setAttribute("newCustomerList",newCustomerList);
+			request.setAttribute("fixedTimeCustomersList",fixedTimeCustomersList);
+            request.getRequestDispatcher("jsp/detail_page.jsp").forward(request, response);
+            }else{
+               if(EmpEName.equalsIgnoreCase(userName)){
+				   List<ItemCase1>orderCustomerList=service.getOrderCustomerList(user);
+				   List<ItemCase1>noOrderCustomerList=service.getNoOrderCustomerList(user);
+				   List<ItemCase1>allCustomerList=service.getallCustomerList(user);
+				   List<ItemCase1>newCustomerList=service.getnewCustomerList(user);
+				   List<ItemCase1>fixedTimeCustomersList=service.getfixedTimeCustomersList(user);
+				   request.setAttribute("userName",userName);
+				   request.setAttribute("orderCustomerList",orderCustomerList);
+				   request.setAttribute("noOrderCustomerList",noOrderCustomerList);
+				   request.setAttribute("allCustomerList",allCustomerList);
+				   request.setAttribute("newCustomerList",newCustomerList);
+				   request.setAttribute("fixedTimeCustomersList",fixedTimeCustomersList);
+               	    request.setAttribute("userName",userName);
+					request.getRequestDispatcher("jsp/detail_page.jsp").forward(request, response);
+				}else{
+					out.write("<script>");
+					out.write("alert('对不起你没有权限查看他人信息');");
+					out.write("window.location.href='jsp/login.jsp'");
+					out.write("</script>");
+				}
+
+
+			}
+
+}
 }
 

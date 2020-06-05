@@ -177,6 +177,8 @@ function checkData() {
 	var allMoney = document.getElementById("allMoney").value;
 	var customerId = document.getElementById("customerId").value;
 	var id = document.getElementById("id").value;
+		var tradeCurrency = document.getElementById("tradeCurrency").value;
+
 	var params = {  
 			"invoicemoney1":invoicemoney1,
 			"invoicemoney2":invoicemoney2,
@@ -205,6 +207,7 @@ function checkData() {
 			"allMoney":allMoney,
 			"id":id,
 			"customerId":customerId,
+		    "tradeCurrency":tradeCurrency,
 			"action":"checkData1",
 			"className":"AmountClaimFormServlet",
  	};
@@ -251,7 +254,8 @@ function checkData() {
             <form action="/ERP-NBEmail/helpServlet?action=checkData&className=AmountClaimFormServlet"
 						id="uploadForm" enctype="multipart/form-data" method="post" >
 						 <input type="hidden" id="allMoney" name="allMoney" value="${allMoney }">
-						 <input type="hidden" id="customerId"  name="customerId" value="${customerId }">
+						 <input type="hidden" id="tradeCurrency"  name="tradeCurrency" value="${account.tradeCurrency }">
+				<input type="hidden" id="customerId"  name="customerId" value="${customerId }">
 						 <input type="hidden" id="id" name="id" value="${id }">
 				<div id="state1" style="display:none;"><input type="text" id="state" name="state" placeholder="国家名"/></div>		 
 			<table class="emanagergettable">

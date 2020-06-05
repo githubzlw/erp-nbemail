@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -199,6 +200,37 @@ var update =function(id,num){
 		     ); 
 		}
 		};
+var entryReason =function(reason,id){
+
+	var flag = confirm("确定添加不认领备注?");
+	if(flag){
+		var allreason=document.getElementById(reason).value;
+		var params = {
+			"id":id,
+			"allreason":allreason,
+			"action":"updateAccountEntry",
+			"className":"AccountEntryFormServlet",
+		};
+		$.ajax({
+					url:'/ERP-NBEmail/helpServlet',
+					type:"post",
+					data:params,
+					success:function(data)
+					{
+
+						if(data == "YES"){
+							window.location.reload();
+
+
+						}else{
+							window.location.reload();
+
+						}
+					},
+				}
+		);
+	}
+};
 function accAdd(arg1,arg2){
 	var r1,r2,m;
 	try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
@@ -331,6 +363,7 @@ var splitAmounty =function(){
 					<td>其他信息</td>
 					<td>推测客户ID/认领人</td>
 					<td>进账详情</td>
+					<td>未认领理由</td>
 					<td>操作</td>
 					<td>已认领人</td>
 					<td>销售进账确认</td>
@@ -351,10 +384,12 @@ var splitAmounty =function(){
 						<td>${cus.remark }</td>
 						<td><c:if test="${cus.nBEmailId !=0}"><c:if test="${cus.conjecture!='' }">${cus.nBEmailId}/${cus.conjecture }</c:if></c:if>
 						<c:if test="${cus.nBEmailId !=0}"><c:if test="${cus.conjecture=='' }">${cus.nBEmailId}</c:if></c:if>
+					    <c:if test="${cus.reason!=null}">未认领理由:${cus.reason},${cus.entryPerson},<fmt:formatDate value="${cus.entryTime}" pattern="yyyy-MM-dd"/></c:if>
 						</td>
 						<td><c:forEach items="${cus.accessories}" var="cus1" varStatus="a">
 						${cus1.invoice }，预计到账${cus1.iimoney }，现实际到账${cus1.ifmoney }
 						   </c:forEach></td>
+						<td><input type="text" id="reason${i.count}" name="reason${i.count}" value="${cus.reason}"></td>
 						<td><c:if test="${cus.claimant==null&&roleNO==5 }">
 						<input type="button" type="button" id="open" onclick="javascript:OpenDiv(${cus.tradeAmount },${cus.id });" value="拆分金额">
 						<input type="button" onclick="enterFinancialEntry(${cus.tradeAmount },${cus.id },${cus.nBEmailId},'${cus.tradeCurrency}');" value="销售认领"></c:if>
@@ -365,7 +400,9 @@ var splitAmounty =function(){
 						    <input type="button" onclick="enterFinancialEntry(${cus.tradeAmount },${cus.id },${cus.nBEmailId},'${cus.tradeCurrency}');" value="销售认领">
 						    </c:if>
 						    <input type="button" id="open" onclick="javascript:OpenDiv(${cus.tradeAmount },${cus.id });" value="拆分金额">
+
 						    </c:if>
+							<input type="button"  onclick="entryReason('reason${i.count}',${cus.id});" value="录入备注">
 						</td>
 						<td><c:if test="${cus.claimant!=null }">${cus.claimant },${cus.claimTime != null ?fn:substring(cus.claimTime,0,fn:indexOf(cus.claimTime," ")):""}</c:if></td>
 						<td><c:choose>

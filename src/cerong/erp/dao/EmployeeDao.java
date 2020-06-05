@@ -614,12 +614,14 @@ public  class EmployeeDao implements IEmployeeDaoImpl{
 				" select count(1)num1 from ( select customercode from (\n" +
 				"select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno   where ifmoney is not null and ifmoney!=0\n" +
 				"and datediff(day,?,ifdate)>0 and datediff(day,?,ifdate)<0  and (CustomerManager=? or Merchandising=? or MerchandManager1=?)\n" +
-				"group by icaseno,customercode\n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
+				"group by icaseno,customercode " +
 				")a group by customercode)a\n" +
 				")a ,(\n" +
 				"  select count(1)num2 from ( select a.customercode from (select customercode from (\n" +
 				"select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno   where ifmoney is not null and ifmoney!=0\n" +
 				"and datediff(day,?,ifdate)>0 and datediff(day,?,ifdate)<0  and (CustomerManager=? or Merchandising=? or MerchandManager1=?)\n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
 				"group by icaseno,customercode\n" +
 				")a group by customercode)a\n" +
 				"left join \n" +
@@ -627,6 +629,7 @@ public  class EmployeeDao implements IEmployeeDaoImpl{
 				"select customercode from (\n" +
 				"select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno   where ifmoney is not null and ifmoney!=0\n" +
 				"and datediff(day,?,ifdate)>0  \n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
 				"group by icaseno,customercode\n" +
 				")a group by customercode)b\n" +
 				"on a.customercode=b.customercode where b.customercode is null\n" +
@@ -636,6 +639,7 @@ public  class EmployeeDao implements IEmployeeDaoImpl{
 				"(select count(1)num3 from (\n" +
 				"select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno left join customer cus on cus.id=it.customercode   where ifmoney is not null and ifmoney!=0\n" +
 				"and datediff(day,?,ifdate)>0 and datediff(day,?,ifdate)<0  and (CustomerManager=? or Merchandising=? or MerchandManager1=?)\n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
 				"and cus.customergrade  in(1,2)\n" +
 				"group by icaseno,customercode\n" +
 				")c\n" +
@@ -645,6 +649,7 @@ public  class EmployeeDao implements IEmployeeDaoImpl{
 				"select customercode from (\n" +
 				"select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno left join customer cus on cus.id=it.customercode   where ifmoney is not null and ifmoney!=0\n" +
 				"  and (CustomerManager=? or Merchandising=? or MerchandManager1=?)\n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
 				"and cus.customergrade  in(1,2)\n" +
 				"group by icaseno,customercode\n" +
 				")a group by customercode\n" +
@@ -654,6 +659,7 @@ public  class EmployeeDao implements IEmployeeDaoImpl{
 				"(select count(1)num5 from (\n" +
 				"select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno left join customer cus on cus.id=it.customercode   where ifmoney is not null and ifmoney!=0\n" +
 				"and datediff(day,?,ifdate)>0 and datediff(day,?,ifdate)<0  and (CustomerManager=? or Merchandising=? or MerchandManager1=?)\n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
 				"and cus.customergrade  in(1,2) and datediff(day,?,cus.creattime)>0\n" +
 				"group by icaseno,customercode\n" +
 				")c\n" +
@@ -663,6 +669,7 @@ public  class EmployeeDao implements IEmployeeDaoImpl{
 				"select customercode from (\n" +
 				"select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno left join customer cus on cus.id=it.customercode   where ifmoney is not null and ifmoney!=0\n" +
 				"  and (CustomerManager=? or Merchandising=? or MerchandManager1=?)\n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
 				"and cus.customergrade  in(1,2) and datediff(day,?,cus.creattime)>0\n" +
 				"group by icaseno,customercode\n" +
 				")a group by customercode\n" +
@@ -671,6 +678,7 @@ public  class EmployeeDao implements IEmployeeDaoImpl{
 				"  select count(1)num7 from (select a.customercode from (select customercode from ( \n" +
 				" select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno   where ifmoney is not null and ifmoney!=0 \n" +
 				" and datediff(day,?,ifdate)>0 and datediff(day,?,ifdate)<0  and (CustomerManager=? or Merchandising=? or MerchandManager1=?) \n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
 				"group by icaseno,customercode \n" +
 				")a group by customercode)a \n" +
 				"left join  \n" +
@@ -678,6 +686,7 @@ public  class EmployeeDao implements IEmployeeDaoImpl{
 				"select customercode from ( \n" +
 				"select icaseno,customercode from invoiceinfo info left join itemcase it on info.icaseno=it.caseno   where ifmoney is not null and ifmoney!=0 \n" +
 				"and datediff(day,?,ifdate)>0   \n" +
+				" and customercode not in (select id from customer where customer_loss=1)"+
 				"group by icaseno,customercode \n" +
 				")a group by customercode)b \n" +
 				"on a.customercode=b.customercode where b.customercode is null" +

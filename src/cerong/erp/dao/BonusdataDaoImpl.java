@@ -407,7 +407,10 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 				ResultSet rs5 = null;
 				String sql5 = "select ic.quality_deduction_project,ic.CustomerManager,ic.customercode,ic.MerchandManager1,ic.MerchandManager2,"
 						+ "ic.Engineer1,ic.Engineer2,ic.Engineer3,ic.zhijian1,ic.zhijian2,ic.ProductDescE"
-						+ ",ic.ProductDescC,ic.Merchandising,ic.MaturePurchase,ic.OriginalPurchase,ic.CaseStatus  from itemCase ic left join invoiceInfo ii on ic.CaseNo=ii.iCaseNo  "
+						+ ",ic.ProductDescC,ic.Merchandising,ic.MaturePurchase,ic.OriginalPurchase,ic.CaseStatus,ic.master_quality_inspection" +
+						" ,ic.QualityInspector,ic.QualityInspector1,ic.QualityInspector2,ic.QualityInspector3,ic.QualityInspector4" +
+						",ic.QualityInspector5,ic.QualityInspector6,ic.QualityInspector7  " +
+						" from itemCase ic left join invoiceInfo ii on ic.CaseNo=ii.iCaseNo  "
 						+ " where CaseNo=? ";
 				conn5 = SQLDBhelper.getConnection();
 				try {
@@ -427,6 +430,15 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 						bo.setProductdescc(rs5.getString("ProductDescC"));
 						bo.setProductdesce(rs5.getString("ProductDescE"));
 						bo.setQualityDeductionProject(rs5.getInt("quality_deduction_project"));
+						bo.setMasterQualityInspection(rs5.getString("master_quality_inspection"));
+						bo.setQualityInspector(rs5.getString("QualityInspector"));
+						bo.setQualityInspector1(rs5.getString("QualityInspector1"));
+						bo.setQualityInspector2(rs5.getString("QualityInspector2"));
+						bo.setQualityInspector3(rs5.getString("QualityInspector3"));
+						bo.setQualityInspector4(rs5.getString("QualityInspector4"));
+						bo.setQualityInspector5(rs5.getString("QualityInspector5"));
+						bo.setQualityInspector6(rs5.getString("QualityInspector6"));
+						bo.setQualityInspector7(rs5.getString("QualityInspector7"));
 						int caseStatus = rs5.getInt("CaseStatus");
 						if (caseStatus == 0 || caseStatus == 14 || caseStatus == 10 || caseStatus == 5) {
 							bo.setCaseStatus(1);
@@ -571,9 +583,13 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 				double profitmargin2 = 0.0;
 				String profitmargin3 = "";
 				if (totalrmb != 0) {
-					totalrmb1 = paywulliu + payother + payfactory;
+					double debitDeduction=getDebitDeduction(CaseNo);//进账扣款
+					double factoryDeduction=getFactoryDeduction(CaseNo);//工厂扣款
+					totalrmbm=totalrmbm-debitDeduction;
+					totalrmb1=paywulliu+payother+payfactory-factoryDeduction;
 					profitrmb = totalrmbm - totalrmb1;
-					profitrmb1 = totalrmb2 - totalrmb1;
+					profitrmb1=totalrmbm-totalrmb1;
+					totalSalesUs=getTotalSalseUs(totalrmbm,year,month);
 					profitus = profitrmb / huilv1;
 					profitmargin = profitrmb / totalrmb;
 					profitmargin2 = profitrmb1 / totalrmb2;
@@ -1365,6 +1381,15 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 				bo.setMerchandManager2(rs5.getString("MerchandManager2"));
 				bo.setZhijian1(rs5.getString("zhijian1"));
 				bo.setZhijian2(rs5.getString("zhijian2"));
+				bo.setMasterQualityInspection(rs5.getString("master_quality_inspection"));
+				bo.setQualityInspector(rs5.getString("QualityInspector"));
+				bo.setQualityInspector1(rs5.getString("QualityInspector1"));
+				bo.setQualityInspector2(rs5.getString("QualityInspector2"));
+				bo.setQualityInspector3(rs5.getString("QualityInspector3"));
+				bo.setQualityInspector4(rs5.getString("QualityInspector4"));
+				bo.setQualityInspector5(rs5.getString("QualityInspector5"));
+				bo.setQualityInspector6(rs5.getString("QualityInspector6"));
+				bo.setQualityInspector7(rs5.getString("QualityInspector7"));
 				bo.setProductdescc(rs5.getString("ProductDescC"));
 				bo.setProductdesce(rs5.getString("ProductDescE"));
 
@@ -2220,12 +2245,16 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 					SQLDBhelper.close(conn4,stmt4,rs4);
 
 				}
+				int  project_situation=0;
 				Connection conn5 = null;
 				PreparedStatement stmt5 = null;
 				ResultSet rs5 = null;
-				String sql5 = "select ic.quality_deduction_project,ic.CustomerManager,ic.customercode,ic.MerchandManager1,ic.MerchandManager2,"
+				String sql5 = "select ic.project_situation,ic.quality_deduction_project,ic.CustomerManager,ic.customercode,ic.MerchandManager1,ic.MerchandManager2,"
 						+ "ic.Engineer1,ic.Engineer2,ic.Engineer3,ic.Merchandising,ic.zhijian1,ic.zhijian2,ic.ProductDescE"
-						+ ",ic.ProductDescC,ic.OriginalPurchase,ic.MaturePurchase,ic.CaseStatus  from itemCase ic left join invoiceInfo ii on ic.CaseNo=ii.iCaseNo  "
+						+ ",ic.ProductDescC,ic.OriginalPurchase,ic.MaturePurchase,ic.CaseStatus,ic.master_quality_inspection" +
+						" ,ic.QualityInspector,ic.QualityInspector1,ic.QualityInspector2,ic.QualityInspector3,ic.QualityInspector4" +
+						",ic.QualityInspector5,ic.QualityInspector6,ic.QualityInspector7  " +
+						"  from itemCase ic left join invoiceInfo ii on ic.CaseNo=ii.iCaseNo  "
 						+ " where CaseNo=? ";
 				conn5 = SQLDBhelper.getConnection();
 				try {
@@ -2242,9 +2271,19 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 						bo.setMerchandManager2(rs5.getString("MerchandManager2"));
 						bo.setZhijian1(rs5.getString("zhijian1"));
 						bo.setZhijian2(rs5.getString("zhijian2"));
+						bo.setMasterQualityInspection(rs5.getString("master_quality_inspection"));
+						bo.setQualityInspector(rs5.getString("QualityInspector"));
+						bo.setQualityInspector1(rs5.getString("QualityInspector1"));
+						bo.setQualityInspector2(rs5.getString("QualityInspector2"));
+						bo.setQualityInspector3(rs5.getString("QualityInspector3"));
+						bo.setQualityInspector4(rs5.getString("QualityInspector4"));
+						bo.setQualityInspector5(rs5.getString("QualityInspector5"));
+						bo.setQualityInspector6(rs5.getString("QualityInspector6"));
+						bo.setQualityInspector7(rs5.getString("QualityInspector7"));
 						bo.setProductdescc(rs5.getString("ProductDescC"));
 						bo.setProductdesce(rs5.getString("ProductDescE"));
 						bo.setQualityDeductionProject(rs5.getInt("quality_deduction_project"));
+						project_situation=rs5.getInt("project_situation");
 						int caseStatus=rs5.getInt("CaseStatus");
 						if(caseStatus==0||caseStatus==14||caseStatus==10||caseStatus==5){
 							bo.setCaseStatus(1);
@@ -2458,16 +2497,17 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 				}
 
 
-
-
+				double debitDeduction=getDebitDeduction(CaseNo);//进账扣款
+				double factoryDeduction=getFactoryDeduction(CaseNo);//工厂扣款
 				String ifdatex="";
 				double profitrmb1=0.0;
 				double profitmargin2=0.0;
 				String profitmargin3="";
-
-				totalrmb1=paywulliu+payother+payfactory;
+				totalrmbm=totalrmbm-debitDeduction;
+				totalrmb1=paywulliu+payother+payfactory-factoryDeduction;
 				profitrmb=totalrmbm-totalrmb1;
-				profitrmb1=totalrmb2-totalrmb1;
+				profitrmb1=totalrmbm-totalrmb1;
+				totalSalesUs=getTotalSalseUs(totalrmbm,year,month);
 				double   f =0.0;
 				double   f1 =0.0;
 				double   f2 =0.0;
@@ -2829,9 +2869,11 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 					SQLDBhelper.returnConnection(conng);
 				}
 
-				if(Pay_Moeny==Get_Moeny &&Pay_Moeny!=0){
+				if(Pay_Moeny-Get_Moeny<=50 &&Pay_Moeny!=0 && project_situation==1){
+
 					bo.setIsInvoice(1);
 				}else{
+
 					bo.setIsInvoice(0);
 				}
 				bo.setProjectId(CaseNo);
@@ -2856,6 +2898,179 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 		}
 		return list;
 	}
+
+	private double getTotalSalseUs(double totalrmbm, int year, int month) {
+		Double totalSalseUs1=0.00;
+		double tmpD1=getHuilva(year+"-"+month+"-"+01,1);
+		double totalSalseUs   =  totalrmbm/tmpD1;
+		if(totalSalseUs!=0&&!"".equals(totalSalseUs)&&!"NaN".equals(totalSalseUs)&&!"Infinity".equals(totalSalseUs)){
+			BigDecimal   b   =   new   BigDecimal(totalSalseUs);
+			totalSalseUs1   =   b.setScale(1,   BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+
+				return totalSalseUs1;
+
+	}
+
+	private double getFactoryDeduction(String caseNo) {
+		double money=0.00;
+		String sql2 = "select sum(amount_deduction)amount_deduction,caseno from contract_deduction where caseno=? group by caseno";
+		Connection conn2 = null;
+		PreparedStatement stmt2 = null;
+		ResultSet rs2 = null;
+		conn2 = SQLDBhelper.getConnection();
+		try {
+			stmt2 = conn2.prepareStatement(sql2);
+			stmt2.setString(1, caseNo);
+			rs2 = stmt2.executeQuery();
+			if (rs2.next()) {
+				double ifmoney = rs2.getDouble("amount_deduction");
+
+				money=ifmoney;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs2 != null) {
+				try {
+					rs2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt2 != null) {
+				try {
+					stmt2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.returnConnection(conn2);
+		}
+		return money;
+
+	}
+
+	private double getDebitDeduction(String caseNo) {
+		double money=0.00;
+		boolean save=getTotalArrival(caseNo);
+        if(save==true) {
+			String sql2 = "select ifmoney,ifdate from deduction_actual_income where caseno=?";
+			Connection conn2 = null;
+			PreparedStatement stmt2 = null;
+			ResultSet rs2 = null;
+			conn2 = SQLDBhelper.getConnection();
+			try {
+				stmt2 = conn2.prepareStatement(sql2);
+				stmt2.setString(1, caseNo);
+				rs2 = stmt2.executeQuery();
+				if (rs2.next()) {
+					double ifmoney = rs2.getDouble("ifmoney");
+					double tmpD1=getHuilva(rs2.getString("ifdate"),1);
+					money=ifmoney*tmpD1;
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (rs2 != null) {
+					try {
+						rs2.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				if (stmt2 != null) {
+					try {
+						stmt2.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				SQLDBhelper.returnConnection(conn2);
+			}
+		}else if(save==false){
+			String sql2 = "select iimoney,iidate from debit_deduction where caseno=?";
+			Connection conn2 = null;
+			PreparedStatement stmt2 = null;
+			ResultSet rs2 = null;
+			conn2 = SQLDBhelper.getConnection();
+			try {
+				stmt2 = conn2.prepareStatement(sql2);
+				stmt2.setString(1, caseNo);
+				rs2 = stmt2.executeQuery();
+				if (rs2.next()) {
+					double ifmoney = rs2.getDouble("iimoney");
+					double tmpD1=getHuilva(rs2.getString("iidate"),1);
+					money=ifmoney*tmpD1;
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (rs2 != null) {
+					try {
+						rs2.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				if (stmt2 != null) {
+					try {
+						stmt2.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				SQLDBhelper.returnConnection(conn2);
+			}
+		}
+		return money;
+	}
+
+	private boolean getTotalArrival(String caseNo) {
+		boolean save=false;
+		String sql2 = "select count(*) from invoiceinfo where icaseno='"+caseNo+"' and  ifmoney is null";
+		Connection conn2 = null;
+		PreparedStatement stmt2 = null;
+		ResultSet rs2 = null;
+		conn2 = SQLDBhelper.getConnection();
+		try {
+			stmt2 = conn2.prepareStatement(sql2);
+
+			rs2 = stmt2.executeQuery();
+			if(rs2.next()) {
+				int num=rs2.getInt(1);
+				if(num!=0){
+					save=false;
+				}else{
+					save=true;
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs2 != null) {
+				try {
+					rs2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt2 != null) {
+				try {
+					stmt2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.returnConnection(conn2);
+		}
+		return save;
+	}
+
 	private double getHuilva(String date, int type) {
 		double huilv=0.00;
 		String[]dates=date.split("-");
@@ -3694,7 +3909,10 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 						ResultSet rs5 = null;
 						String sql5 = "select ic.quality_deduction_project,ic.CustomerManager,ic.customercode,ic.MerchandManager1,ic.MerchandManager2,"
 								+ "ic.Engineer1,ic.Engineer2,ic.Engineer3,ic.zhijian1,ic.zhijian2,ic.ProductDescE"
-								+ ",ic.ProductDescC,ic.Merchandising,ic.MaturePurchase,ic.OriginalPurchase,ic.CaseStatus  from itemCase ic left join invoiceInfo ii on ic.CaseNo=ii.iCaseNo  "
+								+ ",ic.ProductDescC,ic.Merchandising,ic.MaturePurchase,ic.OriginalPurchase,ic.CaseStatus,ic.master_quality_inspection " +
+								" ,ic.QualityInspector,ic.QualityInspector1,ic.QualityInspector2,ic.QualityInspector3,ic.QualityInspector4 " +
+								" ,ic.QualityInspector5,ic.QualityInspector6,ic.QualityInspector7     from itemCase ic left join invoiceInfo ii " +
+								" on ic.CaseNo=ii.iCaseNo  "
 								+ " where CaseNo=? ";
 						conn5 = SQLDBhelper.getConnection();
 						try {
@@ -3711,6 +3929,15 @@ public class BonusdataDaoImpl implements IBonusdataDao {
 								bo.setMaturePurchase(rs5.getString("MaturePurchase"));
 								bo.setZhijian1(rs5.getString("zhijian1"));
 								bo.setZhijian2(rs5.getString("zhijian2"));
+								bo.setMasterQualityInspection(rs5.getString("master_quality_inspection"));
+								bo.setQualityInspector(rs5.getString("QualityInspector"));
+								bo.setQualityInspector1(rs5.getString("QualityInspector1"));
+								bo.setQualityInspector2(rs5.getString("QualityInspector2"));
+								bo.setQualityInspector3(rs5.getString("QualityInspector3"));
+								bo.setQualityInspector4(rs5.getString("QualityInspector4"));
+								bo.setQualityInspector5(rs5.getString("QualityInspector5"));
+								bo.setQualityInspector6(rs5.getString("QualityInspector6"));
+								bo.setQualityInspector7(rs5.getString("QualityInspector7"));
 								bo.setProductdescc(rs5.getString("ProductDescC"));
 								bo.setProductdesce(rs5.getString("ProductDescE"));
 								bo.setQualityDeductionProject(rs5.getInt("quality_deduction_project"));

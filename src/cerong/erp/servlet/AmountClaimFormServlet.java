@@ -527,7 +527,7 @@ public class AmountClaimFormServlet extends HttpServlet{
 				tradeCurrency1=1;
 			}else if("EUR".equalsIgnoreCase(tradeCurrency)){
 				tradeCurrency1=3;
-			}else if("CNY".equalsIgnoreCase(tradeCurrency)){
+			}else if("CNY".equalsIgnoreCase(tradeCurrency)||"RMB".equalsIgnoreCase(tradeCurrency)){
 				tradeCurrency1=2;
 			}else if("GBP".equalsIgnoreCase(tradeCurrency)){
 				tradeCurrency1=5;
@@ -570,25 +570,31 @@ public class AmountClaimFormServlet extends HttpServlet{
 	    	 }else{
 	       if(!"mandyman".equalsIgnoreCase(EmpEName)&&!"lisali".equalsIgnoreCase(EmpEName)&&!"planner".equalsIgnoreCase(EmpEName)
 	    		   &&!"lisodzheng".equalsIgnoreCase(EmpEName)){
-	    	int username=cservice.find(EmpEName,info.getCaseno());  
-	    	 if(username>0){
-	    		 String invoicemoney= request.getParameter("invoicemoney"+num);
-	    		 double allInvoiceMoney=0.000;
-	    			if(invoicemoney!=null&&!"".equals(invoicemoney)){
-	    				allInvoiceMoney=Double.parseDouble(invoicemoney);
-	    				money+=allInvoiceMoney;
-	    			}
-	    		if(50+info.getIimoney()<info.getIfmoney()+allInvoiceMoney){
-	    			wrong=invoice+",该invoice总金额是:"+info.getIimoney()+"已录入金额"+info.getIfmoney();
-	    			
-	    			operation=false;
-					 
-	    		}
-	    	}else{
-	    		wrong=invoice+",你无权限操作该项目";
-	    		operation=false;
-				
-	    	 }  
+	       	if(info.getImoneytype()==tradeCurrency1) {
+				int username = cservice.find(EmpEName, info.getCaseno());
+				if (username > 0) {
+					String invoicemoney = request.getParameter("invoicemoney" + num);
+					double allInvoiceMoney = 0.000;
+					if (invoicemoney != null && !"".equals(invoicemoney)) {
+						allInvoiceMoney = Double.parseDouble(invoicemoney);
+						money += allInvoiceMoney;
+					}
+					if (50 + info.getIimoney() < info.getIfmoney() + allInvoiceMoney) {
+						wrong = invoice + ",该invoice总金额是:" + info.getIimoney() + "已录入金额" + info.getIfmoney();
+
+						operation = false;
+
+					}
+				} else {
+					wrong = invoice + ",你无权限操作该项目";
+					operation = false;
+
+				}
+			}else{
+				wrong = invoice + ",该进账预计录入货币单位与实际进账单位不一致";
+				operation = false;
+			}
+
 	       }
 	       
 	       if(allinvoice!=null&&!"".equals(allinvoice)){

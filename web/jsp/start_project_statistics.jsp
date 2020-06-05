@@ -314,25 +314,18 @@ function OpenDiv(id,projectId){
 								</div>
 							</td>
 							
-					       <td class="usermatd3">起始时间:</td>
+					       <td class="usermatd3">月份:</td>
 							<td><input type="text" readonly class="Wdate" id="time1"
 								name="time1" value="${starttime }"
-								onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" /></td>
+								onfocus="WdatePicker({dateFmt:'yyyy-MM'})" /></td>
 					
 					
-							<td class="usermatd3">截至时间:</td>
-							<td><input type="text" readonly class="Wdate" id="time2"
-								name="time2" value="${endtime }"
-								onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" /></td>
-							
-							<td>
+                            <td>
 							<select name="condition1" class="userselein">
 						<option value="-1" selected="selected">全部项目</option>
 						   <option  <c:if test="${fyfz==1 }">selected="selected"</c:if> value="1">未上传</option>
 							<option <c:if test="${fyfz==2 }">selected="selected"</c:if> value="2">已上传</option>
-							
-							
-					</select></td>
+							</select></td>
 							<td class="usermatd4"><input type="submit" value="查询"
 								class="usersearchbtn"></td>
 							<td><a href="/ERP-NBEmail/download?filename=ExportPenaltyProcessData.xlsx">下载当前记录</a></td>
@@ -369,6 +362,9 @@ function OpenDiv(id,projectId){
                     <td>检验计划更新</td>
                     <td>样品分析会</td>
                     <td>大货分析会</td>
+                    <td>质量反馈报告</td>
+					<td>项目状态</td>
+					<td>投诉引发图纸更新样品或小批量</td>
                     <td>解释</td>
                    <td>操作</td>
 				</tr>
@@ -424,7 +420,22 @@ function OpenDiv(id,projectId){
 					<c:if test="${cus.qpId2=='1' }"><span style="color:red;">大于5000美元，未开</span></c:if>
 					<c:if test="${cus.qpId2=='2' }"><span style="color:red;">有问题，未开</span></c:if>
 					<c:if test="${cus.qpId2=='3' }"><span style="color:red;">无</span></c:if>
-					</td>	
+					</td>
+                        <td>${feedbacktime}${quality_picture}</td>
+						<td><c:choose>
+							<c:when test="${cus.project_status==0 }">新项目</c:when>
+							<c:when test="${cus.project_status==1 }">进行中项目</c:when>
+							<c:when test="${cus.project_status==2 }">大货完结项目</c:when>
+							<c:when test="${cus.project_status==6 }">样品完结项目</c:when>
+
+						</c:choose></td>
+						<td>
+							<c:if test="${cus.complaint_id!=0}">
+								<c:if test="${cus.verification!=0}"><a href="https://www.kuaizhizao.cn/complaint/queryComplaint?id=${cus.complaint_id}">投诉#${cus.complaint_id},已验证</a></c:if>
+								<c:if test="${cus.verification==0}"><a href="https://www.kuaizhizao.cn/complaint/queryComplaint?id=${cus.complaint_id}">投诉#${cus.complaint_id},未验证</a></c:if>
+							</c:if>
+							<c:if test="${cus.complaint_id==0}">无</c:if>
+						</td>
 					<td><input type="text" id="remarks${i.count }" value="${cus.remarks }"></td>
 					<td><c:if test="${loginName=='ninazhao' }"><input type="button" onclick="deleteItem('${cus.caseNo }');" value="清除项目"></c:if>
 					<input type="button" onclick="updateRemarks('${cus.caseNo }','remarks${i.count }')" value="保存备注">

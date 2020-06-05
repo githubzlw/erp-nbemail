@@ -152,12 +152,11 @@ int deleteAccount(int id);
  * @Title:IAccountEntryFormService
  * @Description:修改客户性质
    @author wangyang
- * @param id
- * @param num
+
  * @return int
  * @throws
  */
-int updateAccountEntry(int id, int num);
+int updateAccountEntry(AccountEntryForm entry);
 /**
  * 
  * @Title:IAccountEntryFormService

@@ -22,6 +22,26 @@ public class Bonusdata {
 	private String zhijian1;
 	/** 跟单销售*/
 	private String zhijian2;
+
+	/** 质检*/
+	private String masterQualityInspection;
+    /** 质检*/
+	private String qualityInspector;
+	/** 质检*/
+	private String qualityInspector1;
+	/** 质检*/
+	private String qualityInspector2;
+	/** 质检*/
+	private String qualityInspector3;
+	/** 质检*/
+	private String qualityInspector4;
+	/** 质检*/
+	private String qualityInspector5;
+	/** 质检*/
+	private String qualityInspector6;
+	/** 质检*/
+	private String qualityInspector7;
+
 	/** 跟单销售*/
 	private String engineer1;
 	/** 跟单销售*/
@@ -72,6 +92,78 @@ public class Bonusdata {
 	private int qualityDeductionProject;
 	/** 利润率 */
 	private String grossProfit;
+
+	public String getQualityInspector() {
+		return qualityInspector;
+	}
+
+	public void setQualityInspector(String qualityInspector) {
+		this.qualityInspector = qualityInspector;
+	}
+
+	public String getQualityInspector1() {
+		return qualityInspector1;
+	}
+
+	public void setQualityInspector1(String qualityInspector1) {
+		this.qualityInspector1 = qualityInspector1;
+	}
+
+	public String getQualityInspector2() {
+		return qualityInspector2;
+	}
+
+	public void setQualityInspector2(String qualityInspector2) {
+		this.qualityInspector2 = qualityInspector2;
+	}
+
+	public String getQualityInspector3() {
+		return qualityInspector3;
+	}
+
+	public void setQualityInspector3(String qualityInspector3) {
+		this.qualityInspector3 = qualityInspector3;
+	}
+
+	public String getQualityInspector4() {
+		return qualityInspector4;
+	}
+
+	public void setQualityInspector4(String qualityInspector4) {
+		this.qualityInspector4 = qualityInspector4;
+	}
+
+	public String getQualityInspector5() {
+		return qualityInspector5;
+	}
+
+	public void setQualityInspector5(String qualityInspector5) {
+		this.qualityInspector5 = qualityInspector5;
+	}
+
+	public String getQualityInspector6() {
+		return qualityInspector6;
+	}
+
+	public void setQualityInspector6(String qualityInspector6) {
+		this.qualityInspector6 = qualityInspector6;
+	}
+
+	public String getQualityInspector7() {
+		return qualityInspector7;
+	}
+
+	public void setQualityInspector7(String qualityInspector7) {
+		this.qualityInspector7 = qualityInspector7;
+	}
+
+	public String getMasterQualityInspection() {
+		return masterQualityInspection;
+	}
+
+	public void setMasterQualityInspection(String masterQualityInspection) {
+		this.masterQualityInspection = masterQualityInspection;
+	}
 
 
 
@@ -290,38 +382,8 @@ public class Bonusdata {
 	public void setMaturePurchase(String maturePurchase) {
 		this.maturePurchase = maturePurchase;
 	}
-	@Override
-	public String toString() {
-		return "Bonusdata [customerId=" + customerId + ", customer_name="
-				+ customer_name + ", projectId=" + projectId
-				+ ", productdescc=" + productdescc + ", productdesce="
-				+ productdesce + ", customerManager=" + customerManager
-				+ ", merchandManager1=" + merchandManager1
-				+ ", merchandManager2=" + merchandManager2 + ", zhijian1="
-				+ zhijian1 + ", zhijian2=" + zhijian2 + ", engineer1="
-				+ engineer1 + ", engineer2=" + engineer2 + ", engineer3="
-				+ engineer3 + ", merchandising=" + merchandising
-				+ ", maturePurchase=" + maturePurchase + ", originalPurchase="
-				+ originalPurchase + ", totalSalesUs=" + totalSalesUs
-				+ ", totalSalesRmb=" + totalSalesRmb
-				+ ", totalGrossProfitMargin=" + totalGrossProfitMargin
-				+ ", totalGrossProfitRmb=" + totalGrossProfitRmb
-				+ ", totalGrossProfitUs=" + totalGrossProfitUs
-				+ ", salesThisPeriodRmb=" + salesThisPeriodRmb
-				+ ", accountPayableRmb=" + accountPayableRmb
-				+ ", salesThisPeriodUs=" + salesThisPeriodUs
-				+ ", profitThisPeriodRmb=" + profitThisPeriodRmb
-				+ ", isInvoice=" + isInvoice + ", payment_time=" + payment_time
-				+ ", latest_payment_time=" + latest_payment_time
-				+ ", degreeDifficulty=" + degreeDifficulty
-				+ ", heritageProject=" + heritageProject
-				+ ", totalAmountOfArrival=" + totalAmountOfArrival
-				+ ", totalAmountReceivable=" + totalAmountReceivable
-				+ ", logisticsCost=" + logisticsCost + ", caseStatus="
-				+ caseStatus + ", qualityDeductionProject="
-				+ qualityDeductionProject + ", grossProfit="
-				+ grossProfit + "]";
-	}
+
+
 
 	public String getGrossProfit() {
 		return grossProfit;
@@ -329,5 +391,56 @@ public class Bonusdata {
 
 	public void setGrossProfit(String grossProfit) {
 		this.grossProfit = grossProfit;
+	}
+
+	@Override
+	public String toString() {
+		return "Bonusdata{" +
+				"customerId=" + customerId +
+				", customer_name='" + customer_name + '\'' +
+				", projectId='" + projectId + '\'' +
+				", productdescc='" + productdescc + '\'' +
+				", productdesce='" + productdesce + '\'' +
+				", customerManager='" + customerManager + '\'' +
+				", merchandManager1='" + merchandManager1 + '\'' +
+				", merchandManager2='" + merchandManager2 + '\'' +
+				", zhijian1='" + zhijian1 + '\'' +
+				", zhijian2='" + zhijian2 + '\'' +
+				", masterQualityInspection='" + masterQualityInspection + '\'' +
+				", qualityInspector='" + qualityInspector + '\'' +
+				", qualityInspector1='" + qualityInspector1 + '\'' +
+				", qualityInspector2='" + qualityInspector2 + '\'' +
+				", qualityInspector3='" + qualityInspector3 + '\'' +
+				", qualityInspector4='" + qualityInspector4 + '\'' +
+				", qualityInspector5='" + qualityInspector5 + '\'' +
+				", qualityInspector6='" + qualityInspector6 + '\'' +
+				", qualityInspector7='" + qualityInspector7 + '\'' +
+				", engineer1='" + engineer1 + '\'' +
+				", engineer2='" + engineer2 + '\'' +
+				", engineer3='" + engineer3 + '\'' +
+				", merchandising='" + merchandising + '\'' +
+				", maturePurchase='" + maturePurchase + '\'' +
+				", originalPurchase='" + originalPurchase + '\'' +
+				", totalSalesUs=" + totalSalesUs +
+				", totalSalesRmb=" + totalSalesRmb +
+				", totalGrossProfitMargin='" + totalGrossProfitMargin + '\'' +
+				", totalGrossProfitRmb=" + totalGrossProfitRmb +
+				", totalGrossProfitUs=" + totalGrossProfitUs +
+				", salesThisPeriodRmb=" + salesThisPeriodRmb +
+				", accountPayableRmb=" + accountPayableRmb +
+				", salesThisPeriodUs=" + salesThisPeriodUs +
+				", profitThisPeriodRmb=" + profitThisPeriodRmb +
+				", isInvoice=" + isInvoice +
+				", payment_time='" + payment_time + '\'' +
+				", latest_payment_time='" + latest_payment_time + '\'' +
+				", degreeDifficulty=" + degreeDifficulty +
+				", heritageProject='" + heritageProject + '\'' +
+				", totalAmountOfArrival=" + totalAmountOfArrival +
+				", totalAmountReceivable=" + totalAmountReceivable +
+				", logisticsCost=" + logisticsCost +
+				", caseStatus=" + caseStatus +
+				", qualityDeductionProject=" + qualityDeductionProject +
+				", grossProfit='" + grossProfit + '\'' +
+				'}';
 	}
 }

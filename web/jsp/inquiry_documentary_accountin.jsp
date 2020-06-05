@@ -322,7 +322,8 @@ var splitAmounty =function(){
 				<c:forEach items="${userList}" var="cus" varStatus="i">
 
 					<tr>
-                        <td>${cus.userName }</td>
+						<td><a href="/ERP-NBEmail/helpServlet?action=detailPage&className=ItCaseIdServlet
+						&starttime=${starttime}&endtime=${endtime}&starttime2=${starttime2}&starttime3=${starttime3}&starttimea=${starttimea}&endtimea=${endtimea}&starttime1=${starttime1}&userName=${cus.userName }" target="_blank">${cus.userName }</a></td>
 						<td>${cus.incomingCustomers }</td>
 						<td>${cus.incomingCustomers1 }</td>
 						<td>${cus.incomingCustomers2 }</td>

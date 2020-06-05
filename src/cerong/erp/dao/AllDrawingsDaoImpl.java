@@ -144,7 +144,7 @@ public class AllDrawingsDaoImpl implements  IAllDrawingsDao{
 				Connection conn4 = null;
 				PreparedStatement stmt4 = null;
 				ResultSet rs4 = null;
-				String sql4 = "select yingwen,zhongwen,caseno,remark,uploadDate from tuzhi where  datename(year,UploadDate)=? and datename(MONTH,UploadDate)=? and  datename(DD,UploadDate)=?";
+				String sql4 = "select yingwen,zhongwen,caseno,remark,uploadDate,name from tuzhi where  datename(year,UploadDate)=? and datename(MONTH,UploadDate)=? and  datename(DD,UploadDate)=?";
 				conn4 = SQLDBhelper.getConnection();
 				try {
 					stmt4 = conn4.prepareStatement(sql4);
@@ -167,6 +167,7 @@ public class AllDrawingsDaoImpl implements  IAllDrawingsDao{
 						ad.setProjectNo(rs4.getString("caseno"));
 						ad.setRemark(rs4.getString("remark"));
 						ad.setUploadTime(rs4.getString("uploadDate"));
+						ad.setReportName(rs4.getString("name"));
 						list.add(ad);
 					}
 				} catch (Exception e) {

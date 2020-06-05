@@ -48,6 +48,9 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 			    con.setnBEmailId(rs.getInt("nBEmailId"));
 			    con.setSalesConfirmationAmount(rs.getInt("salesSubmission"));
 			    String payersName= rs.getString("payersName");
+			    con.setReason(rs.getString("reason"));
+			    con.setEntryPerson(rs.getString("entry_person"));
+			    con.setEntryTime(rs.getDate("entry_time"));
 			    int num=0;
 			    Connection conn2 = null;
 				PreparedStatement stmt2 = null;
@@ -813,7 +816,7 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 	}
 
 	@Override
-	public int updateAccountEntry(int id, int num) {
+	public int updateAccountEntry(AccountEntryForm entry) {
 		Date dt = new Date();  
 		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 		  String  time=sdf.format(dt);
@@ -821,12 +824,31 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 		PreparedStatement stmt = null;
 		int result = 0;
 		ResultSet rs = null;
-		String sql = "update AccountEntryForm set newCustomer=?  where id = ? ";
+		String sql = "update AccountEntryForm set" ;
+				if(entry.getNewCustomer()!=-1) {
+					sql += " newCustomer=?  ";
+				}
+				if(entry.getReason()!=null&&!"".equals(entry.getReason())){
+					sql+=" reason=?,entry_person=?,entry_time=getdate() ";
+				}
+				sql+="where id = ? ";
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, num);
-			stmt.setInt(2, id);
+			int i=0;
+			if(entry.getNewCustomer()!=-1) {
+				i++;
+				stmt.setInt(i, entry.getNewCustomer());
+			}
+			if(entry.getReason()!=null&&!"".equals(entry.getReason())){
+				i++;
+				stmt.setString(i,entry.getReason() );
+				i++;
+				stmt.setString(i,entry.getEntryPerson() );
+
+			}
+
+			stmt.setInt(i+1,entry.getId());
 			result = stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

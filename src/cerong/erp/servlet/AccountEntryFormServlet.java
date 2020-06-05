@@ -426,10 +426,17 @@ public class AccountEntryFormServlet extends HttpServlet{
 		String kingdee1=request.getParameter("kingdee");
 		String kingName=request.getParameter("kingName");
 		String CasNo=request.getParameter("CasNo");
+		String country1=request.getParameter("country1");
+		String abbreviation=request.getParameter("abbreviation");
 		int kingdee=0;
 		if(kingdee1!=null&&!"".equals(kingdee1)){
 			kingdee=Integer.parseInt(kingdee1);
 		}
+		int country=0;
+		if(country1!=null&&!"".equals(country1)){
+			country=Integer.parseInt(country1);
+		}
+
 		ItemCase it=iservice.getall(CasNo);
 		ArrivalAccountCorrespondenceTable account=new ArrivalAccountCorrespondenceTable();
 		account.setCustomerId(it.getCid());
@@ -437,16 +444,18 @@ public class AccountEntryFormServlet extends HttpServlet{
 		account.setProjectId(CasNo);
 		account.setKingdee(kingdee);
 		account.setKingName(kingName);
+		account.setCountry(country);
+		account.setAbbreviation(abbreviation);
 		int total=service.addAccount(account);
 		if(total>0){
 			out.write("<script>");
 			out.write("alert('成功录入客户关系');");
-			out.write("window.location.href='/ERP-NBEmail/helpServlet?action=accounEntry&className=AccountEntryFormServlet'");
+			out.write("window.location.href='/ERP-NBEmail/helpServlet?action=enterTheCustomerRelevanceTableIntoTheAccount&className=InvoiceServlet'");
 			out.write("</script>");
 		}else{
 			out.write("<script>");
 			out.write("alert('录入客户关系失败');");
-			out.write("window.location.href='/ERP-NBEmail/helpServlet?action=accounEntry&className=AccountEntryFormServlet'");
+			out.write("window.location.href='/ERP-NBEmail/helpServlet?action=enterTheCustomerRelevanceTableIntoTheAccount&className=InvoiceServlet'");
 			out.write("</script>");
 		}
 		
@@ -510,6 +519,7 @@ public class AccountEntryFormServlet extends HttpServlet{
 	 */
 	public void updateAccountEntry(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		PrintWriter out = response.getWriter();
 		String EmpEName=null;
 		String EmpPWD=null;
@@ -533,15 +543,27 @@ public class AccountEntryFormServlet extends HttpServlet{
 		request.setAttribute("user", user1);
 		String id1=request.getParameter("id");
 		String num1=request.getParameter("num");
+		String allreason=request.getParameter("allreason");
+
+		AccountEntryForm entry=new AccountEntryForm();
 		int id=0;
 		if(id1!=null&&!"".equals(id1)){
 			id=Integer.parseInt(id1);
+			entry.setId(id);
 		}
 		int num=0;
 		if(num1!=null&&!"".equals(num1)){
 			num=Integer.parseInt(num1);
+			entry.setNewCustomer(num);
+		}else{
+			entry.setNewCustomer(-1);
 		}
-		int total=service.updateAccountEntry(id,num);
+		if(allreason!=null&&!"".equalsIgnoreCase(allreason)){
+			allreason=new String(allreason.getBytes("iso-8859-1"),"utf-8");
+			entry.setReason(allreason);
+		}
+		entry.setEntryPerson(EmpEName);
+		int total=service.updateAccountEntry(entry);
 		if(total>0){
 			out.write("YES");
 		}else{

@@ -520,13 +520,27 @@ public class InvoiceServlet extends HttpServlet{
 							user1.setPwd(EmpPWD);
 							int total1=eservice.getUser(EmpPWD, EmpEName);
 							if(user1!=null&& total1>0){
+								if("lisalimandymanroseli".toLowerCase().contains(EmpEName.toLowerCase())){
+									request.setAttribute("EmpEName","mandyman" );
+								}
+
 								String name=request.getParameter("name");
-								
+								String customerId=request.getParameter("customerId");
+								String projectId=request.getParameter("projectId");
 								ArrivalAccountCorrespondenceTable it=new ArrivalAccountCorrespondenceTable();
 								if(name!=null&&!"".equalsIgnoreCase(name)){
 									name = new String(name.getBytes("iso-8859-1"),"UTF-8");
 									it.setName(name);
 									request.setAttribute("name",name );
+								}
+
+								if(customerId!=null&&!"".equalsIgnoreCase(customerId)){
+									it.setCustomerId(Integer.parseInt(customerId));
+									request.setAttribute("customerId",customerId );
+								}
+								if(projectId!=null&&!"".equalsIgnoreCase(projectId)){
+									it.setProjectId(projectId);
+									request.setAttribute("projectId",projectId );
 								}
 								List<ArrivalAccountCorrespondenceTable> list=service.enterTheCustomerRelevanceTableIntoTheAccount(it);//查询到账录入客户关联表
 								request.setAttribute("cusList",list );

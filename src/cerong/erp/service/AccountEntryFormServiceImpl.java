@@ -81,9 +81,9 @@ IAccountEntryFormDao dao=new AccountEntryFormDaoImpl();
 		return dao.deleteAccount(id);
 	}
 	@Override
-	public int updateAccountEntry(int id, int num) {
+	public int updateAccountEntry(AccountEntryForm entry) {
 		
-		return dao.updateAccountEntry(id,num);
+		return dao.updateAccountEntry(entry);
 	}
 	@Override
 	public List<AccountEntryForm> getAll(String time1) {

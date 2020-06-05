@@ -19,8 +19,27 @@ public class ArrivalAccountCorrespondenceTable {
 	private int kingdee;
 	/** 工厂名 */
 	private String kingName;
-	
-	
+	/** 国家 */
+	private int country;
+	/** 简称 */
+	private String abbreviation;
+
+	public int getCountry() {
+		return country;
+	}
+
+	public void setCountry(int country) {
+		this.country = country;
+	}
+
+	public String getAbbreviation() {
+		return abbreviation;
+	}
+
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
+	}
+
 	public String getKingName() {
 		return kingName;
 	}
@@ -75,15 +94,23 @@ public class ArrivalAccountCorrespondenceTable {
 	public void setMerchandising(String merchandising) {
 		Merchandising = merchandising;
 	}
+
 	@Override
 	public String toString() {
-		return "ArrivalAccountCorrespondenceTable [id=" + id + ", customerId="
-				+ customerId + ", name=" + name + ", projectId=" + projectId
-				+ ", CustomerManager=" + CustomerManager
-				+ ", MerchandManager1=" + MerchandManager1 + ", Merchandising="
-				+ Merchandising + ", kingdee=" + kingdee + ", kingName="
-				+ kingName + "]";
+		return "ArrivalAccountCorrespondenceTable{" +
+				"id=" + id +
+				", customerId=" + customerId +
+				", name='" + name + '\'' +
+				", projectId='" + projectId + '\'' +
+				", CustomerManager='" + CustomerManager + '\'' +
+				", MerchandManager1='" + MerchandManager1 + '\'' +
+				", Merchandising='" + Merchandising + '\'' +
+				", kingdee=" + kingdee +
+				", kingName='" + kingName + '\'' +
+				", country=" + country +
+				", abbreviation='" + abbreviation + '\'' +
+				'}';
 	}
-	
-	
+
+
 }

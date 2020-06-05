@@ -1023,7 +1023,7 @@ public class ExternalinterfaceServlet extends HttpServlet{
 		map.put("projectDrawing", json);
 		response.getWriter().print(map);
 		response.getWriter().close();
-		ItCaseIdServlet.sendPost("http://192.168.1.186:8080/test/projectDrawing/synchProjectDrawing",map);
+		ItCaseIdServlet.sendPost("http://192.168.1.6:8080/test/projectDrawing/synchProjectDrawing",map);
 	}
 	/**
 	 * 方法描述:同步项目组成员及重要时间，根据极简任务给项目

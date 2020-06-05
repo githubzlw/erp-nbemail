@@ -59,6 +59,7 @@ public class MoneyCheckUp {
 
 	/** invoice总额*/
 	private String iimoney;
+
 	/** 已到款总额*/
 	private String ifmoney;
 	/** 1,进入快速通道*/
@@ -67,8 +68,16 @@ public class MoneyCheckUp {
 	private String fastTrackReasons;
 	/** Eddie是否审批*/
 	private int expressLaneApproval;
+	/** 利润率*/
+	private int moneytype1;
 
+	public int getMoneytype1() {
+		return moneytype1;
+	}
 
+	public void setMoneytype1(int moneytype1) {
+		this.moneytype1 = moneytype1;
+	}
 
 	public String getIimoney() {
 		return iimoney;
@@ -357,10 +366,10 @@ public class MoneyCheckUp {
 				", ifmoney='" + ifmoney + '\'' +
 				", expressLane=" + expressLane +
 				", fastTrackReasons='" + fastTrackReasons + '\'' +
-				", expressLaneApproval='" + expressLaneApproval + '\'' +
+				", expressLaneApproval=" + expressLaneApproval +
+				", moneytype1=" + moneytype1 +
 				'}';
 	}
-
 
 	public int getExpressLane() {
 		return expressLane;

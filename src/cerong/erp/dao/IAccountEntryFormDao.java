@@ -158,7 +158,7 @@ public interface IAccountEntryFormDao {
 	 * @return int
 	 * @throws
 	 */
-	int updateAccountEntry(int id, int num);
+	int updateAccountEntry(AccountEntryForm entry);
 	/**
 	 * 
 	 * @Title:IAccountEntryFormService

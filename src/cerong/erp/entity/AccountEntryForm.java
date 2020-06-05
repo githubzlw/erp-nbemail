@@ -1,5 +1,6 @@
 package cerong.erp.entity;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -59,7 +60,17 @@ public class AccountEntryForm {
 	private String createTime;
 	/**0,老客户，1新客户*/
 	private int newCustomer;
-	
+	/**理由*/
+	private String reason;
+	/**理由*/
+	private String entryPerson;
+	/**理由*/
+	private Date entryTime;
+
+	public AccountEntryForm() {
+	}
+
+
 	public int getNewCustomer() {
 		return newCustomer;
 	}
@@ -218,27 +229,63 @@ public class AccountEntryForm {
 	public void setAmountClaimForm(List<AmountClaimForm> amountClaimForm) {
 		this.amountClaimForm = amountClaimForm;
 	}
+
 	@Override
 	public String toString() {
-		return "AccountEntryForm [id=" + id + ", transactionDate="
-				+ transactionDate + ", transactionReferenceNumber="
-				+ transactionReferenceNumber + ", tradeAmount=" + tradeAmount
-				+ ", beneficiaryAccountBank=" + beneficiaryAccountBank
-				+ ", payersName=" + payersName + ", nBEmailId=" + nBEmailId
-				+ ", country=" + country + ", exportYear=" + exportYear
-				+ ", exportMonth=" + exportMonth + ", invoice=" + invoice
-				+ ", amountOfDistribution=" + amountOfDistribution
-				+ ", claimant=" + claimant + ", financialConfirmation="
-				+ financialConfirmation + ", financialConfirmationMan="
-				+ financialConfirmationMan + ", tradeCurrency=" + tradeCurrency
-				+ ", remark=" + remark + ", claimTime=" + claimTime
-				+ ", conjecture=" + conjecture + ", payeeAccount="
-				+ payeeAccount + ", dataProcessing=" + dataProcessing
-				+ ", salesConfirmationAmount=" + salesConfirmationAmount
-				+ ", accessories=" + accessories + ", amountClaimForm="
-				+ amountClaimForm + ", createTime=" + createTime
-				+ ", newCustomer=" + newCustomer + "]";
+		return "AccountEntryForm{" +
+				"id=" + id +
+				", transactionDate='" + transactionDate + '\'' +
+				", transactionReferenceNumber='" + transactionReferenceNumber + '\'' +
+				", tradeAmount=" + tradeAmount +
+				", beneficiaryAccountBank='" + beneficiaryAccountBank + '\'' +
+				", payersName='" + payersName + '\'' +
+				", nBEmailId=" + nBEmailId +
+				", country=" + country +
+				", exportYear='" + exportYear + '\'' +
+				", exportMonth='" + exportMonth + '\'' +
+				", invoice='" + invoice + '\'' +
+				", amountOfDistribution=" + amountOfDistribution +
+				", claimant='" + claimant + '\'' +
+				", financialConfirmation=" + financialConfirmation +
+				", financialConfirmationMan=" + financialConfirmationMan +
+				", tradeCurrency='" + tradeCurrency + '\'' +
+				", remark='" + remark + '\'' +
+				", claimTime='" + claimTime + '\'' +
+				", conjecture='" + conjecture + '\'' +
+				", payeeAccount='" + payeeAccount + '\'' +
+				", dataProcessing=" + dataProcessing +
+				", salesConfirmationAmount=" + salesConfirmationAmount +
+				", accessories=" + accessories +
+				", amountClaimForm=" + amountClaimForm +
+				", createTime='" + createTime + '\'' +
+				", newCustomer=" + newCustomer +
+				", reason='" + reason + '\'' +
+				", entryPerson='" + entryPerson + '\'' +
+				", entryTime=" + entryTime +
+				'}';
 	}
-	
-	
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public String getEntryPerson() {
+		return entryPerson;
+	}
+
+	public void setEntryPerson(String entryPerson) {
+		this.entryPerson = entryPerson;
+	}
+
+	public Date getEntryTime() {
+		return entryTime;
+	}
+
+	public void setEntryTime(Date entryTime) {
+		this.entryTime = entryTime;
+	}
 }

@@ -121,6 +121,22 @@ public class ItemCase {
 
 	/*项目总进账*/
 	private int caseStatus;
+
+	/*项目总进账*/
+	private String feedbacktime;
+
+	/*项目总进账*/
+	private String quality_picture;
+
+	/*项目状态*/
+	private int project_status;
+
+	/*项目状态*/
+	private int complaint_id;
+
+	/*项目状态*/
+	private int verification;
+
 	public int getCaseStatus() {
 		return caseStatus;
 	}
@@ -518,6 +534,11 @@ public class ItemCase {
 				", salesContract=" + salesContract +
 				", allmoney=" + allmoney +
 				", caseStatus=" + caseStatus +
+				", feedbacktime='" + feedbacktime + '\'' +
+				", quality_picture='" + quality_picture + '\'' +
+				", project_status=" + project_status +
+				", complaint_id=" + complaint_id +
+				", verification=" + verification +
 				'}';
 	}
 
@@ -535,5 +556,45 @@ public class ItemCase {
 
 	public void setSalesContract(int salesContract) {
 		this.salesContract = salesContract;
+	}
+
+	public String getQuality_picture() {
+		return quality_picture;
+	}
+
+	public void setQuality_picture(String quality_picture) {
+		this.quality_picture = quality_picture;
+	}
+
+	public String getFeedbacktime() {
+		return feedbacktime;
+	}
+
+	public void setFeedbacktime(String feedbacktime) {
+		this.feedbacktime = feedbacktime;
+	}
+
+	public int getProject_status() {
+		return project_status;
+	}
+
+	public void setProject_status(int project_status) {
+		this.project_status = project_status;
+	}
+
+	public int getVerification() {
+		return verification;
+	}
+
+	public void setVerification(int verification) {
+		this.verification = verification;
+	}
+
+	public int getComplaint_id() {
+		return complaint_id;
+	}
+
+	public void setComplaint_id(int complaint_id) {
+		this.complaint_id = complaint_id;
 	}
 }
