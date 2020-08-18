@@ -33,6 +33,7 @@ public class Admin {
 	public void setAuth(int auth2) {
 		this.auth = auth2;
 	}
+
 	@Override
 	public String toString() {
 		return "Admin [id=" + id + ", name=" + name + ", pass=" + pass
