@@ -440,6 +440,13 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 		
 		return dao.getFinalInvoice(itemcase);
 	}
+	@Override
+	public List<FactoryReconciliation> factoryNameByInvoiceName(String invoiceName) {
+
+		return dao.factoryNameByInvoiceName(invoiceName);
+	}
+
+
 
 	@Override
 	public List<FactoryReconciliation> getPaymentExceededApril(
@@ -493,6 +500,11 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 	@Override
 	public int getSalesContract(String caseNo) {
 		return dao.getSalesContract(caseNo);
+	}
+
+	@Override
+	public int getFactoryName(String caseNo) {
+		return dao.getFactoryName(caseNo);
 	}
 
 	@Override

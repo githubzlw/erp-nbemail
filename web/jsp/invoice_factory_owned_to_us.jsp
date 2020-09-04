@@ -11,9 +11,6 @@
 <title>列出欠我司发票的所有工厂以及欠的未收发票金额</title>
 </head>
 <style>
-.usechange {
-	width: 80%;
-}
 .input_style2 {
 	    margin-top: 10px;
     margin-left: 200px;
@@ -21,7 +18,6 @@
 }
 .part_01{overflow: hidden;}
 .emanagergettable {
-	width: 1400px;
 	border: 1px #7D7D7D solid;
 	border-collapse: collapse;
 }
@@ -151,6 +147,7 @@ function uploadFile() {
 					<td width="300px;">最近3年已付款超过4个月尾款已付未收回发票金额</td>
 					<td width="300px;">最近1个月收回发票</td>
 					<td width="200px;">2007年付款金额</td>
+					<td width="400px;">开票种类</td>
 					</tr>
 				<c:forEach items="${cusList}" var="cus" varStatus="i">
 				 <tr>
@@ -163,6 +160,8 @@ function uploadFile() {
 						<td><a href="/ERP-NBEmail/helpServlet?action=allDetailedAccounts&className=InvoiceServlet&kingdee=${cus.kingdee }&num=2&saleName=${userName}" target="_blank"><fmt:formatNumber value="${cus.amountOfUnpaidInvoices}" type="number" maxFractionDigits="2"/></a></td>
 						<td><fmt:formatNumber value="${cus.invoiceAmount}" type="number" maxFractionDigits="2"/></td>
 						<td><fmt:formatNumber value="${cus.payment2007}" type="number" maxFractionDigits="2"/></td>
+					    <td id="type_td"><span class="add_type" title="${cus.invoicName}">${cus.invoicName}</span></td>
+
 						
 						
 					</tr>
@@ -188,6 +187,18 @@ function uploadFile() {
 		$('#div3').hide();
 		$('#div4').show();
 	});
+	/* 最多2行显示，超过部分.... */
+	$('table tr').each(function(){
+        var type_length = $(this).find('.add_type').text().length;
+        var type_text = $(this).find('.add_type').text();
+        if(type_length > 50){
+            var type1 = type_text.substring(0,45);
+            $(this).find('.add_type').text(type1 + '...');
+        }else{
+            $(this).find('.add_type').removeAttr('title');
+        }
+	})
+
 </script>
 
 

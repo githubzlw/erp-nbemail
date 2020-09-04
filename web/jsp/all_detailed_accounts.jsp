@@ -232,6 +232,8 @@ var updateMonth=function(){
 					<td width="80px">欠发票</td>
 					<td width="80px">未付款工厂金额</td>
 					<td width="80px">时间</td>
+					<td width="80px">采购</td>
+					<td width="80px">跟单</td>
 					</tr>
 				<c:forEach items="${cusList}" var="cus" varStatus="i">
 				 <tr>
@@ -255,7 +257,8 @@ var updateMonth=function(){
 						
 						<td>${cus.contractAmount-cus.amountPaid }</td>
 						<td>${cus.createTime != null ?fn:substring(cus.createTime,0,fn:indexOf(cus.createTime," ")):""}</td>
-						
+					 	<td>${cus.merchandManager2 }</td>
+					 	<td>${cus.merchandManager1 }</td>
 					</tr>
 				</c:forEach>
 			</table>

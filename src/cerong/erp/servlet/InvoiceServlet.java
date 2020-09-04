@@ -39,6 +39,7 @@ import cerong.erp.util.AccountEntryUpLoad;
 import cerong.erp.util.Client;
 import cerong.erp.util.PathUtil;
 import cerong.erp.util.ReadExcelUtils;
+import org.apache.commons.lang.StringUtils;
 
 public class InvoiceServlet extends HttpServlet{
 	
@@ -383,7 +384,32 @@ public class InvoiceServlet extends HttpServlet{
 						}
 						}
 					}
-				/**
+
+
+	/**
+	 *
+	 * @Title:InvoiceServlet 20200826
+	 * @Description:可以开该品名的工厂列表
+	  * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws ParseException void
+	 * @throws
+	 */
+	public void factoryNameByInvoiceName (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+		String invoiceName = request.getParameter("invoiceName");
+		// 根据品名查询工厂名
+		List<FactoryReconciliation> list=service.factoryNameByInvoiceName(invoiceName);
+		request.setAttribute("factoryList",list );
+
+		request.getRequestDispatcher("jsp/factory_invoice.jsp").forward(request, response);
+
+	}
+
+
+	/**
 				 * 
 				 * @Title:InvoiceServlet
 				 * @Description:根据客户金蝶号查询明细账
@@ -399,6 +425,9 @@ public class InvoiceServlet extends HttpServlet{
 						throws ServletException, IOException, ParseException {
 					PrintWriter out = response.getWriter();
 					String kingdee = request.getParameter("kingdee");
+					// add 20200806 start
+					String factoryName = request.getParameter("factoryName");
+					// add 20200806 end
 					String num = request.getParameter("num");
 					String saleName = request.getParameter("saleName");
 					String month = request.getParameter("month");
@@ -424,8 +453,12 @@ public class InvoiceServlet extends HttpServlet{
 					user1.setPwd(EmpPWD);
 					int total1=eservice.getUser(EmpPWD, EmpEName);
 					ItemCase it=service.getStartTime();
-					
-					
+					// 取得金蝶号  add 20200806 start
+					if(StringUtils.isNotEmpty(factoryName)){
+						kingdee = String.valueOf(service.getFactoryName(factoryName));
+					}
+					// 取得金蝶号  add 20200806 end
+
 					if(user1!=null&& total1>0){
 						ItemCase2 itemcase=new ItemCase2();
 						String condition2 = request.getParameter("condition2");

@@ -818,6 +818,11 @@ public class CheckLoginFilter implements Filter {
 	    	 chain.doFilter(req, res);
 	    	 return;
 	     }
+		if(action != null && action.equals("factoryNameByInvoiceName")) {//可以开该品名的工厂列表
+			chain.doFilter(req, res);
+			return;
+		}
+
 	     if(action != null && action.equals("search")) {//查询报关名
 	    	 chain.doFilter(req, res);
 	    	 return;

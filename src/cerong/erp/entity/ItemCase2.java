@@ -74,7 +74,18 @@ public class ItemCase2 {
     private String startTime;
     /** 发票金额*/
     private double invoiceAmount;
-    
+
+	/** 开票名称*/
+	private String invoicName;
+
+	public String getInvoicName() {
+		return invoicName;
+	}
+
+	public void setInvoicName(String invoicName) {
+		this.invoicName = invoicName;
+	}
+
 	public double getInvoiceAmount() {
 		return invoiceAmount;
 	}

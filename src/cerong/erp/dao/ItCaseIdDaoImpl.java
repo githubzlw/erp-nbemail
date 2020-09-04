@@ -642,6 +642,9 @@ public List<ItemCase2> invoiceDocumentaryPurchaseOwnedToUs(ItemCase2 it);
  * @throws
  */
 public List<FactoryReconciliation> getFinalInvoice(ItemCase2 itemcase);
+
+public List<FactoryReconciliation> factoryNameByInvoiceName(String invoiceName);
+
 /**
  * 
  * @Title:ItCaseIdServiceImpl
@@ -727,6 +730,11 @@ public ItemCase getStartTime();
 	 * @return
 	 */
 	int getSalesContract(String caseNo);
+
+
+	int getFactoryName(String factoryName);
+
+
 	/**
 	 * 查询数据并修改数据
 	 * @param list

@@ -31,9 +31,31 @@ public class FactoryReconciliation {
 	private String finalTimeReceiptAndReceipt;
 	/** 收票时间后出运单金额*/
 	private Double shipmentBillAmount;
+
+	public String getMerchandManager2() {
+		return merchandManager2;
+	}
+
+	public void setMerchandManager2(String merchandManager2) {
+		this.merchandManager2 = merchandManager2;
+	}
+
 	/** 历史未收票金额*/
+
 	private Double amountCustomsDeclaration;
-	
+	/** 采购*/
+	private String merchandManager2;
+	/** 跟单*/
+	private String merchandManager1;
+
+	public String getMerchandManager1() {
+		return merchandManager1;
+	}
+
+	public void setMerchandManager1(String merchandManager1) {
+		this.merchandManager1 = merchandManager1;
+	}
+
 	public Double getAmountCustomsDeclaration() {
 		return amountCustomsDeclaration;
 	}

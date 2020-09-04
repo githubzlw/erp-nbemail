@@ -645,6 +645,11 @@ public List<ItemCase2> invoiceDocumentaryPurchaseOwnedToUs(ItemCase2 it);
  * @throws
  */
 public List<FactoryReconciliation> getFinalInvoice(ItemCase2 itemcase);
+
+public List<FactoryReconciliation> factoryNameByInvoiceName(String invoiceName);
+
+
+
 /**
  * 
  * @Title:ItCaseIdServiceImpl
@@ -731,6 +736,14 @@ public ItemCase getStartTime();
 	 * @return
 	 */
 	int getSalesContract(String caseNo);
+
+	/**
+	 * 根据工厂名查询是金蝶号
+	 * @param factoryName
+	 * @return
+	 */
+	int getFactoryName(String factoryName);
+
 
 	/**
 	 * 查询数据并修改数据

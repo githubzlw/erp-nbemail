@@ -5162,10 +5162,10 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		ResultSet rs = null;
 		String sql = " select * from ("
 				+ "select FactoryName,kingdee,Convert(decimal(18,2),sum(money1))money1,sum(money2)money2,sum(money3)money3,sum(money4)money4"
-				+ ",isnull(min(Factory_yue_Money),0)Factory_yue_Money,sum(Get_Moeny1)Get_Moeny1 from (  "
-		        +"  select a.kingdee,a.FactoryName,(a.friMoney-a.Get_Moeny-rmb-amount_customs_declaration)money3,b.money2,c.money1,d.money4,e.Get_Moeny1 from ( "
+				+ ",isnull(min(Factory_yue_Money),0)Factory_yue_Money,sum(Get_Moeny1)Get_Moeny1,isnull(Factory_invice.Invoice_name,'') invoice_name  from (  "
+		        +"  select a.kingdee,a.FactoryName,(a.friMoney-a.Get_Moeny-rmb-amount_customs_declaration)money3,b.money2,c.money1,d.money4,e.Get_Moeny1,Factory_id from ( "
 		        +" select a.*,isnull(b.friMoney,0)friMoney,isnull(c.rmb,0)rmb,isnull(d.amount_customs_declaration,0)"
-		        + " amount_customs_declaration from ( select sum(Get_Moeny)Get_Moeny,kingdee,min(FactoryName)FactoryName from ( "
+		        + " amount_customs_declaration from ( select sum(Get_Moeny)Get_Moeny,kingdee,min(FactoryName)FactoryName,min(Factory_id) Factory_id from ( "
 		   +" select a.*,info.FactoryName,info.kingdee  from Tab_Factory_Money a left join factoryinfo info "
 		   + " on info.id=a.Factory_id  left join itemcase it on it.caseno=a.case_no   where  Case_No  in ( select a.CaseNo from( "
 		  +" select sum(friMoney)friMoney1,caseno from factoryfund a WHERE friMoney is not null group by caseno "
@@ -5274,7 +5274,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
          + ",tab.createtime,tab.Date_time from Tab_Factory_Money tab left join factoryinfo info on tab.Factory_id=info.id"
          + " where tab.Get_Moeny!=0 and datediff(day,createtime,getdate())<30)a group by kingdee)e"
          + " on a.kingdee=e.kingdee"
-         + ")a left join Tab_Factory_yue yue on a.kingdee=yue.Factory_yue_kingdeId group by FactoryName,kingdee"
+         + ")a left join Tab_Factory_yue yue on a.kingdee=yue.Factory_yue_kingdeId " +
+			" left join  (SELECT Factory_id, Invoice_name = stuff((SELECT ',' + Invoice_name  " +
+			" FROM (SELECT Factory_id,Invoice_name FROM Tab_Factory_Money  where Invoice_name is not null group by Factory_id ,Invoice_name) t  " +
+			" WHERE t.Factory_id = p.Factory_id  FOR xml path('')) , 1 , 1 , '') " +
+			" FROM (SELECT Factory_id,Invoice_name FROM Tab_Factory_Money  where Invoice_name is not null group by Factory_id ,Invoice_name) p " +
+			" GROUP BY Factory_id) Factory_invice on a.Factory_id=Factory_invice.Factory_id " +
+			" group by FactoryName,kingdee,Factory_invice.Invoice_name"
          + ")a where a.money1!=-a.Factory_yue_Money and kingdee!=0  "
          ;
 		 if(it.getFactoryName()!=null&&!"".equalsIgnoreCase(it.getFactoryName())){
@@ -5318,6 +5324,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setPayment2007(rs.getDouble("Factory_yue_Money"));
 				info.setAllUnacceptableInvoiceAmounts1(rs.getDouble("money4"));
 				info.setInvoiceAmount(rs.getDouble("Get_Moeny1"));
+				info.setInvoicName(rs.getString("invoice_name"));
 				list.add(info);
 				}
 				}
@@ -5352,7 +5359,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sql = "select * from (select b.kingdee,b.FactoryName,b.Factory_id,b.CaseNo,b.bargain_no"
-				+ ",a.createtime,isnull(a.Get_Moeny,0)Get_Moeny,isnull(a.Pay_Moeny,0)Pay_Moeny,isnull(z.rmb,0)rmb,b.friMoney,c.friMoney1,"
+				+ ",a.createtime,isnull(a.Get_Moeny,0)Get_Moeny,isnull(a.Pay_Moeny,0)Pay_Moeny,isnull(z.rmb,0)rmb,isnull(b.friMoney,0)friMoney,isnull(c.friMoney1,0)friMoney1,"
 				+ "isnull(d.amount_customs_declaration,0)amount_customs_declaration,it.CustomerManager ,"
 				+ " it.MerchandManager1,it.MerchandManager2 , it.Merchandising ,it.MaturePurchase , "
 				+ "it.OriginalPurchase from (select sum(fu.friMoney)friMoney,CaseNo,max(info.FactoryName)FactoryName"
@@ -5494,6 +5501,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setFinalTimeReceiptAndReceipt(time);
 				con.setShipmentBillAmount(rs.getDouble("rmb"));
 				con.setAmountCustomsDeclaration(rs.getDouble("amount_customs_declaration"));
+				con.setMerchandManager2(rs.getString("MerchandManager2"));
+				con.setMerchandManager1(rs.getString("MerchandManager1"));
 				list.add(con);
 			}
 		} catch (Exception e) {
@@ -5790,7 +5799,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sql = "select * from (select b.caseno, b.Factory_id, b.kingdee,b.FactoryName,b.bargain_no, isnull(a.Pay_Moeny,0)Pay_Moeny"
-				+ ", isnull(a.Get_Moeny,0)Get_Moeny,a.createtime,isnull(z.rmb,0)rmb,b.friMoney,c.friMoney1,"
+				+ ", isnull(a.Get_Moeny,0)Get_Moeny,a.createtime,isnull(z.rmb,0)rmb,isnull(b.friMoney,0)friMoney,isnull(c.friMoney1,0)friMoney1,"
 				+ "isnull(d.amount_customs_declaration,0)amount_customs_declaration,it.CustomerManager ,"
 				+ " it.MerchandManager1,it.MerchandManager2 , it.Merchandising ,it.MaturePurchase , "
 				+ "it.OriginalPurchase from "
@@ -5948,6 +5957,52 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setFinalTimeReceiptAndReceipt(time);
 				con.setShipmentBillAmount(rs.getDouble("rmb"));
 				con.setAmountCustomsDeclaration(rs.getDouble("amount_customs_declaration"));
+				con.setMerchandManager2(rs.getString("MerchandManager2"));
+				con.setMerchandManager1(rs.getString("MerchandManager1"));
+				list.add(con);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+
+	@Override
+	public List<FactoryReconciliation> factoryNameByInvoiceName(String  invoiceName) {
+		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = " select b.FactoryName from VIEW_Factory_Money a ,factoryinfo b " +
+				" where a.Factory_id=b.id " +
+				" and a.Invoice_name=? " +
+				" group by b.FactoryName ";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, invoiceName);
+
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				FactoryReconciliation con=new FactoryReconciliation();
+				con.setFactoryName(rs.getString("FactoryName"));
 				list.add(con);
 			}
 		} catch (Exception e) {
@@ -5980,7 +6035,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = " select * from (select b.FactoryName,b.kingdee,a.*,isnull(z.rmb,0)rmb,b.friMoney,c.friMoney1,"
+		String sql = " select * from (select b.FactoryName,b.kingdee,a.*,isnull(z.rmb,0)rmb,isnull(b.friMoney,0)friMoney,isnull(c.friMoney1,0)friMoney1,"
 				+ "isnull(d.amount_customs_declaration,0)amount_customs_declaration,it.CustomerManager ,"
 				+ " it.MerchandManager1,it.MerchandManager2 , it.Merchandising ,it.MaturePurchase , "
 				+ "it.OriginalPurchase from "
@@ -6148,6 +6203,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setFinalTimeReceiptAndReceipt(time);
 				con.setShipmentBillAmount(rs.getDouble("rmb"));
 				con.setAmountCustomsDeclaration(rs.getDouble("amount_customs_declaration"));
+				con.setMerchandManager2(rs.getString("MerchandManager2"));
+				con.setMerchandManager1(rs.getString("MerchandManager1"));
 				list.add(con);
 			}
 		} catch (Exception e) {
@@ -6700,6 +6757,45 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		}
 		return result;
 	}
+
+	@Override
+	public int getFactoryName(String factoryName) {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select kingdee from factoryinfo where FactoryName=?    ";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,factoryName );
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				result= rs.getInt("kingdee");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return result;
+	}
+
+
 
 	@Override
 	public void updateDividendBalance(List<Bonusdata> list) {
