@@ -400,6 +400,11 @@ public class InvoiceServlet extends HttpServlet{
 	public void factoryNameByInvoiceName (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, ParseException {
 		String invoiceName = request.getParameter("invoiceName");
+//		if(StringUtils.isNotEmpty(invoiceName)){
+//			invoiceName = java.net.URLEncoder.encode(invoiceName,"utf-8");
+////			invoiceName = new String(invoiceName.getBytes("ISO-8859-1"),"UTF-8");
+//		}
+
 		// 根据品名查询工厂名
 		List<FactoryReconciliation> list=service.factoryNameByInvoiceName(invoiceName);
 		request.setAttribute("factoryList",list );
@@ -427,6 +432,11 @@ public class InvoiceServlet extends HttpServlet{
 					String kingdee = request.getParameter("kingdee");
 					// add 20200806 start
 					String factoryName = request.getParameter("factoryName");
+//					if(StringUtils.isNotEmpty(factoryName)){
+//						factoryName = java.net.URLEncoder.encode(factoryName,"utf-8");
+////						factoryName=new String(factoryName.getBytes("ISO-8859-1"),"UTF-8");
+//					}
+
 					// add 20200806 end
 					String num = request.getParameter("num");
 					String saleName = request.getParameter("saleName");

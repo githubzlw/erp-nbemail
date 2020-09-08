@@ -30,6 +30,9 @@ public class CheckLoginFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
+
+		req.setCharacterEncoding("utf-8");
+		res.setCharacterEncoding("utf-8");
 		// 获得用户请求的URI
 		String path = req.getRequestURI();
 		String action = req.getParameter("action");
