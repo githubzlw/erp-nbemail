@@ -59,7 +59,7 @@ function updateAll(projectnote1,projectId,id,sign) {
 				"projectId":projectId,
 				"fastTrackReasons":projectnote,
 				"id":id,
-				"action":"updatecustomerremarks1",
+                "action":"updatecustomerremarks1",
 				"className":"CheckUpServlet",
 			};
 			$.ajax({
