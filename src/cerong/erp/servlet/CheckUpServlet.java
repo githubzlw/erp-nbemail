@@ -966,16 +966,28 @@ public class CheckUpServlet extends HttpServlet {
 		String projectnote = request.getParameter("projectNote");
         int eid=iservice.geteid(projectId);
         if(customerremarks!=null&&!"".equals(customerremarks)){
-        	customerremarks = new String(customerremarks.getBytes("iso-8859-1"),"utf-8");
+//        	customerremarks = new String(customerremarks.getBytes("iso-8859-1"),"utf-8");
+			//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+			if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(customerremarks))) {
+				customerremarks = new String(customerremarks.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+			}
         	int total=cservice.updateremarks(eid,customerremarks);
         }
         if(projectnote!=null&&!"".equals(projectnote)){
-        	projectnote = new String(projectnote.getBytes("iso-8859-1"),"utf-8");
+//        	projectnote = new String(projectnote.getBytes("iso-8859-1"),"utf-8");
+			//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+			if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(projectnote))) {
+				projectnote = new String(projectnote.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+			}
         	int total=iservice.updateprojectnote(projectId,projectnote);
         }
 		String fastTrackReasons = request.getParameter("fastTrackReasons");
 		if(fastTrackReasons!=null&&!"".equals(fastTrackReasons)){
-			fastTrackReasons = new String(fastTrackReasons.getBytes("iso-8859-1"),"utf-8");
+//			fastTrackReasons = new String(fastTrackReasons.getBytes("iso-8859-1"),"utf-8");
+			//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+			if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(fastTrackReasons))) {
+				fastTrackReasons = new String(fastTrackReasons.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+			}
 			int total=iservice.updateFastTrackReasons(id,fastTrackReasons);
 		}
         int total2=service.updateApproval1(id);

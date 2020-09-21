@@ -826,6 +826,11 @@ public class CheckLoginFilter implements Filter {
 			return;
 		}
 
+		if(action != null && action.equals("factoryPayInfo")) {//点开之后把一个厂那么多年的所有付款记录按照时间排序
+			chain.doFilter(req, res);
+			return;
+		}
+
 	     if(action != null && action.equals("search")) {//查询报关名
 	    	 chain.doFilter(req, res);
 	    	 return;

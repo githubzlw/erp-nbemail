@@ -205,11 +205,11 @@ var updateMonth=function(){
 							<td class="usermatd4"><input type="submit" value="查询"
 								class="usersearchbtn">
 								</td>
-								<td>出运单报关金额从${day != null ?fn:substring(day,0,fn:indexOf(day," ")):""}后开始查询</td>
+								<%--<td>出运单报关金额从${day != null ?fn:substring(day,0,fn:indexOf(day," ")):""}后开始查询</td>
 								<c:if test="${roleNo==100 }"><td>修改出运单查询日期<input type="text" readonly class="Wdate" id="time1"
 								name="time1" value="${starttime }"
 								onfocus="WdatePicker({dateFmt:'yyyy-MM'})" /><input type="button" value="修改"
-								class="usersearchbtn" onclick="updateMonth();"></td></c:if>
+								class="usersearchbtn" onclick="updateMonth();"></td></c:if>--%>
 						</tr>
 					</table>
 
@@ -229,6 +229,7 @@ var updateMonth=function(){
 					<td width="60px">已支付工厂金额</td>
 					<td width="80px">收回发票</td>
 					<td width="80px">出运单已报关金额</td>
+					<td width="80px">未带票金额</td>
 					<td width="80px">欠发票</td>
 					<td width="80px">未付款工厂金额</td>
 					<td width="80px">时间</td>
@@ -254,7 +255,16 @@ var updateMonth=function(){
 						<c:if test="${cus.contractAmount==cus.currentDebitAmount+cus.shipmentBillAmount+cus.amountCustomsDeclaration }">
 					     0</c:if>
 						</td>
-						
+
+					 <td><c:if test="${cus.contractAmount!=cus.currentDebitAmount+cus.shipmentBillAmount+cus.amountCustomsDeclaration }">
+						<span style="color:red;">
+						<fmt:formatNumber value="${cus.contractAmount-cus.currentDebitAmount-cus.shipmentBillAmount-cus.amountCustomsDeclaration }" type="number" maxFractionDigits="2"/>
+
+						</span></c:if>
+						 <c:if test="${cus.contractAmount==cus.currentDebitAmount+cus.shipmentBillAmount+cus.amountCustomsDeclaration }">
+							 0</c:if>
+					 </td>
+
 						<td>${cus.contractAmount-cus.amountPaid }</td>
 						<td>${cus.createTime != null ?fn:substring(cus.createTime,0,fn:indexOf(cus.createTime," ")):""}</td>
 					 	<td>${cus.merchandManager2 }</td>

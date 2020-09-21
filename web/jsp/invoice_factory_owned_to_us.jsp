@@ -153,7 +153,7 @@ function uploadFile() {
 				 <tr>
 						<td>${i.count }</td>
 						<td>${cus.kingdee }</td>
-						<td>${cus.factoryName }</td>
+					 <td><a href="/ERP-NBEmail/helpServlet?action=factoryPayInfo&className=InvoiceServlet&factoryName=${cus.factoryName }" target="_blank">${cus.factoryName }</a></td>
 						<td><a href="/ERP-NBEmail/helpServlet?action=allDetailedAccounts&className=InvoiceServlet&kingdee=${cus.kingdee }&num=0&saleName=${userName}" target="_blank"><fmt:formatNumber value="${cus.allUnacceptableInvoiceAmounts}" type="number" maxFractionDigits="2"/></a></td>
 						<td><a href="/ERP-NBEmail/helpServlet?action=allDetailedAccounts&className=InvoiceServlet&kingdee=${cus.kingdee }&num=0&saleName=${userName}" target="_blank"><fmt:formatNumber value="${cus.allUnacceptableInvoiceAmounts1}" type="number" maxFractionDigits="2"/></a></td>
 						<td><a href="/ERP-NBEmail/helpServlet?action=allDetailedAccounts&className=InvoiceServlet&kingdee=${cus.kingdee }&num=1&saleName=${userName}" target="_blank"><fmt:formatNumber value="${cus.amountOfNonReceiptAndReceiptOfInvoices}" type="number" maxFractionDigits="2"/></a></td>

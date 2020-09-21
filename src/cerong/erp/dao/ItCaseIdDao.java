@@ -6028,6 +6028,52 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 	}
 
 	@Override
+	public List<FactoryReconciliation> factoryPayInfo(String  factoryName) {
+		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = " select fu.CaseNo,fu.friMoney,fu.friFacDate FROM factoryfund fu " +
+				" LEFT JOIN factoryinfo info ON fu.fid = info.id  " +
+				" where fu.friMoney!=0   and info.FactoryName=? " +
+				" order by fu.CaseNo,fu.friFacDate ";
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, factoryName);
+
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				FactoryReconciliation con=new FactoryReconciliation();
+				con.setCaseNo(rs.getString("CaseNo"));
+				con.setPrice(rs.getDouble("friMoney"));
+				con.setCreateTime(rs.getString("friFacDate"));
+				list.add(con);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+
+	@Override
 	public List<FactoryReconciliation> getPaymentExceededApril(
 			ItemCase2 itemcase) {
 		String time=itemcase.getStartTime();

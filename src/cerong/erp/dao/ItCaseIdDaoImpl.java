@@ -645,6 +645,9 @@ public List<FactoryReconciliation> getFinalInvoice(ItemCase2 itemcase);
 
 public List<FactoryReconciliation> factoryNameByInvoiceName(String invoiceName);
 
+public List<FactoryReconciliation> factoryPayInfo(String invoiceName);
+
+
 /**
  * 
  * @Title:ItCaseIdServiceImpl

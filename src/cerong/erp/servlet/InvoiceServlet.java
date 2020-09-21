@@ -417,6 +417,30 @@ public class InvoiceServlet extends HttpServlet{
 
 	}
 
+	/**
+	 *
+	 * @Title:InvoiceServlet
+	 * @Description:点开之后把一个厂那么多年的所有付款记录按照时间排序
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws ParseException void
+	 * @throws
+	 */
+	public void factoryPayInfo (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+		String factoryName = request.getParameter("factoryName");
+
+		// 根据品名查询工厂名
+		List<FactoryReconciliation> list=service.factoryPayInfo(factoryName);
+		request.setAttribute("factoryPayList",list );
+
+		request.getRequestDispatcher("jsp/factory_payinfo.jsp").forward(request, response);
+
+
+	}
+
 
 	/**
 				 * 
@@ -437,8 +461,6 @@ public class InvoiceServlet extends HttpServlet{
 					// add 20200806 start
 					String factoryName = request.getParameter("factoryName");
 					if(StringUtils.isNotEmpty(factoryName)){
-//						factoryName = java.net.URLEncoder.encode(factoryName,"utf-8");
-////						factoryName=new String(factoryName.getBytes("ISO-8859-1"),"UTF-8");
 						//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
 						if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(factoryName))) {
 							factoryName = new String(factoryName.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8

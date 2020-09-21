@@ -446,6 +446,12 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 		return dao.factoryNameByInvoiceName(invoiceName);
 	}
 
+	@Override
+	public List<FactoryReconciliation> factoryPayInfo(String factoryName) {
+
+		return dao.factoryPayInfo(factoryName);
+	}
+
 
 
 	@Override
