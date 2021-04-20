@@ -580,6 +580,11 @@ public int updateCaseStatus(String caseno);
  * @throws
  */
 public int updateRemarks(String caseno, String remarks);
+
+
+public int updateFpRemarks(String bargainNo, String remarks);
+
+
 /**
  * 
  * @Title:ItCaseIdServiceImpl

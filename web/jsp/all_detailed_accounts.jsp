@@ -235,6 +235,8 @@ var updateMonth=function(){
 					<td width="80px">时间</td>
 					<td width="80px">采购</td>
 					<td width="80px">跟单</td>
+			<%--		<td width="80px">备注</td>--%>
+					<%--<td width="80px"></td>--%>
 					</tr>
 				<c:forEach items="${cusList}" var="cus" varStatus="i">
 				 <tr>
@@ -269,6 +271,15 @@ var updateMonth=function(){
 						<td>${cus.createTime != null ?fn:substring(cus.createTime,0,fn:indexOf(cus.createTime," ")):""}</td>
 					 	<td>${cus.merchandManager2 }</td>
 					 	<td>${cus.merchandManager1 }</td>
+
+<%--					 <td style="border: 1px solid #BBBABA; width: 80px;">--%>
+<%--						 <input type="text" style="width: 150px;" id="projectnote${i.count}"--%>
+<%--							 value="${cus.remarks }" title="${cus.remarks }">--%>
+<%--					 </td>--%>
+<%--					 <td>--%>
+<%--						 <input type="button" value="提交备注" onclick="updateRemarks('projectnote${i.count}','${cus.bargainNo }');"/>--%>
+<%--					 </td>--%>
+
 					</tr>
 				</c:forEach>
 			</table>
@@ -292,6 +303,42 @@ var updateMonth=function(){
 		$('#div3').hide();
 		$('#div4').show();
 	});
+
+	function updateRemarks(remarks,bargainNo){
+
+		var remarks=  document.getElementById(remarks).value;
+		remarks = remarks.replace(/\%/g,"%25").replace(/\#/g,"%23").replace(/\&/g,"%26").replace(/\+/g,"%2B");
+
+		bargainNo = bargainNo.replace(/\%/g,"%25").replace(/\#/g,"%23").replace(/\&/g,"%26").replace(/\+/g,"%2B");
+		var params = {
+			"remarks":remarks,
+			"bargainNo":bargainNo,
+			"action":"updateRemarks",
+			"className":"InvoiceServlet",
+		};
+
+		$.ajax({
+					url:'/ERP-NBEmail/helpServlet',
+					type:"post",
+					data:params,
+					success:function(data)
+					{
+						if(data == "YES"){
+							alert("成功")
+							window.location.reload();
+						}else{
+							window.location.reload();
+
+						}
+					},
+
+				}
+		);
+
+
+	}
+
+
 </script>
 
 

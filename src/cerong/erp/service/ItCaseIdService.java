@@ -406,6 +406,15 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 	}
 
 	@Override
+	public int updateFpRemarks(String caseno, String remarks) {
+
+		return dao.updateFpRemarks(caseno,remarks);
+	}
+
+
+
+
+	@Override
 	public int insert1(String fileName, String projectId, String userName, int fid) {
 		
 		return dao.insert1(fileName,projectId,userName,fid);

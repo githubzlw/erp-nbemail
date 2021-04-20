@@ -553,9 +553,55 @@ public class InvoiceServlet extends HttpServlet{
 						request.getRequestDispatcher("jsp/all_detailed_accounts.jsp").forward(request, response);
 						}
 					}
-				
-				
-				
+
+
+	/**
+	 * 方法描述:备注插入
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+
+	public void updateRemarks(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		PrintWriter out = response.getWriter();
+		String remarks = request.getParameter("remarks");
+
+		String bargainNo = request.getParameter("bargainNo");
+
+		if(StringUtils.isNotEmpty(remarks)){
+			//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+			if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(remarks))) {
+				remarks = new String(remarks.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+			}
+		}
+
+		if(StringUtils.isNotEmpty(bargainNo)){
+			//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+			if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(bargainNo))) {
+				bargainNo = new String(bargainNo.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+			}
+		}
+		int total=0;
+
+		String[] bargainNoAry = bargainNo.split(",");
+
+		for(int i=0;i<bargainNoAry.length;i++){
+			total = service.updateFpRemarks(bargainNoAry[i],remarks);
+		}
+
+
+		if(total>0){
+			out.print("YES");
+		}else{
+			out.print("NO");
+		}
+
+
+
+	}
 						
 						/**
 						 * 

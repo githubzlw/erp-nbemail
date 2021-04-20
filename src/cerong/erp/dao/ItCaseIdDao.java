@@ -5109,6 +5109,48 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		return result;
 	}
 
+
+	@Override
+	public int updateFpRemarks(String bargainNo, String remarks) {
+		String sql1 = "update factoryfund set remarks=? where BargainNo = ?";
+		Connection conn1 = null;
+		ResultSet rs1 = null;
+		PreparedStatement stmt1 = null;
+		int result=0;
+		conn1 = SQLDBhelper.getConnection();
+		try {
+			stmt1 = conn1.prepareStatement(sql1);
+			stmt1.setString(1,remarks );
+			stmt1.setString(2,bargainNo );
+			result = stmt1.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt1 != null) {
+				try {
+					stmt1.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs1 != null) {
+				try {
+					rs1.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn1,stmt1,rs1);
+		}
+
+
+		return result;
+	}
+
+
+
+
+
 	@Override
 	public int insert1(String fileName, String projectId, String userName,
 			int fid) {
@@ -5362,8 +5404,12 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				+ ",a.createtime,isnull(a.Get_Moeny,0)Get_Moeny,isnull(a.Pay_Moeny,0)Pay_Moeny,isnull(z.rmb,0)rmb,isnull(b.friMoney,0)friMoney,isnull(c.friMoney1,0)friMoney1,"
 				+ "isnull(d.amount_customs_declaration,0)amount_customs_declaration,it.CustomerManager ,"
 				+ " it.MerchandManager1,it.MerchandManager2 , it.Merchandising ,it.MaturePurchase , "
-				+ "it.OriginalPurchase from (select sum(fu.friMoney)friMoney,CaseNo,max(info.FactoryName)FactoryName"
-				+ "  ,max(fu.fid)Factory_id,kingdee ,  STUFF( ( SELECT    ',' + BargainNo   FROM factoryfund x left join factoryinfo y "
+				+ "it.OriginalPurchase " +
+//				",b.remarks " +
+				"from (select sum(fu.friMoney)friMoney,CaseNo,max(info.FactoryName)FactoryName"
+				+ "  ,max(fu.fid)Factory_id,kingdee ," +
+//				"max(fu.remarks) as remarks, " +
+				" STUFF( ( SELECT    ',' + BargainNo   FROM factoryfund x left join factoryinfo y "
 		        + "on y.id=x.fid  WHERE x.CaseNo = fu.CaseNo and y.kingdee=info.kingdee group by BargainNo  FOR XML PATH('')) ,1,1,'') AS  bargain_no "
 		        + " from factoryfund fu left join "
 				+ "factoryinfo info on fu.fid=info.id where info.kingdee=?  ";
@@ -5503,6 +5549,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setAmountCustomsDeclaration(rs.getDouble("amount_customs_declaration"));
 				con.setMerchandManager2(rs.getString("MerchandManager2"));
 				con.setMerchandManager1(rs.getString("MerchandManager1"));
+				//202012 rose 增加合同备注暂时删除
+//				con.setRemarks(rs.getString("remarks"));
 				list.add(con);
 			}
 		} catch (Exception e) {
@@ -7419,16 +7467,58 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 					itcase.setRemark(null);
 				}
 
-				if(it.getProjectLevel()==1||it.getProjectLevel()==2||it.getProjectLevel()==0) {
-					if(it.getCreateTime()!=null&&!"".equalsIgnoreCase(it.getCreateTime())) {
-						String []time=it.getCreateTime().split(" ");
-						itcase.setPoId("阳工已上传，上传时间:"+time[0]);
-					}else{
-						itcase.setPoId("未上传");
+				//20201016 update start
+//				if(it.getProjectLevel()==1||it.getProjectLevel()==2||it.getProjectLevel()==0) {
+//					if(it.getCreateTime()!=null&&!"".equalsIgnoreCase(it.getCreateTime())) {
+//						String []time=it.getCreateTime().split(" ");
+//						itcase.setPoId("阳工已上传，上传时间:"+time[0]);
+//					}else{
+//						itcase.setPoId("未上传");
+//					}
+//				}else{
+//					itcase.setPoId("C级项目无需上传");
+//				}
+
+				PreparedStatement stmt3= null;
+				ResultSet rs3= null;
+				Connection conn3 = null;
+				String sql3 = " select count(1) cn from POupload where caseno=? and (intro like '%采购A版%' or intro like '%采购B版%')";
+				conn3= SQLDBhelper.getConnection();
+				try {
+					stmt3 = conn3.prepareStatement(sql3);
+					stmt3.setString(1, caseno);
+					rs3 = stmt3.executeQuery();
+					if(rs3.next()) {
+						int count3 =rs3.getInt("cn");
+						if(count3>0){
+							itcase.setPoId("已上传");
+						}else{
+							itcase.setPoId("未上传");
+						}
 					}
-				}else{
-					itcase.setPoId("C级项目无需上传");
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					if (stmt3 != null) {
+						try {
+							stmt3.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+					if (rs3 != null) {
+						try {
+							rs3.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+					DBHelper.returnConnection(conn3);
+
 				}
+
+				//20201016 update end
+
 				String intro2=rs.getString("intro2");
 				if(intro2!=null&&!"".equalsIgnoreCase(intro2)){
 					itcase.setPoId2(intro2+"["+rs.getString("uploader2")+"/"+rs.getString("uploadtime2")+"]");

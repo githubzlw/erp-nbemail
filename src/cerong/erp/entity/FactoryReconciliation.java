@@ -48,6 +48,16 @@ public class FactoryReconciliation {
 	/** 跟单*/
 	private String merchandManager1;
 
+	private String remarks;
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
 	public String getMerchandManager1() {
 		return merchandManager1;
 	}

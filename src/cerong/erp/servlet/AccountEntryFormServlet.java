@@ -97,7 +97,7 @@ public class AccountEntryFormServlet extends HttpServlet{
 		request.setAttribute("user", user1);
 		if(user1!=null){
 			
-		   String s2 = "lisodZheng";
+		   String s2 = "ands";
 			Boolean index2=false;
 			index2 = s2.toLowerCase().contains(user1.getUserName().toLowerCase());
 		   if(index2!=false){

@@ -209,7 +209,7 @@ public class AmountClaimFormServlet extends HttpServlet{
 			request.setAttribute("customerId",customerId);
 			request.setAttribute("account",account1 );
 			request.setAttribute("tradeCurrency",tradeCurrency );
-			 String s2 = "lisodZheng";
+			 String s2 = "ands";
 				Boolean index2=false;
 				index2 = s2.toLowerCase().contains(user1.getUserName().toLowerCase());
 			   if(index2!=false){
@@ -383,7 +383,7 @@ public class AmountClaimFormServlet extends HttpServlet{
 	    		 
 	    	 }else{
 	       if(!"mandyman".equalsIgnoreCase(EmpEName)&&!"lisali".equalsIgnoreCase(EmpEName)&&!"planner".equalsIgnoreCase(EmpEName)
-	    		   &&!"lisodzheng".equalsIgnoreCase(EmpEName)){
+	    		   &&!"ands".equalsIgnoreCase(EmpEName)){
 	    	int username=cservice.find(EmpEName,info.getCaseno());  
 	    	 if(username>0){
 	    		 String invoicemoney=(String) request.getAttribute("invoicemoney"+num);
@@ -569,7 +569,7 @@ public class AmountClaimFormServlet extends HttpServlet{
 	    		 
 	    	 }else{
 	       if(!"mandyman".equalsIgnoreCase(EmpEName)&&!"lisali".equalsIgnoreCase(EmpEName)&&!"planner".equalsIgnoreCase(EmpEName)
-	    		   &&!"lisodzheng".equalsIgnoreCase(EmpEName)){
+	    		   &&!"ands".equalsIgnoreCase(EmpEName)){
 	       	if(info.getImoneytype()==tradeCurrency1) {
 				int username = cservice.find(EmpEName, info.getCaseno());
 				if (username > 0) {

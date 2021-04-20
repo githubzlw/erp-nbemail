@@ -13,7 +13,10 @@ public class SQLDBhelper {
 //    public static String url="jdbc:sqlserver://192.168.1.2; DatabaseName=ShangHaiSourcing";
 //    public static String user="sa";
 //    public static String pwd="Safevault73_1";
-    public static String url="jdbc:sqlserver://192.168.1.91; DatabaseName=ShangHaiSourcing";
+//    public static String url="jdbc:sqlserver://192.168.1.91; DatabaseName=ShangHaiSourcing";
+//    public static String user="sa";
+//    public static String pwd="Admin123";
+    public static String url="jdbc:sqlserver://192.168.1.55; DatabaseName=ShangHaiSourcing";
     public static String user="sa";
     public static String pwd="Admin123";
    public static Connection getConnection(){

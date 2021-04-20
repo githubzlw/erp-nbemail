@@ -581,6 +581,20 @@ public int updateCaseStatus(String caseno);
  * @throws
  */
 public int updateRemarks(String caseno, String remarks);
+
+	/**
+	 *
+	 * @Title:ItCaseIdServiceImpl
+	 * @Description:修改发票备注
+	 @author wangyang
+	  * @param caseno
+	 * @param remarks
+	 * @return int
+	 * @throws
+	 */
+	public int updateFpRemarks(String caseno, String remarks);
+
+
 /**
  * 
  * @Title:ItCaseIdServiceImpl
@@ -799,4 +813,6 @@ public ItemCase getStartTime();
 	 * @return
 	 */
 	ItemCase getProjectStatistics(ItemCase itcase);
+
+
 }

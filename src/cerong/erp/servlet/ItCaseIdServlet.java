@@ -606,7 +606,7 @@ public class ItCaseIdServlet extends HttpServlet {
 		
 		/**
 		 * 方法描述:远程保存附件
-		 * author:wy
+		 * author:wytransAudit
 		 * date:2016年6月2日
 		 * @param response
 		 * @throws ServletException
@@ -2403,7 +2403,7 @@ public class ItCaseIdServlet extends HttpServlet {
 			int total1=eservice.getUser(EmpPWD, EmpEName);
 			//List<ItemCase> list1=service.getAllItem();
 			if(user1!=null&& total1>0){
-				String s1 = "edwardfanemmaxieninazhaoLisodZhengjerrylongroseli";
+				String s1 = "edwardfanemmaxieninazhaoandsjerrylongroseli";
 				Boolean index1=false;
 				index1 = s1.toLowerCase().contains(user1.getUserName().toLowerCase());
 				if(index1!=false){

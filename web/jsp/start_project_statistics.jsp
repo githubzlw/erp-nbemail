@@ -406,15 +406,23 @@ function OpenDiv(id,projectId){
 					</td>
 					<td><c:if test="${cus.projectLevel==1 || cus.projectLevel==2||cus.projectLevel==0 }"><c:if test="${cus.pdId!=0 }">已上传</c:if><c:if test="${cus.pdId==0 }">未上传</c:if></c:if><c:if test="${cus.projectLevel==3  }">C</c:if></td>	
 					<td><c:if test="${cus.remark!=null }">${cus.remark}</c:if><c:if test="${cus.remark==null }"><span style="color:red;">未上传</span></c:if></td>
-					<td><c:if test="${cus.projectLevel==1 || cus.projectLevel==2||cus.projectLevel==0 }"><c:if test="${cus.technicalDocumentation!=null }">${cus.technicalDocumentation}</c:if><c:if test="${cus.technicalDocumentation==null }"><span style="color:red;">未上传</span></c:if></c:if><c:if test="${cus.projectLevel==3  }">C</c:if></td>
-					
+
+					<td>
+						<c:if test="${cus.projectLevel==1 || cus.projectLevel==2||cus.projectLevel==0 }">
+							<c:if test="${cus.technicalDocumentation!=null }">${cus.technicalDocumentation}</c:if>
+							<c:if test="${cus.technicalDocumentation==null || cus.technicalDocumentation=='' }"><span style="color:red;">未上传</span></c:if>
+						</c:if>
+						<c:if test="${cus.projectLevel==3  }">C</c:if>
+					</td>
+
 					<td><c:if test="${cus.projectLevel==1 || cus.projectLevel==2||cus.projectLevel==0 }"><c:if test="${cus.delay!=0 }">项目延期</c:if><c:if test="${cus.delay==0 }">无延期</c:if></c:if><c:if test="${cus.projectLevel==3  }">C</c:if></td>
-					<td><c:if test="${cus.poId!=null }">${cus.poId }</c:if><c:if test="${cus.poId==null }"><span style="color:red;">未上传</span></c:if></td>
-				    <td><c:if test="${cus.dateSample!=null }">${cus.dateSample != null ?fn:substring(cus.dateSample,0,fn:indexOf(cus.dateSample," ")):""}</c:if><c:if test="${cus.dateSample==null }"><span style="color:red;">无</span></c:if></td>	
+<%--					<td><c:if test="${cus.poId!=null }">${cus.poId }</c:if><c:if test="${cus.poId==null }"><span style="color:red;">未上传</span></c:if></td>--%>
+						<td><c:if test="${cus.poId!=null }">${cus.poId }</c:if>
+						<td><c:if test="${cus.dateSample!=null }">${cus.dateSample != null ?fn:substring(cus.dateSample,0,fn:indexOf(cus.dateSample," ")):""}</c:if><c:if test="${cus.dateSample==null }"><span style="color:red;">无</span></c:if></td>
 					<td><c:if test="${cus.completiontime!=null }">${cus.completiontime != null ?fn:substring(cus.completiontime,0,fn:indexOf(cus.completiontime," ")):""}</c:if><c:if test="${cus.completiontime==null }"><span style="color:red;">无</span></c:if></td>		
 					<td><c:if test="${cus.intro!=null }">${cus.intro}</c:if><c:if test="${cus.intro==null }"><span style="color:red;">无</span></c:if></td>	
-					<td><c:if test="${cus.poId2!=null }">${cus.poId2}</c:if><c:if test="${cus.poId2==null }"><span style="color:red;">未更新</span></c:if></td>	
-					<td><c:if test="${cus.qpId1!=null }">${cus.qpId1}</c:if><c:if test="${cus.qpId1==null }"><span style="color:red;">未开</span></c:if></td>	
+					<td><c:if test="${cus.poId2!=null }">${cus.poId2}</c:if><c:if test="${cus.poId2==null }"><span style="color:red;">未更新</span></c:if></td>
+						<td><c:if test="${cus.qpId1!=null }">${cus.qpId1}</c:if><c:if test="${cus.qpId1==null }"><span style="color:red;">未开</span></c:if></td>
 					<td><c:if test="${cus.qpId2!='0'&&cus.qpId2!='1'&&cus.qpId2!='2'&&cus.qpId2!='3' }">${cus.qpId2}</c:if>
 					<c:if test="${cus.qpId2=='0' }"><span style="color:red;">有问题，大于5000美元，未开</span></c:if>
 					<c:if test="${cus.qpId2=='1' }"><span style="color:red;">大于5000美元，未开</span></c:if>
