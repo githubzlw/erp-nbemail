@@ -427,6 +427,12 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 	}
 
 	@Override
+	public List<ItemCase2> invoiceFactoryOwnedToUsNew(ItemCase2 it) {
+
+		return dao.invoiceFactoryOwnedToUsNew(it);
+	}
+
+	@Override
 	public List<FactoryReconciliation> getAllDetailedAccounts(ItemCase2 itemcase) {
 		
 		return dao.getAllDetailedAccounts(itemcase);
@@ -459,6 +465,18 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 	public List<FactoryReconciliation> factoryPayInfo(String factoryName) {
 
 		return dao.factoryPayInfo(factoryName);
+	}
+
+	@Override
+	public List<FactoryReconciliation> factoryPayInfoNew(String factoryName) {
+
+		return dao.factoryPayInfoNew(factoryName);
+	}
+
+	@Override
+	public List<FactoryReconciliation> factoryPayInfoDetail(String factoryName) {
+
+		return dao.factoryPayInfoDetail(factoryName);
 	}
 
 

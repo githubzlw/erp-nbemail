@@ -5112,7 +5112,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 	@Override
 	public int updateFpRemarks(String bargainNo, String remarks) {
-		String sql1 = "update factoryfund set remarks=? where BargainNo = ?";
+		String sql1 = "update Tab_Factory_Money set remark=? where Case_No = ? and Factory_id=?";
 		Connection conn1 = null;
 		ResultSet rs1 = null;
 		PreparedStatement stmt1 = null;
@@ -5121,7 +5121,8 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		try {
 			stmt1 = conn1.prepareStatement(sql1);
 			stmt1.setString(1,remarks );
-			stmt1.setString(2,bargainNo );
+			stmt1.setString(2,bargainNo.split(",")[0] );
+            stmt1.setString(3,bargainNo.split(",")[1] );
 			result = stmt1.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5370,6 +5371,59 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				list.add(info);
 				}
 				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+
+	@Override
+	public List<ItemCase2> invoiceFactoryOwnedToUsNew(ItemCase2 it) {
+		String time=it.getStartTime();
+		List<ItemCase2> list =new ArrayList<ItemCase2>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = " Select b.FactoryName,isnull(sum(a.Pay_Moeny),0) as PayMoney,isnull(sum(a.Get_Moeny),0) as GetMoney ,sum(Pay_Moeny)-sum(Get_Moeny) as amount "
+				+ " from Tab_Factory_Money a inner join factoryinfo b on a.Factory_id=b.id ";
+		if(it.getFactoryName()!=null&&!"".equalsIgnoreCase(it.getFactoryName())){
+			sql +=" where b.FactoryName like ? ";
+		}
+		sql += " group by b.FactoryName order by amount desc";
+
+		conn = SQLDBhelper.getConnection();
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			if(it.getFactoryName()!=null&&!"".equalsIgnoreCase(it.getFactoryName())) {
+				stmt.setString(1, "%" + it.getFactoryName() + "%");
+			}
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				ItemCase2 info=new ItemCase2();
+				info.setFactoryName(rs.getString("FactoryName"));
+				info.setInvoiceAmount(rs.getDouble("PayMoney"));
+				info.setAllUnacceptableInvoiceAmounts(rs.getDouble("GetMoney"));
+				info.setAllUnacceptableInvoiceAmounts1(rs.getDouble("amount"));
+				list.add(info);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -6119,6 +6173,116 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		}
 		return list;
 	}
+
+	@Override
+	public List<FactoryReconciliation> factoryPayInfoNew(String  factoryName) {
+		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+//		String sql = " Select b.FactoryName,a.Case_No,a.Pay_Moeny,a.Get_Moeny,a.Bargain_No,a.createtime " +
+//				" from Tab_Factory_Money a inner join factoryinfo b on a.Factory_id=b.id " +
+//				" where b.FactoryName=? " +
+//				" order by a.Case_No ,a.createtime desc ";
+
+		String sql = " Select a.Factory_id,a.Case_No,isnull(sum(a.Pay_Moeny),0) as PayMoney,isnull(sum(a.Get_Moeny),0) as GetMoney,sum(Pay_Moeny)-sum(Get_Moeny) as amount,a.remark " +
+				" from Tab_Factory_Money a inner join factoryinfo b on a.Factory_id=b.id " +
+				" where b.FactoryName=? " +
+				" group by a.Factory_id,a.Case_No,a.remark order by amount desc ";
+
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, factoryName);
+
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				FactoryReconciliation con=new FactoryReconciliation();
+				con.setBargainNo(rs.getString("Factory_id"));
+				con.setCaseNo(rs.getString("Case_No"));
+				con.setPrice(rs.getDouble("PayMoney"));
+				con.setEndingBalance(rs.getDouble("GetMoney"));
+				con.setAmountCredit(rs.getDouble("amount"));
+				con.setRemarks(rs.getString("remark"));
+//				con.setBargainNo(rs.getString("Bargain_No"));
+//				con.setCreateTime(rs.getString("createtime"));
+				list.add(con);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+	@Override
+	public List<FactoryReconciliation> factoryPayInfoDetail(String  factoryName) {
+		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sql = " Select a.Case_No,a.Pay_Moeny,a.Get_Moeny,a.Date_time ,it.merchandManager2,it.CustomerManager " +
+				" from Tab_Factory_Money a inner join itemcase it on a.Case_No=it.caseno  " +
+				" where a.Factory_id=? " +
+				" and  a.Case_No=? " +
+				" order by a.Case_No ,a.Date_time desc  ";
+
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, factoryName.split(",")[0]);
+			stmt.setString(2, factoryName.split(",")[1]);
+
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				FactoryReconciliation con=new FactoryReconciliation();
+				con.setCaseNo(rs.getString("Case_No"));
+				con.setPrice(rs.getDouble("Pay_Moeny"));
+				con.setEndingBalance(rs.getDouble("Get_Moeny"));
+				con.setCreateTime(rs.getString("Date_time"));
+				con.setMerchandManager1(rs.getString("CustomerManager"));
+				con.setMerchandManager2(rs.getString("merchandManager2"));
+				list.add(con);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+
 
 
 	@Override

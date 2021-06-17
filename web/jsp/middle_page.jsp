@@ -62,7 +62,7 @@
 						<a target="_blank" href="/ERP-NBEmail/helpServlet?action=ViewFactoryData&className=FactoryReconciliationServlet" ><button>财务对账表</button></a>
 					</c:if>
 					<a target="_blank" href="/ERP-NBEmail/helpServlet?action=invoiceFactoryOwnedToUs&className=InvoiceServlet" ><button>欠我司发票的所有工厂</button></a>
-
+					<a target="_blank" href="/ERP-NBEmail/helpServlet?action=invoiceFactoryOwnedToUsNew&className=InvoiceServlet" ><button>工厂及发票信息</button></a>
 					<a target="_blank" href="/ERP-NBEmail/helpServlet?action=clientToAccountListPage&className=InvoiceServlet" ><button>客户到账列表页</button></a>
 					<c:if test="${notes!=''}">
 					<div class="line mb10"></div>

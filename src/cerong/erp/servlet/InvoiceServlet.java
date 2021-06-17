@@ -386,6 +386,76 @@ public class InvoiceServlet extends HttpServlet{
 					}
 
 
+	public void invoiceFactoryOwnedToUsNew (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+		PrintWriter out = response.getWriter();
+		String EmpEName=null;
+		String EmpPWD=null;
+		Cookie c[]=request.getCookies();
+		if(c!=null)
+		{
+			for(int x=0;x<c.length;x++){
+				if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
+					EmpPWD=c[x].getValue();
+				}
+
+				if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
+				{
+					EmpEName=c[x].getValue();
+				}
+			}
+		}
+		EmailUser user1=new EmailUser();
+		user1.setUserName(EmpEName);
+		user1.setPwd(EmpPWD);
+		int total1=eservice.getUser(EmpPWD, EmpEName);
+		if(user1!=null&& total1>0){
+			ItemCase it3=service.getStartTime();
+			String vs=request.getParameter("vs");
+//			String condition=request.getParameter("condition");
+			ItemCase2 it=new ItemCase2();
+			if(vs!=null&&!"".equalsIgnoreCase(vs)){
+				vs = new String(vs.getBytes("iso-8859-1"),"UTF-8");
+//				if("1".equalsIgnoreCase(condition)){
+//					it.setKingdee(Integer.parseInt(vs));
+//					request.setAttribute("fyfy",1 );
+//				}else if("2".equalsIgnoreCase(condition)){
+					it.setFactoryName(vs);
+//					request.setAttribute("fyfy",2 );
+//				}
+				request.setAttribute("vs",vs );
+			}
+			it.setStartTime(it3.getStartTime());
+			String s1="mandymanlisaliShiGuoJuanedwardfanemmaxiejerrylongninazhaoroseli";
+			boolean index1 = s1.toLowerCase().contains(EmpEName.toLowerCase());
+			if(index1!=false){
+//				request.setAttribute("roleNo",100 );
+				String userName=request.getParameter("userName");
+				List<EmailUser>projectMembers=eservice.getMember();//获取跟单、采购列表
+				if(userName!=null&&!"".equalsIgnoreCase(userName)&&!"-1".equalsIgnoreCase(userName)){
+					it.setCustomerManager(userName);
+					request.setAttribute("userName",userName );
+				}
+
+				List<ItemCase2> list=service.invoiceFactoryOwnedToUsNew(it);//欠我司发票工厂
+				request.setAttribute("projectMembers",projectMembers );
+				request.setAttribute("cusList",list );
+				request.getRequestDispatcher("jsp/invoice_factory_owned_to_us_new.jsp").forward(request, response);
+			}
+//			else{
+//				String userName=request.getParameter("userName");
+//				List<EmailUser>projectMembers=eservice.getMember();//获取跟单、采购列表
+//				if(userName!=null&&!"".equalsIgnoreCase(userName)&&!"-1".equalsIgnoreCase(userName)){
+//					it.setCustomerManager(userName);
+//					request.setAttribute("userName",userName );
+//				}
+//				List<ItemCase2> list=service.invoiceFactoryOwnedToUsNew(it);//跟单、采购
+//				request.setAttribute("cusList",list );
+//				request.getRequestDispatcher("jsp/invoice_factory_owned_to_us_new.jsp").forward(request, response);
+//			}
+		}
+	}
+
 	/**
 	 *
 	 * @Title:InvoiceServlet 20200826
@@ -432,11 +502,49 @@ public class InvoiceServlet extends HttpServlet{
 			throws ServletException, IOException, ParseException {
 		String factoryName = request.getParameter("factoryName");
 
+		//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+		if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(factoryName))) {
+			factoryName = new String(factoryName.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+		}
+
 		// 根据品名查询工厂名
 		List<FactoryReconciliation> list=service.factoryPayInfo(factoryName);
 		request.setAttribute("factoryPayList",list );
 
 		request.getRequestDispatcher("jsp/factory_payinfo.jsp").forward(request, response);
+
+
+	}
+
+
+	public void factoryPayInfoNew (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+		String factoryName = request.getParameter("factoryName");
+
+		//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+		if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(factoryName))) {
+			factoryName = new String(factoryName.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+		}
+		//
+		List<FactoryReconciliation> list=service.factoryPayInfoNew(factoryName);
+		request.setAttribute("factoryPayList",list );
+
+		request.getRequestDispatcher("jsp/factory_payinfonew.jsp").forward(request, response);
+
+
+	}
+
+	public void factoryPayInfoDetail (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+		String factoryName = request.getParameter("factoryId");
+
+		String caseNo = request.getParameter("caseNo");
+
+		//
+		List<FactoryReconciliation> list=service.factoryPayInfoDetail(factoryName+","+caseNo);
+		request.setAttribute("factoryPayList",list );
+
+		request.getRequestDispatcher("jsp/factory_payinfoDetail.jsp").forward(request, response);
 
 
 	}
@@ -569,7 +677,9 @@ public class InvoiceServlet extends HttpServlet{
 		PrintWriter out = response.getWriter();
 		String remarks = request.getParameter("remarks");
 
-		String bargainNo = request.getParameter("bargainNo");
+		String factoryId = request.getParameter("factoryId");
+
+		String caseNo = request.getParameter("caseNo");
 
 		if(StringUtils.isNotEmpty(remarks)){
 			//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
@@ -578,20 +688,7 @@ public class InvoiceServlet extends HttpServlet{
 			}
 		}
 
-		if(StringUtils.isNotEmpty(bargainNo)){
-			//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
-			if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(bargainNo))) {
-				bargainNo = new String(bargainNo.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
-			}
-		}
-		int total=0;
-
-		String[] bargainNoAry = bargainNo.split(",");
-
-		for(int i=0;i<bargainNoAry.length;i++){
-			total = service.updateFpRemarks(bargainNoAry[i],remarks);
-		}
-
+		int total = service.updateFpRemarks(caseNo+","+factoryId,remarks);
 
 		if(total>0){
 			out.print("YES");

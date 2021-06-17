@@ -618,6 +618,8 @@ public int insert1(String value, String projectId, String userName, int fid);
  * @throws
  */
 public List<ItemCase2> invoiceFactoryOwnedToUs(ItemCase2 it);
+
+public List<ItemCase2> invoiceFactoryOwnedToUsNew(ItemCase2 it);
 /**
  * 
  * @Title:ItCaseIdServiceImpl
@@ -664,6 +666,9 @@ public List<FactoryReconciliation> factoryNameByInvoiceName(String invoiceName);
 
 
 public List<FactoryReconciliation> factoryPayInfo(String factoryName);
+public List<FactoryReconciliation> factoryPayInfoNew(String factoryName);
+
+public List<FactoryReconciliation> factoryPayInfoDetail(String factoryName);
 
 
 /**

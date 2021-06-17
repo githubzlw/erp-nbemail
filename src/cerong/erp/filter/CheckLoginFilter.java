@@ -817,6 +817,10 @@ public class CheckLoginFilter implements Filter {
 	    	 chain.doFilter(req, res);
 	    	 return;
 	     }
+		if(action != null && action.equals("invoiceFactoryOwnedToUsNew")) {//列出欠我司发票的所有工厂以及欠的未收发票金额new
+			chain.doFilter(req, res);
+			return;
+		}
 	     if(action != null && action.equals("allDetailedAccounts")) {//所有未收发票金额数据
 	    	 chain.doFilter(req, res);
 	    	 return;
@@ -830,6 +834,17 @@ public class CheckLoginFilter implements Filter {
 			chain.doFilter(req, res);
 			return;
 		}
+
+		if(action != null && action.equals("factoryPayInfoNew")) {//
+			chain.doFilter(req, res);
+			return;
+		}
+
+		if(action != null && action.equals("factoryPayInfoDetail")) {//
+			chain.doFilter(req, res);
+			return;
+		}
+
 
 	     if(action != null && action.equals("search")) {//查询报关名
 	    	 chain.doFilter(req, res);
