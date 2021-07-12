@@ -534,6 +534,24 @@ public class InvoiceServlet extends HttpServlet{
 
 	}
 
+    public void getPayInfo (HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, ParseException {
+        String fName = request.getParameter("fName");
+
+
+        //判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+        if (fName!=null && !(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(fName))) {
+			fName = new String(fName.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+        }
+        //
+        List<FactoryReconciliation> list=service.getPayInfo(fName);
+        request.setAttribute("factoryPayList",list );
+		request.setAttribute("fName",fName );
+        request.getRequestDispatcher("jsp/case_payinfo.jsp").forward(request, response);
+
+
+    }
+
 	public void factoryPayInfoDetail (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, ParseException {
 		String factoryName = request.getParameter("factoryId");

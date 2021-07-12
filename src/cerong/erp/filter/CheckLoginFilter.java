@@ -821,6 +821,10 @@ public class CheckLoginFilter implements Filter {
 			chain.doFilter(req, res);
 			return;
 		}
+		if(action != null && action.equals("getPayInfo")) {//发票查询
+			chain.doFilter(req, res);
+			return;
+		}
 	     if(action != null && action.equals("allDetailedAccounts")) {//所有未收发票金额数据
 	    	 chain.doFilter(req, res);
 	    	 return;

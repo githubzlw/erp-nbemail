@@ -6230,6 +6230,65 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		return list;
 	}
 
+
+	@Override
+	public List<FactoryReconciliation> getPayInfo(String  factoryName) {
+		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sql = " Select a.Case_No,b.FactoryName,isnull(sum(a.Pay_Moeny),0) as PayMoney,isnull(sum(a.Get_Moeny),0) as GetMoney,sum(Pay_Moeny)-sum(Get_Moeny) as amount,it.CustomerManager  " +
+				" from Tab_Factory_Money a inner join factoryinfo b on a.Factory_id=b.id inner join itemcase it on a.Case_No=it.caseno   " +
+				" where it.CustomerManager !='' " ;
+		if(factoryName!=null&&!"".equalsIgnoreCase(factoryName)){
+			sql +=" and it.CustomerManager=? ";
+		}
+
+		sql +=" group by b.FactoryName,a.Case_No,it.CustomerManager  order by amount desc,b.FactoryName asc ";
+
+
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			if(factoryName!=null&&!"".equalsIgnoreCase(factoryName)){
+				stmt.setString(1, factoryName.trim());
+			}
+
+
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				FactoryReconciliation con=new FactoryReconciliation();
+				con.setFactoryName(rs.getString("FactoryName"));
+				con.setCaseNo(rs.getString("Case_No"));
+				con.setPrice(rs.getDouble("PayMoney"));
+				con.setEndingBalance(rs.getDouble("GetMoney"));
+				con.setAmountCredit(rs.getDouble("amount"));
+				con.setMerchandManager1(rs.getString("CustomerManager"));
+				list.add(con);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
 	@Override
 	public List<FactoryReconciliation> factoryPayInfoDetail(String  factoryName) {
 		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();

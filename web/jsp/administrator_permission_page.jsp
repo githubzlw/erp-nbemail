@@ -53,6 +53,7 @@
 					</c:if>
 					<a target="_blank" href="/ERP-NBEmail/helpServlet?action=invoiceFactoryOwnedToUs&className=InvoiceServlet" ><button>欠我司发票的所有工厂</button></a>
 					<a target="_blank" href="/ERP-NBEmail/helpServlet?action=invoiceFactoryOwnedToUsNew&className=InvoiceServlet" ><button>工厂及发票信息</button></a>
+					<a target="_blank" href="/ERP-NBEmail/helpServlet?action=getPayInfo&className=InvoiceServlet" ><button>发票信息查询</button></a>
 					<div class="line mb10"></div>
 					<a target="_blank" href="/ERP-NBEmail/helpServlet?action=nonPaymentCustomers&className=ItCaseIdServlet" ><button>客户到款及欠账数据</button></a>
 					<a href="/ERP-NBEmail/helpServlet?action=customerReconciliation&className=CustomerReconciliationSystemServlet" target="_blank"><button>个人客户对账表</button></a>
