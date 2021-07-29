@@ -71,41 +71,44 @@ public void run() {
     cell.setCellStyle(style); 
     cell = row.createCell((short) 12);
     cell.setCellValue("图纸是否上传");  
-    cell.setCellStyle(style); 
+    cell.setCellStyle(style);
     cell = row.createCell((short) 13);
-    cell.setCellValue("技术文档上传");  
+    cell.setCellValue("零件图纸是否上传");
     cell.setCellStyle(style);
     cell = row.createCell((short) 14);
-    cell.setCellValue("项目是否延期");
+    cell.setCellValue("技术文档上传");  
     cell.setCellStyle(style);
     cell = row.createCell((short) 15);
+    cell.setCellValue("项目是否延期");
+    cell.setCellStyle(style);
+    cell = row.createCell((short) 16);
     cell.setCellValue("检验计划是否上传");  
     cell.setCellStyle(style); 
-    cell = row.createCell((short) 16);
+    cell = row.createCell((short) 17);
     cell.setCellValue("样品交期");  
     cell.setCellStyle(style); 
-    cell = row.createCell((short) 17);
+    cell = row.createCell((short) 18);
     cell.setCellValue("大货交期");  
     cell.setCellStyle(style); 
-    cell = row.createCell((short) 18);
+    cell = row.createCell((short) 19);
     cell.setCellValue("检验报告");  
     cell.setCellStyle(style); 
-    cell = row.createCell((short) 19);
+    cell = row.createCell((short) 20);
     cell.setCellValue("检验计划更新");  
     cell.setCellStyle(style); 
-    cell = row.createCell((short) 20);
+    cell = row.createCell((short) 21);
     cell.setCellValue("样品分析会");  
     cell.setCellStyle(style); 
-    cell = row.createCell((short) 21);
+    cell = row.createCell((short) 22);
     cell.setCellValue("大货分析会");  
     cell.setCellStyle(style); 
-    cell = row.createCell((short) 22);
+    cell = row.createCell((short) 23);
     cell.setCellValue("质量反馈");
     cell.setCellStyle(style);
-    cell = row.createCell((short) 23);
+    cell = row.createCell((short) 24);
     cell.setCellValue("项目状态");
     cell.setCellStyle(style);
-    cell = row.createCell((short) 24);
+    cell = row.createCell((short) 25);
     cell.setCellValue("解释");
     cell.setCellStyle(style);
     int total=0;
@@ -177,89 +180,94 @@ public void run() {
    }else{
 	   row.createCell((short) 12).setCellValue("未上传");
    }
+    if(itemCase.getPartTuzhi()!=null){
+        row.createCell((short) 13).setCellValue("已上传");
+    }else{
+        row.createCell((short) 13).setCellValue("未上传");
+    }
     if(itemCase.getTechnicalDocumentation()!=null){
-    	row.createCell((short) 13).setCellValue(itemCase.getTechnicalDocumentation());
+    	row.createCell((short) 14).setCellValue(itemCase.getTechnicalDocumentation());
     }else{
     	if(itemCase.getProjectLevel()==1||itemCase.getProjectLevel()==2){
-    		   row.createCell((short) 13).setCellValue("未上传");
+    		   row.createCell((short) 14).setCellValue("未上传");
     		   }else if(itemCase.getProjectLevel()==3){
-    			   row.createCell((short) 13).setCellValue("C");
+    			   row.createCell((short) 14).setCellValue("C");
     		   }else{
-    			   row.createCell((short) 13).setCellValue("");
+    			   row.createCell((short) 14).setCellValue("");
     		   }
     }
         if(itemCase.getProjectLevel()==1||itemCase.getProjectLevel()==2||itemCase.getProjectLevel()==0){
             if(itemCase.getDelay()==0) {
-                row.createCell((short) 14).setCellValue("无延期");
+                row.createCell((short) 15).setCellValue("无延期");
             }else{
-                row.createCell((short) 14).setCellValue("项目延期");
+                row.createCell((short) 15).setCellValue("项目延期");
             }
         }else{
-            row.createCell((short) 14).setCellValue("C");
+            row.createCell((short) 15).setCellValue("C");
         }
     if(itemCase.getPoId()!=null){
-    	row.createCell((short) 15).setCellValue(itemCase.getPoId());
+    	row.createCell((short) 16).setCellValue(itemCase.getPoId());
     }else{
-    	row.createCell((short) 15).setCellValue("未上传");
+    	row.createCell((short) 16).setCellValue("未上传");
     }
     if(itemCase.getDateSample()!=null){
-    	 row.createCell((short) 16).setCellValue(itemCase.getDateSample());
-    }else{
-    	 row.createCell((short) 16).setCellValue("无");
-    }
-    if(itemCase.getCompletiontime()!=null){
-        String param[]=itemCase.getCompletiontime().split(" ");
-    	 row.createCell((short) 17).setCellValue(param[0]);
+    	 row.createCell((short) 17).setCellValue(itemCase.getDateSample());
     }else{
     	 row.createCell((short) 17).setCellValue("无");
     }
+    if(itemCase.getCompletiontime()!=null){
+        String param[]=itemCase.getCompletiontime().split(" ");
+    	 row.createCell((short) 18).setCellValue(param[0]);
+    }else{
+    	 row.createCell((short) 18).setCellValue("无");
+    }
    if(itemCase.getIntro()!=null){
-	   row.createCell((short) 18).setCellValue(itemCase.getIntro());
+	   row.createCell((short) 19).setCellValue(itemCase.getIntro());
    }else{
-	   row.createCell((short) 18).setCellValue("无");
+	   row.createCell((short) 19).setCellValue("无");
    }
    if(itemCase.getPoId2()!=null){
-	   row.createCell((short) 19).setCellValue(itemCase.getPoId2());
+	   row.createCell((short) 20).setCellValue(itemCase.getPoId2());
    }else{
-	   row.createCell((short) 19).setCellValue("未更新");
+	   row.createCell((short) 20).setCellValue("未更新");
    } 
     if(itemCase.getQpId1()!=null){
-    row.createCell((short) 20).setCellValue(itemCase.getQpId1());
+    row.createCell((short) 21).setCellValue(itemCase.getQpId1());
     }else{
-    	 row.createCell((short) 20).setCellValue("未开");
+    	 row.createCell((short) 21).setCellValue("未开");
     }
     if(itemCase.getQpId2()!=null){
     if("0".equalsIgnoreCase(itemCase.getQpId2())){
-        row.createCell((short) 21).setCellValue("有问题，大于5000美元，未开");
+        row.createCell((short) 22).setCellValue("有问题，大于5000美元，未开");
     }else if("1".equalsIgnoreCase(itemCase.getQpId2())){
-        row.createCell((short) 21).setCellValue("大于5000美元，未开");
+        row.createCell((short) 22).setCellValue("大于5000美元，未开");
     } else if("2".equalsIgnoreCase(itemCase.getQpId2())){
-        row.createCell((short) 21).setCellValue("有问题，未开");
+        row.createCell((short) 22).setCellValue("有问题，未开");
     }else if("3".equalsIgnoreCase(itemCase.getQpId2())){
-        row.createCell((short) 21).setCellValue("无");
+        row.createCell((short) 22).setCellValue("无");
     }  else {
-        row.createCell((short) 21).setCellValue(itemCase.getQpId2());
+        row.createCell((short) 22).setCellValue(itemCase.getQpId2());
     }
     }else{
     	
-    	 row.createCell((short) 21).setCellValue("未开");
+    	 row.createCell((short) 22).setCellValue("未开");
     }
 
     if(itemCase.getFeedbacktime()!=null&&!"".equalsIgnoreCase(itemCase.getFeedbacktime())
     &&!itemCase.getFeedbacktime().toLowerCase().contains("1900")){
 
-        row.createCell((short) 22).setCellValue("客户已反馈，时间:"+itemCase.getFeedbacktime());
+        row.createCell((short) 23).setCellValue("客户已反馈，时间:"+itemCase.getFeedbacktime());
     }
     if(itemCase.getProject_status()==0){
-        row.createCell((short) 23).setCellValue("新项目");
+        row.createCell((short) 24).setCellValue("新项目");
     }else if(itemCase.getProject_status()==1){
-        row.createCell((short) 23).setCellValue("进行中项目");
+        row.createCell((short) 24).setCellValue("进行中项目");
     }else if(itemCase.getProject_status()==2){
-        row.createCell((short) 23).setCellValue("大货完结项目");
+        row.createCell((short) 24).setCellValue("大货完结项目");
     }else if(itemCase.getProject_status()==6){
-        row.createCell((short) 23).setCellValue("样品完结项目");
+        row.createCell((short) 24).setCellValue("样品完结项目");
     }
-        row.createCell((short) 24).setCellValue(itemCase.getRemarks());
+        row.createCell((short) 25).setCellValue(itemCase.getRemarks());
 
 
     }
