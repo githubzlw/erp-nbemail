@@ -104,6 +104,17 @@ public class ItemCase {
     private String technicalDocumentation;
     /** 技术报告*/
     private String remarks;
+
+	public String getPartTuzhi() {
+		return partTuzhi;
+	}
+
+	public void setPartTuzhi(String partTuzhi) {
+		this.partTuzhi = partTuzhi;
+	}
+
+	/** 零件图纸*/
+	private String partTuzhi;
     /** 客户名*/
     private String cusName;
     /** 客户名*/

@@ -7480,12 +7480,12 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		String sql = "select * from(select isNull(PObiao,null)PObiao,isnull(DateSample,null)DateSample,isnull(completiontime,null)completiontime,isnull(pdId,null)pdId,isnull(DrawingName1,null)DrawingName1 "
 				+ " ,isnull(intro,null)intro,isnull(uploader,null)uploader,  "
 				+ "  isnull(uploadtime,null)uploadtime,isnull(intro1,null)intro1,isnull(intro2,null)intro2,isnull(uploader2,null)uploader2,isnull(uploadtime2,null)uploadtime2, "
-				+ "  isnull(zhongwen,null)zhongwen,isnull(zhongwen1,null)zhongwen1,isnull(yingwen,null)yingwen,isnull(BargainNo,null)BargainNo,isnull(EmployeeName1,null)EmployeeName1,isnull(EmployeeName2,null)EmployeeName2,isnull(EmployeeName3,null)EmployeeName3,isnull(UpdateTime1,null)UpdateTime1,"
+				+ "  isnull(zhongwen,null)zhongwen,isnull(up_file_name, NULL) upFileName,isnull(zhongwen1,null)zhongwen1,isnull(yingwen,null)yingwen,isnull(BargainNo,null)BargainNo,isnull(EmployeeName1,null)EmployeeName1,isnull(EmployeeName2,null)EmployeeName2,isnull(EmployeeName3,null)EmployeeName3,isnull(UpdateTime1,null)UpdateTime1,"
 				+ " isnull(UpdateTime2,null)UpdateTime2,isnull(UpdateTime3,null)UpdateTime3,isnull(ProjectLevel,null)ProjectLevel,isnull(potime,null)potime,caseno,isnull(ProductDescC,null)ProductDescC,isnull(ProductDescE,null)ProductDescE, "
 				+ " isnull(CustomerManager,null)CustomerManager,isnull(MerchandManager1,null)MerchandManager1,isnull(MerchandManager2,null)MerchandManager2,Merchandising,OriginalPurchase,MaturePurchase,isnull(ProductState,null)ProductState,isnull(QIC,null)QIC,remarks,feedbacktime,quality_picture "
 				+ " from( "
 				+ "select po.PObiao,m.DateSample,m.completiontime,isnull(x.id,0)pdId,y.DrawingName1,c.intro,c.uploader,convert(varchar(10),c.uploadtime,120)uploadtime,c.intro1,"
-				+ " c.intro2,c.uploader2,convert(varchar(10),c.uploadtime2,120)uploadtime2,n.zhongwen,n.yingwen,yy.zhongwen1,m.BargainNo,qp.EmployeeName1,qp.EmployeeName2,qp.EmployeeName3"
+				+ " c.intro2,c.uploader2,convert(varchar(10),c.uploadtime2,120)uploadtime2,n.zhongwen,p.up_file_name,n.yingwen,yy.zhongwen1,m.BargainNo,qp.EmployeeName1,qp.EmployeeName2,qp.EmployeeName3"
 				+ ",convert(varchar(10),qp.UpdateTime1,120)UpdateTime1,convert(varchar(10),qp.UpdateTime2,120)UpdateTime2,convert(varchar(10),qp.UpdateTime3,120)UpdateTime3, "
 				+ " it.ProjectLevel,convert(nvarchar(10),it.potime,120)potime,a.caseno,it.ProductDescC,it.ProductDescE,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Merchandising,it.OriginalPurchase,it.MaturePurchase,it.ProductState,it.QIC,it.remarks,isnull(z.create_time,'')feedbacktime ,isnull(quality_picture,'')quality_picture from ("
 				+ " select caseno from ( select caseno from itemcase)m where caseno=?   )a "
@@ -7496,7 +7496,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				+ " left join (select CaseNo,min(EmployeeName)EmployeeName3,min(UpdateTime)UpdateTime3 from QuotePrice where CurrentStatus like '%大货分析会%' or CurrentStatus like '%大货验货会%' group by CaseNo )  qp2 on qp2.caseno=qp.CaseNo "
 				+ " )  qp on qp.caseno=a.CaseNo left join ( select a.caseno,a.zhongwen,a.yingwen from ( select caseno,min(tz.zhongwen)zhongwen,min(yingwen)yingwen from tuzhi tz where remark like '%受控版本%'  group by caseno "
 				+ " )a  "
-				+ " )n on n.caseno=a.CaseNo "
+				+ " )n on n.caseno=a.CaseNo LEFT JOIN (SELECT b.caseno,b.up_file_name FROM (SELECT top 1 ptz.caseno,ptz.up_file_name FROM part_tuzhi ptz where ptz.caseno=? order by upload_date desc) b ) p ON p.caseno = a.CaseNo"
 				+ "  left join ( select xx.caseno,isnull(xx.zhongwen,xx.task_system_technical_documentation)zhongwen1 from ( select caseno,min(tz.zhongwen)zhongwen,min(tz.task_system_technical_documentation)task_system_technical_documentation from tuzhi tz where attribute =1  group by caseno "
 				+ " )xx  "
 				+ " )yy on yy.caseno=a.CaseNo"
@@ -7521,7 +7521,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 
 				sql+=" group by PObiao,DateSample,completiontime,pdId,"
-				+ "DrawingName1,intro,uploader,uploadtime,intro1,intro2,uploader2,uploadtime2,zhongwen,yingwen,BargainNo"
+				+ "DrawingName1,intro,uploader,uploadtime,intro1,intro2,uploader2,uploadtime2,zhongwen,up_file_name,yingwen,BargainNo"
 				+ ",EmployeeName1,EmployeeName2,EmployeeName3,UpdateTime1,UpdateTime2,UpdateTime3,ProjectLevel,potime,caseno,"
 				+ "ProductDescC,ProductDescE,CustomerManager,MerchandManager1,MerchandManager2,Merchandising,OriginalPurchase,MaturePurchase,ProductState,QIC,zhongwen1,remarks,feedbacktime,quality_picture)x where 1=1  ";
 
@@ -7537,6 +7537,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 			stmt = conn.prepareStatement(sql);
 			int i=0;
 			stmt.setString(1,it.getCaseNo() );
+            stmt.setString(2,it.getCaseNo() );
 			if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
 				i++;
 				stmt.setString(1+i,it.getCustomerManager() );
@@ -7675,6 +7676,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				itcase.setEngineer2(rs.getString("MaturePurchase"));
 				itcase.setPo(rs.getString("PObiao"));
 				itcase.setRemarks(rs.getString("remarks"));
+                itcase.setPartTuzhi(rs.getString("upFileName"));
 				itcase.setProjectLevel(rs.getInt("projectLevel"));
 				itcase.setPotime(rs.getString("potime"));
 				itcase.setPdId1(rs.getString("DrawingName1"));

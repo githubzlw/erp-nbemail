@@ -353,6 +353,7 @@ function OpenDiv(id,projectId){
 					<td>合同是否做出</td>
 					<td>A/B级项目及延期项目 的项目计划是否做出</td>
 					<td>图纸是否上传</td>
+                    <td>零件图纸是否上传</td>
 					<td>技术文档上传</td>
 					<td>项目是否延期</td>
                     <td>检验计划是否上传</td>
@@ -406,6 +407,7 @@ function OpenDiv(id,projectId){
 					</td>
 					<td><c:if test="${cus.projectLevel==1 || cus.projectLevel==2||cus.projectLevel==0 }"><c:if test="${cus.pdId!=0 }">已上传</c:if><c:if test="${cus.pdId==0 }">未上传</c:if></c:if><c:if test="${cus.projectLevel==3  }">C</c:if></td>	
 					<td><c:if test="${cus.remark!=null }">${cus.remark}</c:if><c:if test="${cus.remark==null }"><span style="color:red;">未上传</span></c:if></td>
+                        <td><c:if test="${cus.partTuzhi!=null }">${cus.partTuzhi}</c:if><c:if test="${cus.partTuzhi==null }"><span style="color:red;">未上传</span></c:if></td>
 
 					<td>
 						<c:if test="${cus.projectLevel==1 || cus.projectLevel==2||cus.projectLevel==0 }">
