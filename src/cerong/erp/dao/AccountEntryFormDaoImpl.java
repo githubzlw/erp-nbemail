@@ -16,6 +16,8 @@ import cerong.erp.entity.AccountEntryForm;
 import cerong.erp.entity.FactoryFund;
 import cerong.erp.entity.PreparatorEntryForm;
 import cerong.erp.jdbc.SQLDBhelper;
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.util.StringUtil;
 
 public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 
@@ -26,7 +28,7 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 	    ResultSet rs = null;
-	   String sql = "  select account.*,isnull(pre.salesSubmission,0)salesSubmission from AccountEntryForm account left join (select AmountClaimFormId,min(salesSubmission)salesSubmission from  PreparatorEntryForm group by AmountClaimFormId) pre on account.id=pre.AmountClaimFormId where account.DataProcessing=0	";
+	   String sql = "  select account.*,isnull(pre.salesSubmission,0)salesSubmission from AccountEntryForm account left join (select AmountClaimFormId,min(salesSubmission)salesSubmission from  PreparatorEntryForm group by AmountClaimFormId) pre on account.id=pre.AmountClaimFormId where account.DataProcessing=0	order by account.TransactionDate desc ";
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
@@ -478,25 +480,37 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 	@Override
 	public List<AccountEntryForm> completionOfMoney(AccountEntryForm account) {
 List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
-		
+
+		if(StringUtils.isEmpty(account.getTransactionDate()) && StringUtils.isEmpty(account.getTransactionEndDate())){
+			return  list;
+		}
 		Connection conn = null;
 		PreparedStatement stmt = null;
 	    ResultSet rs = null;
 	   String sql = " select * from AccountEntryForm where DataProcessing=1	";
 	   if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
-		   sql+=" and transactionDate like ?";
+		   sql+=" and transactionDate >= ?";
 	   }
+		if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
+			sql+=" and transactionDate <= ?";
+		}
 	   if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
 		   sql+=" and (BeneficiaryAccountBank like ? or PayersName like ? or TradeCurrency like ?)";
 	   }
+
+		sql+=" order by transactionDate ";
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
 			int i=0;
 			if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
 				 i++; 
-				 stmt.setString(i, "%"+account.getTransactionDate()+"%");
+				 stmt.setString(i, account.getTransactionDate());
 			   }
+			if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
+				i++;
+				stmt.setString(i, account.getTransactionEndDate());
+			}
 			   if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
 				   i++; 
 					 stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");

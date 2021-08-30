@@ -5,11 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -17,7 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cerong.erp.entity.*;
+import cerong.erp.util.CheckUtil;
 import org.apache.poi.common.usermodel.Hyperlink;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -35,13 +37,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.ibm.icu.math.BigDecimal;
 import com.ibm.icu.text.DecimalFormat;
 
-import cerong.erp.entity.AccountEntryForm;
-import cerong.erp.entity.AmountClaimForm;
-import cerong.erp.entity.ArrivalAccountCorrespondenceTable;
-import cerong.erp.entity.EmailUser;
-import cerong.erp.entity.ItemCase;
-import cerong.erp.entity.ItemCase1;
-import cerong.erp.entity.TuZhi;
 import cerong.erp.service.AccountEntryFormServiceImpl;
 import cerong.erp.service.AmountClaimFormServiceImpl;
 import cerong.erp.service.IAccountEntryFormService;
@@ -55,390 +50,476 @@ import cerong.erp.util.PathUtil;
 import cerong.erp.util.ReadExcelUtils;
 
 
-public class AccountEntryFormServlet extends HttpServlet{
-	IAmountClaimFormService acservice =new AmountClaimFormServiceImpl();
-	IAccountEntryFormService service =new AccountEntryFormServiceImpl();
-	IPreparatorEntryFormService pservice=new PreparatorEntryFormServiceImpl();
+public class AccountEntryFormServlet extends HttpServlet {
+	IAmountClaimFormService acservice = new AmountClaimFormServiceImpl();
+	IAccountEntryFormService service = new AccountEntryFormServiceImpl();
+	IPreparatorEntryFormService pservice = new PreparatorEntryFormServiceImpl();
 	ItCaseIdServiceImpl iservice = new ItCaseIdService();
+
 	/**
-	 * 
-	 * @Title:AccountEntryFormServlet
-	 * @Description:进入到账录入页面
-	   @author wangyang
 	 * @param request
 	 * @param response
 	 * @throws ServletException
-	 * @throws IOException void
+	 * @throws IOException      void
 	 * @throws
+	 * @Title:AccountEntryFormServlet
+	 * @Description:进入到账录入页面
+	 * @author wangyang
 	 */
-	
+
 	public void accounEntry(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-	    String EmpEName=null;
-		String EmpPWD=null;
-		Cookie c[]=request.getCookies();
-		if(c!=null)
-		{
-		for(int x=0;x<c.length;x++){
-		if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
-			EmpPWD=c[x].getValue();
-					}	
-			
-		if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
-		{
-		EmpEName=c[x].getValue();
+		String EmpEName = null;
+		String EmpPWD = null;
+		Cookie c[] = request.getCookies();
+		if (c != null) {
+			for (int x = 0; x < c.length; x++) {
+				if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+					EmpPWD = c[x].getValue();
+				}
+
+				if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+					EmpEName = c[x].getValue();
+				}
+			}
 		}
-	} 
-		}
-		EmailUser user1=new EmailUser();
+		EmailUser user1 = new EmailUser();
 		user1.setUserName(EmpEName);
 		user1.setPwd(EmpPWD);
 		request.setAttribute("user", user1);
-		if(user1!=null){
-			
-		   String s2 = "ands";
-			Boolean index2=false;
+		if (user1 != null) {
+
+			String s2 = "ands";
+			Boolean index2 = false;
 			index2 = s2.toLowerCase().contains(user1.getUserName().toLowerCase());
-		   if(index2!=false){
-			request.setAttribute("roleNO", 99);
-		     }else{
-		    	request.setAttribute("roleNO", 5);	 
-		     }
-		   String s1 = "mandymanlisaliShiGuoJuanroseli";
-			Boolean index1=false;
+			if (index2 != false) {
+				request.setAttribute("roleNO", 99);
+			} else {
+				request.setAttribute("roleNO", 5);
+			}
+			String s1 = "mandymanlisaliShiGuoJuanroseli";
+			Boolean index1 = false;
 			index1 = s1.toLowerCase().contains(user1.getUserName().toLowerCase());
-		   if(index1!=false){
-			request.setAttribute("roleNO", 100);
-		     }
-		   List<AccountEntryForm> list=service.accounEntry();
-			request.setAttribute("cusList",list );
+			if (index1 != false) {
+				request.setAttribute("roleNO", 100);
+			}
+			List<AccountEntryForm> list = service.accounEntry();
+			request.setAttribute("cusList", list);
 			request.getRequestDispatcher("jsp/accoun_entry.jsp").forward(request, response);
 		}
-	
+
 	}
+
 	/**
-	 * 
-	 * @Title:AccountEntryFormServlet
-	 * @Description:查看已审批列表页
-	   @author wangyang
 	 * @param request
 	 * @param response
 	 * @throws ServletException
-	 * @throws IOException void
+	 * @throws IOException      void
 	 * @throws
+	 * @Title:AccountEntryFormServlet
+	 * @Description:查看已审批列表页
+	 * @author wangyang
 	 */
 	public void completionOfMoney(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		String EmpEName=null;
-		String EmpPWD=null;
-		Cookie c[]=request.getCookies();
-		if(c!=null)
-		{
-			for(int x=0;x<c.length;x++){
-				if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
-					EmpPWD=c[x].getValue();
-				}	
-				
-				if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
-				{
-					EmpEName=c[x].getValue();
+		String EmpEName = null;
+		String EmpPWD = null;
+		Cookie c[] = request.getCookies();
+		if (c != null) {
+			for (int x = 0; x < c.length; x++) {
+				if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+					EmpPWD = c[x].getValue();
 				}
-			} 
+
+				if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+					EmpEName = c[x].getValue();
+				}
+			}
 		}
-		EmailUser user1=new EmailUser();
+		EmailUser user1 = new EmailUser();
 		user1.setUserName(EmpEName);
 		user1.setPwd(EmpPWD);
 		request.setAttribute("user", user1);
-		if(user1!=null){
+		if (user1 != null) {
 			String s1 = "mandymanlisaliShiGuoJuanroseli";
-			Boolean index1=false;
+			Boolean index1 = false;
 			index1 = s1.toLowerCase().contains(user1.getUserName().toLowerCase());
-			if(index1!=false){
+			if (index1 != false) {
 				request.setAttribute("roleNO", 100);
 			}
-			String bank=request.getParameter("bank");
-			String time1=request.getParameter("time1");
-			AccountEntryForm accountEntryForm=new AccountEntryForm();
-			if(bank!=null&&!"".equalsIgnoreCase(bank)){
-				bank = new String(bank.getBytes("iso-8859-1"),"UTF-8");
+			String bank = request.getParameter("bank");
+			String time1 = request.getParameter("time1");
+			String time2 = request.getParameter("time2");
+			AccountEntryForm accountEntryForm = new AccountEntryForm();
+			if (bank != null && !"".equalsIgnoreCase(bank)) {
+				bank = new String(bank.getBytes("iso-8859-1"), "UTF-8");
 				accountEntryForm.setBeneficiaryAccountBank(bank);
-				request.setAttribute("bank",bank );
+				request.setAttribute("bank", bank);
 			}
-			if(time1!=null&&!"".equalsIgnoreCase(time1)){
+			if (time1 != null && !"".equalsIgnoreCase(time1)) {
 				accountEntryForm.setTransactionDate(time1);
-				request.setAttribute("time1",time1 );
+				request.setAttribute("time1", time1);
 			}
-			
-			List<AccountEntryForm> list=service.completionOfMoney(accountEntryForm);
-			request.setAttribute("cusList",list );
+			if (time2 != null && !"".equalsIgnoreCase(time2)) {
+				accountEntryForm.setTransactionEndDate(time2);
+				request.setAttribute("time2", time2);
+			}
+
+			List<AccountEntryForm> list = service.completionOfMoney(accountEntryForm);
+
+			// excel 下载
+			File storefile = new File(PathUtil.FirstParagraph,"completionData.xls");
+
+			for(int i=0;storefile.exists();i++){
+				storefile.delete();
+			}
+			// 第一步，创建一个webbook，对应一个Excel文件
+			HSSFWorkbook wb = new HSSFWorkbook();
+			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+			HSSFSheet sheet = wb.createSheet("美元待核查");
+			// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+			HSSFRow row = sheet.createRow((int) 0);
+			// 第四步，创建单元格，并设置值表头 设置表头居中
+			HSSFCellStyle style = wb.createCellStyle();
+			style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+			HSSFCell cell = row.createCell((short) 0);
+
+			cell.setCellValue("付款人名称");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 1);
+			cell.setCellValue("交易日期");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 2);
+			cell.setCellValue("货币");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 3);
+			cell.setCellValue("交易金额");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 4);
+			cell.setCellValue("项目号");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 5);
+			cell.setCellValue("出口日期");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 6);
+			cell.setCellValue("出口国家");
+			cell.setCellStyle(style);
+
+//			cell.setCellValue("原因");
+//			cell.setCellStyle(style);
+
+//			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+
+			for (int i = 0; i < list.size(); i++)
+			{
+				row = sheet.createRow((int) i + 1);
+				AccountEntryForm sc=list.get(i);
+				// 第四步，创建单元格，并设置值
+				row.createCell((short) 0).setCellValue(sc.getPayersName());
+				row.createCell((short) 1).setCellValue(sc.getTransactionDate());
+				row.createCell((short) 2).setCellValue(sc.getTradeCurrency());
+				row.createCell((short) 3).setCellValue(sc.getTradeAmount());
+
+
+				List<AmountClaimForm> amountClaimFormList=sc.getAmountClaimForm();
+				String invoiceS="";
+				HashMap map = new HashMap();
+				for (int j = 0; j < amountClaimFormList.size(); j++){
+					AmountClaimForm amountClaimForm=amountClaimFormList.get(j);
+
+					invoiceS = amountClaimForm.getInvoice().replaceAll("INV","SHS").replaceAll("inv","SHS");
+					invoiceS = invoiceS.substring(0,invoiceS.length()-1);
+
+					if(!map.containsKey(invoiceS)){
+						map.put(invoiceS,invoiceS);
+					}
+					row.createCell((short) 5).setCellValue(amountClaimForm.getExportYear()+"-"+amountClaimForm.getExportMonth());
+					row.createCell((short) 6).setCellValue(CheckUtil.getCountyName(amountClaimForm.getCountry()));
+				}
+
+				List<String> result = new ArrayList(map.keySet());
+				row.createCell((short) 4).setCellValue(result.toString());
+
+
+			}
+			// 第六步，将文件存到指定位置
+			try
+			{
+				FileOutputStream fout = new FileOutputStream(PathUtil.FirstParagraph+File.separator+"completionData.xls");
+				wb.write(fout);
+				fout.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+
+
+
+
+			request.setAttribute("cusList", list);
 			request.getRequestDispatcher("jsp/completion_of_money.jsp").forward(request, response);
 		}
-		
+
 	}
+
+
 	/**
-	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException      void
+	 * @throws
 	 * @Title:AccountEntryFormServlet
 	 * @Description:上传excel表到数据库
-	   @author wangyang
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException void
-	 * @throws
+	 * @author wangyang
 	 */
-	public void UploadForm (HttpServletRequest request, HttpServletResponse response)
+	public void UploadForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		AccountEntryUpLoad.upload(request, response);
-		String payBank=(String) request.getAttribute("payBank");
-		String EmpEName=null;
-		String EmpPWD=null;
-		Cookie c[]=request.getCookies();
-		if(c!=null)
-		{
-		for(int x=0;x<c.length;x++){
-		if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
-			EmpPWD=c[x].getValue();
-					}	
-			
-		if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
-		{
-		EmpEName=c[x].getValue();
+		String payBank = (String) request.getAttribute("payBank");
+		String EmpEName = null;
+		String EmpPWD = null;
+		Cookie c[] = request.getCookies();
+		if (c != null) {
+			for (int x = 0; x < c.length; x++) {
+				if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+					EmpPWD = c[x].getValue();
+				}
+
+				if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+					EmpEName = c[x].getValue();
+				}
+			}
 		}
-	} 
-		}
-		EmailUser user1=new EmailUser();
+		EmailUser user1 = new EmailUser();
 		user1.setUserName(EmpEName);
 		user1.setPwd(EmpPWD);
-		AccountEntryForm account=new AccountEntryForm();
-		String fileName="";
-		 Map<String, String> map = (Map<String, String>) request.getAttribute("map");
-		  //准备参数map
-		if(map != null && map.size() > 0) {//说明之前的附件没有检测到敏感字符  将所有的附件信息保存到数据库
+		AccountEntryForm account = new AccountEntryForm();
+		String fileName = "";
+		Map<String, String> map = (Map<String, String>) request.getAttribute("map");
+		//准备参数map
+		if (map != null && map.size() > 0) {//说明之前的附件没有检测到敏感字符  将所有的附件信息保存到数据库
 			Set<String> keySet = map.keySet();
-		    	for (String key : keySet) {
-		    		String value = map.get(key);
-		    		fileName=value;
-		    	}
+			for (String key : keySet) {
+				String value = map.get(key);
+				fileName = value;
+			}
 		}
 		String path = PathUtil.FirstParagraph;
-		File storefile = new File(path,fileName);
-		String filepath=path+File.separator+fileName;
-        ReadExcelUtils excelReader = new ReadExcelUtils(filepath);
-       
-       try{
-    	  
-        // 对读取Excel表格内容测试
-        Map<Integer, Map<Integer,Object>> map1 = excelReader.readExcelContent();
-        for (int name : map1.keySet()) {
-        	 int key =  name;
-        	 Map<Integer, Object> map2 = map1.get(key);
-             for (int name1 : map2.keySet()) {
-            	 int keya =  name1;
-             	String value = (String) map2.get(keya);
-             	if(keya==4){
-             		account.setPayeeAccount(value);
-                }else if(keya==5){
-                	value=value.replaceAll(",", "");
-                	account.setPayersName(value);
-                }else if(keya==7){
-                	account.setBeneficiaryAccountBank(value);
-               }else if(keya==10){
-               	account.setTransactionDate(value);
-              }else if(keya==12){
-              	account.setTradeCurrency(value);
-             }else if(keya==13){
-            	 double id = 0.000;//默认是第一页
-         		if(value != null && !"".equals(value)) {
-         			id = Double.parseDouble(value);
-         		}
-             	account.setTradeAmount(id);
-            }else if(keya==17){
-            	account.setTransactionReferenceNumber(value);
-           }else if(keya==25){
-           	account.setRemark(value);
-          }
-             		
-             }
-           String PayersName= account.getPayersName();
-           
-         ArrivalAccountCorrespondenceTable arrival=service.getall(PayersName);
-         if(arrival!=null){
-         account.setnBEmailId(arrival.getCustomerId());
-         String Conjecture="";
-         if(arrival.getCustomerManager()!=null&&!"".equalsIgnoreCase(arrival.getCustomerManager())&&!"null".equalsIgnoreCase(arrival.getCustomerManager())){
-        	 Conjecture+= arrival.getCustomerManager();
-         }
-         if(arrival.getMerchandManager1()!=null&&!"".equalsIgnoreCase(arrival.getMerchandManager1())&&!"null".equalsIgnoreCase(arrival.getMerchandManager1())){
-        	 Conjecture+=";"+ arrival.getMerchandManager1();
-         }
-         if(arrival.getMerchandising()!=null&&!"".equalsIgnoreCase(arrival.getMerchandising())&&!"null".equalsIgnoreCase(arrival.getMerchandising())){
-        	 Conjecture+=";"+ arrival.getMerchandising();
-         }
-         account.setConjecture(Conjecture);
-         }else{
-        	 account.setnBEmailId(0);
-        	 account.setConjecture(null);
-         }
-         service.add(account);
-        }
-        
-        response.sendRedirect("/ERP-NBEmail/helpServlet?action=accounEntry&className=AccountEntryFormServlet");
-       }catch(Exception e){
-    	   
-       }
+		File storefile = new File(path, fileName);
+		String filepath = path + File.separator + fileName;
+		ReadExcelUtils excelReader = new ReadExcelUtils(filepath);
+
+		try {
+
+			// 对读取Excel表格内容测试
+			Map<Integer, Map<Integer, Object>> map1 = excelReader.readExcelContent();
+			for (int name : map1.keySet()) {
+				int key = name;
+				Map<Integer, Object> map2 = map1.get(key);
+				for (int name1 : map2.keySet()) {
+					int keya = name1;
+					String value = (String) map2.get(keya);
+					if (keya == 4) {
+						account.setPayeeAccount(value);
+					} else if (keya == 5) {
+						value = value.replaceAll(",", "");
+						account.setPayersName(value);
+					} else if (keya == 7) {
+						account.setBeneficiaryAccountBank(value);
+					} else if (keya == 10) {
+						account.setTransactionDate(value);
+					} else if (keya == 12) {
+						account.setTradeCurrency(value);
+					} else if (keya == 13) {
+						double id = 0.000;//默认是第一页
+						if (value != null && !"".equals(value)) {
+							id = Double.parseDouble(value);
+						}
+						account.setTradeAmount(id);
+					} else if (keya == 17) {
+						account.setTransactionReferenceNumber(value);
+					} else if (keya == 25) {
+						account.setRemark(value);
+					}
+
+				}
+				String PayersName = account.getPayersName();
+
+				ArrivalAccountCorrespondenceTable arrival = service.getall(PayersName);
+				if (arrival != null) {
+					account.setnBEmailId(arrival.getCustomerId());
+					String Conjecture = "";
+					if (arrival.getCustomerManager() != null && !"".equalsIgnoreCase(arrival.getCustomerManager()) && !"null".equalsIgnoreCase(arrival.getCustomerManager())) {
+						Conjecture += arrival.getCustomerManager();
+					}
+					if (arrival.getMerchandManager1() != null && !"".equalsIgnoreCase(arrival.getMerchandManager1()) && !"null".equalsIgnoreCase(arrival.getMerchandManager1())) {
+						Conjecture += ";" + arrival.getMerchandManager1();
+					}
+					if (arrival.getMerchandising() != null && !"".equalsIgnoreCase(arrival.getMerchandising()) && !"null".equalsIgnoreCase(arrival.getMerchandising())) {
+						Conjecture += ";" + arrival.getMerchandising();
+					}
+					account.setConjecture(Conjecture);
+				} else {
+					account.setnBEmailId(0);
+					account.setConjecture(null);
+				}
+				service.add(account);
+			}
+
+			response.sendRedirect("/ERP-NBEmail/helpServlet?action=accounEntry&className=AccountEntryFormServlet");
+		} catch (Exception e) {
+
+		}
 	}
+
 	/**
-	 * 
-	 * @Title:AccountEntryFormServlet
-	 * @Description:信息还原
-	   @author wangyang
 	 * @param request
 	 * @param response
 	 * @throws ServletException
-	 * @throws IOException void
+	 * @throws IOException      void
 	 * @throws
+	 * @Title:AccountEntryFormServlet
+	 * @Description:信息还原
+	 * @author wangyang
 	 */
 	public void recoveryInformation(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-	    String EmpEName=null;
-		String EmpPWD=null;
-		Cookie c[]=request.getCookies();
-		if(c!=null)
-		{
-		for(int x=0;x<c.length;x++){
-		if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
-			EmpPWD=c[x].getValue();
-					}	
-			
-		if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
-		{
-		EmpEName=c[x].getValue();
+		String EmpEName = null;
+		String EmpPWD = null;
+		Cookie c[] = request.getCookies();
+		if (c != null) {
+			for (int x = 0; x < c.length; x++) {
+				if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+					EmpPWD = c[x].getValue();
+				}
+
+				if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+					EmpEName = c[x].getValue();
+				}
+			}
 		}
-	} 
-		}
-		EmailUser user1=new EmailUser();
+		EmailUser user1 = new EmailUser();
 		user1.setUserName(EmpEName);
 		user1.setPwd(EmpPWD);
 		request.setAttribute("user", user1);
-		
-		String id1=request.getParameter("id");
-		int id=0;
-		if(id1!=null&&!"".equals(id1)){
-			id=Integer.parseInt(id1);
+
+		String id1 = request.getParameter("id");
+		int id = 0;
+		if (id1 != null && !"".equals(id1)) {
+			id = Integer.parseInt(id1);
 		}
-		int total1=service.recoveryInformation(id);
-		int total2=acservice.recoveryInformation(id);
-		int total3=pservice.recoveryInformation(id);
-		if(user1!=null){
+		int total1 = service.recoveryInformation(id);
+		int total2 = acservice.recoveryInformation(id);
+		int total3 = pservice.recoveryInformation(id);
+		if (user1 != null) {
 			String s1 = "mandymanlisaliShiGuoJuanroseli";
-			Boolean index1=false;
+			Boolean index1 = false;
 			index1 = s1.toLowerCase().contains(user1.getUserName().toLowerCase());
-		   if(index1!=false){
-			request.setAttribute("roleNO", 100);
-		     }
-		    List<AccountEntryForm> list=service.accounEntry();
-			request.setAttribute("cusList",list );
+			if (index1 != false) {
+				request.setAttribute("roleNO", 100);
+			}
+			List<AccountEntryForm> list = service.accounEntry();
+			request.setAttribute("cusList", list);
 			request.getRequestDispatcher("jsp/accoun_entry.jsp").forward(request, response);
 		}
-	
+
 	}
+
 	/**
-	 * 
-	 * @Title:AccountEntryFormServlet
-	 * @Description:客户关联表录入
-	   @author wangyang
 	 * @param request
 	 * @param response
 	 * @throws ServletException
-	 * @throws IOException void
+	 * @throws IOException      void
 	 * @throws
+	 * @Title:AccountEntryFormServlet
+	 * @Description:客户关联表录入
+	 * @author wangyang
 	 */
 	public void insertCustomer(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		String EmpEName=null;
-		String EmpPWD=null;
-		Cookie c[]=request.getCookies();
-		if(c!=null)
-		{
-			for(int x=0;x<c.length;x++){
-				if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
-					EmpPWD=c[x].getValue();
-				}	
-				
-				if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
-				{
-					EmpEName=c[x].getValue();
+		String EmpEName = null;
+		String EmpPWD = null;
+		Cookie c[] = request.getCookies();
+		if (c != null) {
+			for (int x = 0; x < c.length; x++) {
+				if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+					EmpPWD = c[x].getValue();
 				}
-			} 
+
+				if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+					EmpEName = c[x].getValue();
+				}
+			}
 		}
-		EmailUser user1=new EmailUser();
+		EmailUser user1 = new EmailUser();
 		user1.setUserName(EmpEName);
 		user1.setPwd(EmpPWD);
 		request.setAttribute("user", user1);
-		if(user1!=null){
+		if (user1 != null) {
 			String s1 = "mandymanlisaliShiGuoJuanroseli";
-			Boolean index1=false;
+			Boolean index1 = false;
 			index1 = s1.toLowerCase().contains(user1.getUserName().toLowerCase());
-			if(index1!=false){
+			if (index1 != false) {
 				request.getRequestDispatcher("jsp/insert_customer.jsp").forward(request, response);
 			}
 		}
 	}
+
 	/**
-	 * 
-	 * @Title:AccountEntryFormServlet
-	 * @Description:批量认领数据
-	   @author wangyang
 	 * @param request
 	 * @param response
 	 * @throws ServletException
-	 * @throws IOException void
+	 * @throws IOException      void
 	 * @throws
+	 * @Title:AccountEntryFormServlet
+	 * @Description:批量认领数据
+	 * @author wangyang
 	 */
 	public void insertEnteryCustomer(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		String EmpEName=null;
-		String EmpPWD=null;
-		Cookie c[]=request.getCookies();
-		if(c!=null)
-		{
-			for(int x=0;x<c.length;x++){
-				if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
-					EmpPWD=c[x].getValue();
-				}	
-				
-				if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
-				{
-					EmpEName=c[x].getValue();
+		String EmpEName = null;
+		String EmpPWD = null;
+		Cookie c[] = request.getCookies();
+		if (c != null) {
+			for (int x = 0; x < c.length; x++) {
+				if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+					EmpPWD = c[x].getValue();
 				}
-			} 
+
+				if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+					EmpEName = c[x].getValue();
+				}
+			}
 		}
-		EmailUser user1=new EmailUser();
+		EmailUser user1 = new EmailUser();
 		user1.setUserName(EmpEName);
 		user1.setPwd(EmpPWD);
 		request.setAttribute("user", user1);
-		String customerName=request.getParameter("customerName");
-		String kingdee1=request.getParameter("kingdee");
-		String kingName=request.getParameter("kingName");
-		String CasNo=request.getParameter("CasNo");
-		String country1=request.getParameter("country1");
-		String abbreviation=request.getParameter("abbreviation");
-		int kingdee=0;
-		if(kingdee1!=null&&!"".equals(kingdee1)){
-			kingdee=Integer.parseInt(kingdee1);
+		String customerName = request.getParameter("customerName");
+		String kingdee1 = request.getParameter("kingdee");
+		String kingName = request.getParameter("kingName");
+		String CasNo = request.getParameter("CasNo");
+		String country1 = request.getParameter("country1");
+		String abbreviation = request.getParameter("abbreviation");
+		int kingdee = 0;
+		if (kingdee1 != null && !"".equals(kingdee1)) {
+			kingdee = Integer.parseInt(kingdee1);
 		}
-		int country=0;
-		if(country1!=null&&!"".equals(country1)){
-			country=Integer.parseInt(country1);
+		int country = 0;
+		if (country1 != null && !"".equals(country1)) {
+			country = Integer.parseInt(country1);
 		}
 
-		ItemCase it=iservice.getall(CasNo);
-		ArrivalAccountCorrespondenceTable account=new ArrivalAccountCorrespondenceTable();
+		ItemCase it = iservice.getall(CasNo);
+		ArrivalAccountCorrespondenceTable account = new ArrivalAccountCorrespondenceTable();
 		account.setCustomerId(it.getCid());
 		account.setName(customerName);
 		account.setProjectId(CasNo);
@@ -446,141 +527,138 @@ public class AccountEntryFormServlet extends HttpServlet{
 		account.setKingName(kingName);
 		account.setCountry(country);
 		account.setAbbreviation(abbreviation);
-		int total=service.addAccount(account);
-		if(total>0){
+		int total = service.addAccount(account);
+		if (total > 0) {
 			out.write("<script>");
 			out.write("alert('成功录入客户关系');");
 			out.write("window.location.href='/ERP-NBEmail/helpServlet?action=enterTheCustomerRelevanceTableIntoTheAccount&className=InvoiceServlet'");
 			out.write("</script>");
-		}else{
+		} else {
 			out.write("<script>");
 			out.write("alert('录入客户关系失败');");
 			out.write("window.location.href='/ERP-NBEmail/helpServlet?action=enterTheCustomerRelevanceTableIntoTheAccount&className=InvoiceServlet'");
 			out.write("</script>");
 		}
-		
+
 	}
+
 	/**
-	 * 
-	 * @Title:AccountEntryFormServlet
-	 * @Description:删除数据
-	   @author wangyang
 	 * @param request
 	 * @param response
 	 * @throws ServletException
-	 * @throws IOException void
+	 * @throws IOException      void
 	 * @throws
+	 * @Title:AccountEntryFormServlet
+	 * @Description:删除数据
+	 * @author wangyang
 	 */
 	public void deleteAccountEntry(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		String EmpEName=null;
-		String EmpPWD=null;
-		Cookie c[]=request.getCookies();
-		if(c!=null)
-		{
-			for(int x=0;x<c.length;x++){
-				if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
-					EmpPWD=c[x].getValue();
-				}	
-				
-				if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
-				{
-					EmpEName=c[x].getValue();
+		String EmpEName = null;
+		String EmpPWD = null;
+		Cookie c[] = request.getCookies();
+		if (c != null) {
+			for (int x = 0; x < c.length; x++) {
+				if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+					EmpPWD = c[x].getValue();
 				}
-			} 
+
+				if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+					EmpEName = c[x].getValue();
+				}
+			}
 		}
-		EmailUser user1=new EmailUser();
+		EmailUser user1 = new EmailUser();
 		user1.setUserName(EmpEName);
 		user1.setPwd(EmpPWD);
 		request.setAttribute("user", user1);
-		String id1=request.getParameter("id");
-		int id=0;
-		if(id1!=null&&!"".equals(id1)){
-			id=Integer.parseInt(id1);
+		String id1 = request.getParameter("id");
+		int id = 0;
+		if (id1 != null && !"".equals(id1)) {
+			id = Integer.parseInt(id1);
 		}
-		int total=service.deleteAccount(id);
-		if(total>0){
+		int total = service.deleteAccount(id);
+		if (total > 0) {
 			out.write("YES");
-		}else{
+		} else {
 			out.write("NO");
 		}
 	}
+
 	/**
-	 * 
-	 * @Title:AccountEntryFormServlet
-	 * @Description:修改客户属性
-	   @author wangyang
 	 * @param request
 	 * @param response
 	 * @throws ServletException
-	 * @throws IOException void
+	 * @throws IOException      void
 	 * @throws
+	 * @Title:AccountEntryFormServlet
+	 * @Description:修改客户属性
+	 * @author wangyang
 	 */
 	public void updateAccountEntry(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		PrintWriter out = response.getWriter();
-		String EmpEName=null;
-		String EmpPWD=null;
-		Cookie c[]=request.getCookies();
-		if(c!=null)
-		{
-			for(int x=0;x<c.length;x++){
-				if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
-					EmpPWD=c[x].getValue();
-				}	
-				
-				if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
-				{
-					EmpEName=c[x].getValue();
+		String EmpEName = null;
+		String EmpPWD = null;
+		Cookie c[] = request.getCookies();
+		if (c != null) {
+			for (int x = 0; x < c.length; x++) {
+				if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+					EmpPWD = c[x].getValue();
 				}
-			} 
+
+				if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+					EmpEName = c[x].getValue();
+				}
+			}
 		}
-		EmailUser user1=new EmailUser();
+		EmailUser user1 = new EmailUser();
 		user1.setUserName(EmpEName);
 		user1.setPwd(EmpPWD);
 		request.setAttribute("user", user1);
-		String id1=request.getParameter("id");
-		String num1=request.getParameter("num");
-		String allreason=request.getParameter("allreason");
+		String id1 = request.getParameter("id");
+		String num1 = request.getParameter("num");
+		String allreason = request.getParameter("allreason");
 
-		AccountEntryForm entry=new AccountEntryForm();
-		int id=0;
-		if(id1!=null&&!"".equals(id1)){
-			id=Integer.parseInt(id1);
+		AccountEntryForm entry = new AccountEntryForm();
+		int id = 0;
+		if (id1 != null && !"".equals(id1)) {
+			id = Integer.parseInt(id1);
 			entry.setId(id);
 		}
-		int num=0;
-		if(num1!=null&&!"".equals(num1)){
-			num=Integer.parseInt(num1);
+		int num = 0;
+		if (num1 != null && !"".equals(num1)) {
+			num = Integer.parseInt(num1);
 			entry.setNewCustomer(num);
-		}else{
+		} else {
 			entry.setNewCustomer(-1);
 		}
-		if(allreason!=null&&!"".equalsIgnoreCase(allreason)){
-			allreason=new String(allreason.getBytes("iso-8859-1"),"utf-8");
+		if (allreason != null && !"".equalsIgnoreCase(allreason)) {
+			allreason = new String(allreason.getBytes("iso-8859-1"), "utf-8");
 			entry.setReason(allreason);
 		}
 		entry.setEntryPerson(EmpEName);
-		int total=service.updateAccountEntry(entry);
-		if(total>0){
+		int total = service.updateAccountEntry(entry);
+		if (total > 0) {
 			out.write("YES");
-		}else{
+		} else {
 			out.write("NO");
 		}
 	}
-	/**
-	 * 
-	 * @Title:AccountEntryFormServlet
-	 * @Description:导出excel表
-	   @author wangyang
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException void
-	 * @throws
-	 */
+
+			/**
+             *
+             * @Title:AccountEntryFormServlet
+             * @Description:导出excel表
+               @author wangyang
+             * @param request
+             * @param response
+             * @throws ServletException
+             * @throws IOException void
+             * @throws
+             */
 	public void exportReceiptForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();

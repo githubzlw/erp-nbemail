@@ -12,6 +12,16 @@ public class AccountEntryForm {
 	private int id;
 	/**进账日期 */
 	private String transactionDate;
+
+	public String getTransactionEndDate() {
+		return transactionEndDate;
+	}
+
+	public void setTransactionEndDate(String transactionEndDate) {
+		this.transactionEndDate = transactionEndDate;
+	}
+
+	private String transactionEndDate;
 	/**银行交易号 */
 	private String transactionReferenceNumber;
 	/** 进账金额 */

@@ -215,4 +215,92 @@ public class CheckUtil {
     	boolean find = m.find();
     	return find;
     }
+
+
+	public static String getCountyName(int coutryId) {
+
+		String couryName="";
+		switch(coutryId){
+			case 1:
+				couryName="USA";
+				break;
+			case 2:
+				couryName="Canada";
+				break;
+			case 3:
+				couryName="France";
+				break;
+			case 4:
+				couryName="Germany";
+				break;
+			case 5:
+				couryName="Netherlands";
+				break;
+			case 6:
+				couryName="Israel";
+				break;
+			case 7:
+				couryName="Mexico";
+				break;
+			case 8:
+				couryName="Australia";
+				break;
+			case 9:
+				couryName="Italy";
+				break;
+			case 10:
+				couryName="Switzerland";
+				break;
+			case 11:
+				couryName="Finland";
+				break;
+			case 12:
+				couryName="Sweden";
+				break;
+			case 13:
+				couryName="UK";
+				break;
+			case 14:
+				couryName="Argentina";
+				break;
+			case 15:
+				couryName="Other";
+				break;
+			case 16:
+				couryName="Japan";
+				break;
+			case 17:
+				couryName="China";
+				break;
+			case 18:
+				couryName="Austria";
+				break;
+			case 19:
+				couryName="Saudi Arabia";
+				break;
+			case 20:
+				couryName="Belgium";
+				break;
+			case 21:
+				couryName="Spain";
+				break;
+			case 22:
+				couryName="New Zealand";
+				break;
+			case 23:
+				couryName="Slovenia";
+				break;
+			case 24:
+				couryName="Serbia";
+				break;
+			case 25:
+				couryName="Ireland";
+				break;
+
+			default:
+				couryName="";
+		}
+		return couryName;
+	}
+
 }

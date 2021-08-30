@@ -118,38 +118,54 @@ var checkCustomer =function(){
 	<div class="usechange">
 	<h2>到账录入完成页面</h2>
 		<div>
-          <table >
-            <tr>
-					<td>汇款人名<input type="text" id="customerName" name="customerName"></td>
-					<td><input type="button" value="查询" onclick="checkCustomer();"><span id="notes"></span></td>
-					</tr>
-				</table>
-			<form action="/ERP-NBEmail/helpServlet?action=exportReceiptForm&className=AccountEntryFormServlet" method="post">
-            <table >
-              <tr>
-				<td>数据编号<input type="text" id="fNumber" name="fNumber"></td>
-				<td>当月汇率<input type="text" id="exchangeRate" name="exchangeRate"></td>
-				<td>日期<input type="text" readonly class="Wdate" id="time1"
-								name="time1" value="${starttime }"
-								onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />(全部必填)</td>
-				<td><input type="submit"  value="导出金蝶Excel表格">
-				</td>
-				</tr>	
-				</table>	
-			</form>
+<%--          <table >--%>
+<%--            <tr>--%>
+<%--					<td>汇款人名<input type="text" id="customerName" name="customerName"></td>--%>
+<%--					<td><input type="button" value="查询" onclick="checkCustomer();"><span id="notes"></span></td>--%>
+<%--					</tr>--%>
+<%--				</table>--%>
+<%--			<form action="/ERP-NBEmail/helpServlet?action=exportReceiptForm&className=AccountEntryFormServlet" method="post">--%>
+<%--            <table >--%>
+<%--              <tr>--%>
+<%--				<td>数据编号<input type="text" id="fNumber" name="fNumber"></td>--%>
+<%--				<td>当月汇率<input type="text" id="exchangeRate" name="exchangeRate"></td>--%>
+<%--				<td>日期<input type="text" readonly class="Wdate" id="time1"--%>
+<%--								name="time1" value="${starttime }"--%>
+<%--								onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />(全部必填)</td>--%>
+<%--				<td><input type="submit"  value="导出金蝶Excel表格">--%>
+<%--				</td>--%>
+<%--				</tr>	--%>
+<%--				</table>	--%>
+<%--			</form>--%>
 		<form action="/ERP-NBEmail/helpServlet?action=completionOfMoney&className=AccountEntryFormServlet" method="post">
             <table >
               <tr>
-				<td><input type="text" id="bank" name="bank" value="${bank }"></td>
-				<td>日期查询<input type="text" readonly class="Wdate" id="time1"
-								name="time1" value="${starttime }" value="${time1 }"
+<%--				<td><input type="text" id="bank" name="bank" value="${bank }"></td>--%>
+				<td>日期必须输入<input type="text" readonly class="Wdate" id="time1"
+							   name="time1"  value="${time1 }"
+							   onfocus="WdatePicker({dateFmt:'yyyyMMdd'})" />
+					~
+					<input type="text" readonly class="Wdate" id="time2"
+								name="time2"  value="${time2 }"
 								onfocus="WdatePicker({dateFmt:'yyyyMMdd'})" /></td>
-				<td><input type="submit"  value="查询"><span>可根据银行、客户、币别、日期查询</span>
+				<td><input type="submit"  value="查询">
+					<a
+							href="/ERP-NBEmail/download1?filename=completionData.xls"
+							title="firstparagraph.xls">导出列表数据</a>
+
+<%--					<span>日期必须输入、可根据银行、客户、币别、日期查询</span>--%>
 				</td>
 				</tr>	
 				</table>	
 			</form>
-		
+<%--	<form action="/ERP-NBEmail/helpServlet?action=exportReceiptFormNew&className=AccountEntryFormServlet" method="post">--%>
+<%--		<table >--%>
+<%--			<tr>--%>
+<%--				<td><input type="submit"  value="导出Excel表格">--%>
+<%--				</td>--%>
+<%--			</tr>--%>
+<%--		</table>--%>
+<%--	</form>--%>
 			</div>
 		
 			<table class="emanagergettable">
@@ -160,12 +176,12 @@ var checkCustomer =function(){
 					<th width="40px">货币</th>
 					<th width="350px">汇款人名</th>
 					<th width="100px">银行</th>
-					<th width="100px">推测认领人</th>
+<%--					<th width="100px">推测认领人</th>--%>
 					<th width="100px">详情</th>
 					<th width="100px">操作</th>
 					<th width="100px">已认领人</th>
 					<th width="100px">认领时间</th>
-					<th width="100px">客户状态</th>
+<%--					<th width="100px">客户状态</th>--%>
 					<!-- <th width="150px">其他信息</th> -->
 				<!-- 	
 					<th >其他信息</th>
@@ -184,7 +200,7 @@ var checkCustomer =function(){
 						<td>${cus.tradeCurrency }</td>
 						<td>${cus.payersName }</td>
 						<td>${cus.beneficiaryAccountBank }</td>
-						<td>估计客户${cus.nBEmailId},${cus.conjecture }</td>
+<%--						<td>估计客户${cus.nBEmailId},${cus.conjecture }</td>--%>
 						<td><c:forEach items="${cus.amountClaimForm}" var="cus1" varStatus="n">
 						${cus1.invoice } 出口年月${cus1.exportYear }-${cus1.exportMonth } 国家<c:if test="${cus1.country!=15 }"><c:choose>
 						<c:when test="${cus1.country==1 }">USA</c:when>
@@ -211,7 +227,7 @@ var checkCustomer =function(){
 										<c:when test="${cus1.country==22 }">New Zealand</c:when>
 										<c:when test="${cus1.country==23 }">Slovenia</c:when>
 										<c:when test="${cus1.country==24 }">Serbia</c:when>
-										<c:when test="${cus1.country==24 }">Ireland</c:when>
+										<c:when test="${cus1.country==25 }">Ireland</c:when>
 
 									</c:choose></c:if><c:if test="${cus1.country==15 }">${cus1.state }</c:if>
 						</c:forEach></td>
@@ -220,9 +236,9 @@ var checkCustomer =function(){
 						 </td>
 						<td>${cus.claimant }</td>
 						<td>${cus.claimTime }</td>
-						<td><c:choose>
-						<c:when test="${cus.newCustomer==0 }">老客户</c:when>
-						<c:when test="${cus.newCustomer==1 }">新客户</c:when></c:choose></td>
+<%--						<td><c:choose>--%>
+<%--						<c:when test="${cus.newCustomer==0 }">老客户</c:when>--%>
+<%--						<c:when test="${cus.newCustomer==1 }">新客户</c:when></c:choose></td>--%>
 						<%-- <td>${cus.remark }</td> --%>
 						<%-- 
 						<td>${cus.remark }</td>
