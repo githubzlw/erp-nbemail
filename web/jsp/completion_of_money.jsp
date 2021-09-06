@@ -14,7 +14,7 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script language="javascript" type="text/javascript"
 	src="My97DatePicker/WdatePicker.js"></script>
-<title>到账录入完成页面</title>
+<title>退款完成列表</title>
 </head>
 <style>
 .emanagergettable {

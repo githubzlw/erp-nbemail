@@ -227,7 +227,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		String result = null;
 		ResultSet rs = null;
 		String str;
-        String sql = "select substring(CaseNo,4,8)+1 from itemCase where id=(select MAX(id) from itemCase  where BackSingleCase='')";
+        String sql = "select substring(CaseNo,4,8)+1 from itemCase where id=(select MAX(id) from itemCase  where BackSingleCase='' and case_type=0)";
         conn = SQLDBhelper.getConnection();
         try {
 			stmt = conn.prepareStatement(sql);
