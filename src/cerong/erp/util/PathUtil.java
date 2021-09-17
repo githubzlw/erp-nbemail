@@ -18,6 +18,7 @@ public class PathUtil{
 	
 	/** 财务当月表*/
 	public static final String FirstParagraph = "F:"+File.separator+"FinancialStatement"+File.separator+"FirstParagraph";
+//	public static final String FirstParagraph = "E:"+File.separator+"FinancialStatement"+File.separator+"FirstParagraph";
 	
 	
 }

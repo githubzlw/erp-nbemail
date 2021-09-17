@@ -1,53 +1,28 @@
 
 package cerong.erp.servlet;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import cerong.erp.entity.*;
+import cerong.erp.service.*;
+import cerong.erp.util.AccountEntryUpLoad;
+import cerong.erp.util.CheckUtil;
+import cerong.erp.util.PathUtil;
+import cerong.erp.util.ReadExcelUtils;
+import com.ibm.icu.math.BigDecimal;
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import cerong.erp.entity.*;
-import cerong.erp.util.CheckUtil;
-import org.apache.poi.common.usermodel.Hyperlink;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFHyperlink;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-
-
-
-
-
-
-import com.ibm.icu.math.BigDecimal;
-import com.ibm.icu.text.DecimalFormat;
-
-import cerong.erp.service.AccountEntryFormServiceImpl;
-import cerong.erp.service.AmountClaimFormServiceImpl;
-import cerong.erp.service.IAccountEntryFormService;
-import cerong.erp.service.IAmountClaimFormService;
-import cerong.erp.service.IPreparatorEntryFormService;
-import cerong.erp.service.ItCaseIdService;
-import cerong.erp.service.ItCaseIdServiceImpl;
-import cerong.erp.service.PreparatorEntryFormServiceImpl;
-import cerong.erp.util.AccountEntryUpLoad;
-import cerong.erp.util.PathUtil;
-import cerong.erp.util.ReadExcelUtils;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 public class AccountEntryFormServlet extends HttpServlet {
@@ -241,7 +216,7 @@ public class AccountEntryFormServlet extends HttpServlet {
 				}
 
 				List<String> result = new ArrayList(map.keySet());
-				row.createCell((short) 4).setCellValue(result.toString());
+				row.createCell((short) 4).setCellValue(StringUtils.strip(result.toString().trim(),"[]").replaceAll(", ","/"));
 
 
 			}

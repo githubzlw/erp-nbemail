@@ -7535,26 +7535,35 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-			int i=0;
+//			int i=0;
 			stmt.setString(1,it.getCaseNo() );
             stmt.setString(2,it.getCaseNo() );
 			if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
-				i++;
-				stmt.setString(1+i,it.getCustomerManager() );
-				i++;
-				stmt.setString(1+i,it.getCustomerManager() );
-				i++;
-				stmt.setString(1+i,it.getCustomerManager() );
-				i++;
-				stmt.setString(1+i,it.getCustomerManager() );
-				i++;
-				stmt.setString(1+i,it.getCustomerManager() );
-				i++;
-				stmt.setString(1+i,it.getCustomerManager() );
-				i++;
-				stmt.setString(1+i,it.getCustomerManager() );
-				i++;
-				stmt.setString(1+i,it.getCustomerManager() );
+//				i++;
+//				stmt.setString(1+i,it.getCustomerManager() );
+//				i++;
+//				stmt.setString(1+i,it.getCustomerManager() );
+//				i++;
+//				stmt.setString(1+i,it.getCustomerManager() );
+//				i++;
+//				stmt.setString(1+i,it.getCustomerManager() );
+//				i++;
+//				stmt.setString(1+i,it.getCustomerManager() );
+//				i++;
+//				stmt.setString(1+i,it.getCustomerManager() );
+//				i++;
+//				stmt.setString(1+i,it.getCustomerManager() );
+//				i++;
+//				stmt.setString(1+i,it.getCustomerManager() );
+
+                stmt.setString(3,it.getCustomerManager() );
+                stmt.setString(4,it.getCustomerManager() );
+                stmt.setString(5,it.getCustomerManager() );
+                stmt.setString(6,it.getCustomerManager() );
+                stmt.setString(7,it.getCustomerManager() );
+                stmt.setString(8,it.getCustomerManager() );
+                stmt.setString(9,it.getCustomerManager() );
+                stmt.setString(10,it.getCustomerManager() );
 
 			}
 			rs = stmt.executeQuery();
