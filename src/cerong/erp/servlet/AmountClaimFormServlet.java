@@ -337,8 +337,8 @@ public class AmountClaimFormServlet extends HttpServlet{
 			for(int x=0;x<c.length;x++){
 				if(c[x].getName().equals("SESSION_LOGIN_PASSWORD")){
 					EmpPWD=c[x].getValue();
-				}	
-				
+				}
+
 				if(c[x].getName().equals("SESSION_LOGIN_USERNAME"))
 				{
 					EmpEName=c[x].getValue();
@@ -362,11 +362,11 @@ public class AmountClaimFormServlet extends HttpServlet{
 				wrong="合同金额已录入,请勿重复录入合同金额";
 				wrong = new String(wrong.getBytes("iso-8859-1"),"utf-8");
 				response.sendRedirect("/ERP-NBEmail/helpServlet?action=lookEnterFinancialEntry&className=AmountClaimFormServlet&allMoney="+allMoney+"&id="+id+"&customerId="+customerId+"&&wrong="+wrong+"");
-					
-				
+
+
 			}else{
-			
-			
+
+
 		boolean operation=true;
 		String allinvoice="";
 		for(int i=0;i<12;i++){
@@ -374,17 +374,17 @@ public class AmountClaimFormServlet extends HttpServlet{
 			int num=i+1;
 		String invoice= (String) request.getAttribute("invoice"+num);
 		if(invoice!=null&&!"".equals(invoice)){
-		invoiceinfo info=inservice.getInvoice(invoice);//查询invoice是否存在
+		invoiceinfo info=inservice.getInvoice(invoice,"1");//查询invoice是否存在
 		AmountClaimForm amount=acervice.getAmount(invoice);//查询invoice是否存在
 	    if(info!=null){
 	    	 if(amount!=null){
 	    		 wrong=invoice+",该合同号已录入,再次录入会出现认领错误现象,请等财务确认完上一笔认领后再认领该笔数据";
 	 	    	operation=false;
-	    		 
+
 	    	 }else{
 	       if(!"mandyman".equalsIgnoreCase(EmpEName)&&!"lisali".equalsIgnoreCase(EmpEName)&&!"planner".equalsIgnoreCase(EmpEName)
 	    		   &&!"ands".equalsIgnoreCase(EmpEName)){
-	    	int username=cservice.find(EmpEName,info.getCaseno());  
+	    	int username=cservice.find(EmpEName,info.getCaseno());
 	    	 if(username>0){
 	    		 String invoicemoney=(String) request.getAttribute("invoicemoney"+num);
 	    		 double allInvoiceMoney=0;
@@ -393,51 +393,51 @@ public class AmountClaimFormServlet extends HttpServlet{
 	    			}
 	    		if(50+info.getIimoney()<info.getIfmoney()+allInvoiceMoney){
 	    			wrong=invoice+",该invoice总金额是:"+info.getIimoney()+"已录入金额"+info.getIfmoney();
-	    			
+
 	    			operation=false;
-					 
+
 	    		}
 	    	}else{
 	    		wrong=invoice+",你无权限操作该项目";
 	    		operation=false;
-				
-	    	 }  
+
+	    	 }
 	       }
-	       
+
 	       if(allinvoice!=null&&!"".equals(allinvoice)){
 	   		if(allinvoice.toLowerCase().contains(invoice.toLowerCase())){
 	   			wrong=invoice+",相同invoice只允许出现一次";
-	    		operation=false;	
+	    		operation=false;
 	   		}
 	   		}else{
-	   		allinvoice+=invoice;  
-	   		
+	   		allinvoice+=invoice;
+
 	       }
 	    	 }
 	    }else{
 	    	wrong=invoice+",该invoice数据库不存在";
 	    	operation=false;
-			
+
 	    }
 		}
 			}
 			}
-		
-		
-		
+
+
+
 		if(operation==true){
 		for(int i=0;i<12;i++){
 			int num=i+1;
 		String invoice= (String) request.getAttribute("invoice"+num);
 		if(invoice!=null&&!"".equals(invoice)){
-		invoiceinfo info=inservice.getInvoice(invoice);//查询invoice是否存在
+		invoiceinfo info=inservice.getInvoice(invoice,"1");//查询invoice是否存在
 	    if(info!=null){
 	    String invoicemoney=(String) request.getAttribute("invoicemoney"+num);
 		double allInvoiceMoney=0;
 		if(invoicemoney!=null&&!"".equals(invoicemoney)){
 			allInvoiceMoney=Double.parseDouble(invoicemoney);
 		}
-		
+
 		String year=(String) request.getAttribute("year"+num);
 	    String month=(String) request.getAttribute("month"+num);
 		String country1=(String) request.getAttribute("country"+num);
@@ -469,17 +469,17 @@ public class AmountClaimFormServlet extends HttpServlet{
 			 out.write("alert('"+invoice+",该invoice数据库不存在！！！');");
 			 out.write("window.history.back();");
 			 out.write("</script>");
- 	        
+
 	    }
 		}
 		}
 		response.sendRedirect("/ERP-NBEmail/helpServlet?action=lookEnterFinancialEntry&className=AmountClaimFormServlet&allMoney="+allMoney+"&id="+id+"&customerId="+customerId);
-		
+
 		}else{
 			String wrong1 = URLEncoder.encode(wrong, "utf-8");
-			
+
 			response.sendRedirect("/ERP-NBEmail/helpServlet?action=lookEnterFinancialEntry&className=AmountClaimFormServlet&allMoney="+allMoney+"&id="+id+"&customerId="+customerId+"&&wrong="+wrong1);
-			
+
 		}
 			}
 	}
@@ -559,8 +559,9 @@ public class AmountClaimFormServlet extends HttpServlet{
 		list.add(amountClaimForm);
 		allList1.add(invoice);
 		if(invoice!=null&&!"".equals(invoice)){
-		invoiceinfo info=inservice.getInvoice(invoice);//查询invoice是否存在
+		invoiceinfo info=inservice.getInvoice(invoice,"1");//查询invoice是否存在
 		AmountClaimForm amount=acervice.getAmount(invoice);//查询invoice是否存在
+			invoiceinfo info1=inservice.getInvoice(invoice,"2");//查询invoice实际到款,预计收款
 	    if(info!=null){
 	    	/*if(info.getImoneytype()==tradeCurrency1){*/
 	    	 if(amount!=null){
@@ -585,6 +586,13 @@ public class AmountClaimFormServlet extends HttpServlet{
 						operation = false;
 
 					}
+//					if (info.getIimoney() < info1.getIfmoney() + allInvoiceMoney) {
+//						wrong = invoice + "该invoice的已录入金额+实际到款大于Invoice 总金额";
+//
+//						operation = false;
+//
+//					}
+
 				} else {
 					wrong = invoice + ",你无权限操作该项目";
 					operation = false;

@@ -288,9 +288,14 @@ public class invoiceinfoDaoImpl implements  IinvoiceinfoDao{
 	}
 
 	@Override
-	public invoiceinfo getInvoice(String invoice) {
+	public invoiceinfo getInvoice(String invoice,String flag) {
 		invoiceinfo info=null;
-		String sql = "select sum(iimoney)iimoney,sum(ifmoney)ifmoney,icaseno,min(imoneytype)imoneytype from invoiceinfo where iInvNo='"+invoice+"' and ifmoney is null  group by icaseno "; 
+		String sql = "select sum(iimoney)iimoney,sum(ifmoney)ifmoney,icaseno,min(imoneytype)imoneytype from invoiceinfo where iInvNo='"+invoice+"'  ";
+		if("1".equals(flag)){
+			sql  +=" and ifmoney is null  group by icaseno";
+		}else{
+			sql  +=" group by icaseno";
+		}
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;

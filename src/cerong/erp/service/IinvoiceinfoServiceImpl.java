@@ -30,7 +30,7 @@ public interface IinvoiceinfoServiceImpl {
 	 * @return int
 	 * @throws
 	 */
-	public invoiceinfo getInvoice(String invoice);
+	public invoiceinfo getInvoice(String invoice,String flag);
 	/**
 	 * @param empEName 
 	 * 

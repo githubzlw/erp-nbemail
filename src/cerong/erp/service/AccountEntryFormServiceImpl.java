@@ -51,9 +51,9 @@ IAccountEntryFormDao dao=new AccountEntryFormDaoImpl();
 		return dao.updateModificationResults(eids);
 	}
 	@Override
-	public List<AccountEntryForm> completionOfMoney(AccountEntryForm accountEntryForm) {
+	public List<AccountEntryForm> completionOfMoney(AccountEntryForm accountEntryForm,String flag) {
 		
-		return dao.completionOfMoney(accountEntryForm);
+		return dao.completionOfMoney(accountEntryForm,flag);
 	}
 	@Override
 	public AccountEntryForm getAccount(int id) {

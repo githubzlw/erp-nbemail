@@ -97,7 +97,7 @@ public interface IAccountEntryFormDao {
 	 * @return List<AccountEntryForm>
 	 * @throws
 	 */
-	List<AccountEntryForm> completionOfMoney(AccountEntryForm accountEntryForm);
+	List<AccountEntryForm> completionOfMoney(AccountEntryForm accountEntryForm,String flag);
 	/**
 	 * 
 	 * @Title:IAccountEntryFormDao

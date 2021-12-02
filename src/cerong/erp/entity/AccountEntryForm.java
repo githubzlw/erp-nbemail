@@ -77,6 +77,18 @@ public class AccountEntryForm {
 	/**理由*/
 	private Date entryTime;
 
+	/** 发票明细金额 */
+	private Double sumMoney;
+
+
+	public Double getSumMoney() {
+		return sumMoney;
+	}
+
+	public void setSumMoney(Double sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+
 	public AccountEntryForm() {
 	}
 

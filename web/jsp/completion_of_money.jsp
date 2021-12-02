@@ -111,6 +111,17 @@ var checkCustomer =function(){
 		         }
 		     ); 
 		};
+
+
+function mysubmit(){      //定义调用的块。
+
+	// form1.action ="**.jsp"; //知道调用后的处理页面，可同时将表单参数传递过去。
+	document.getElementById("form1").action="/ERP-NBEmail/helpServlet?action=completionOfMoneyInv&className=AccountEntryFormServlet";
+
+	document.getElementById("form1").submit();
+
+}
+
 </script>
 
 <body>
@@ -137,7 +148,7 @@ var checkCustomer =function(){
 <%--				</tr>	--%>
 <%--				</table>	--%>
 <%--			</form>--%>
-		<form action="/ERP-NBEmail/helpServlet?action=completionOfMoney&className=AccountEntryFormServlet" method="post">
+		<form action="/ERP-NBEmail/helpServlet?action=completionOfMoney&className=AccountEntryFormServlet" method="post" name="form1" id="form1">
             <table >
               <tr>
 <%--				<td><input type="text" id="bank" name="bank" value="${bank }"></td>--%>
@@ -153,11 +164,19 @@ var checkCustomer =function(){
 							href="/ERP-NBEmail/download1?filename=completionData.xls"
 							title="firstparagraph.xls">导出列表数据</a>
 
+					&nbsp&nbsp&nbsp&nbsp
+					<a
+							href="/ERP-NBEmail/download1?filename=completionDataInv.xls"
+							title="firstparagraphInv.xls">导出列表数据INV明细</a>
+
+<%--					<a href="#" onClick="return mysubmit()" language="javascript">导出列表数据INV明细</a>--%>
+
 <%--					<span>日期必须输入、可根据银行、客户、币别、日期查询</span>--%>
 				</td>
 				</tr>	
 				</table>	
 			</form>
+
 <%--	<form action="/ERP-NBEmail/helpServlet?action=exportReceiptFormNew&className=AccountEntryFormServlet" method="post">--%>
 <%--		<table >--%>
 <%--			<tr>--%>

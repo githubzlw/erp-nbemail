@@ -23,7 +23,7 @@
 
 .part_01{overflow: hidden;}
 .emanagergettable {
-	width: 800px;
+	width: 1000px;
 	border: 1px #7D7D7D solid;
 	border-collapse: collapse;
 }
@@ -78,20 +78,25 @@
 <body>
 	<div class="cusalldiv">
 	<div class="usechange">
-			<h2>工厂发票详细列表</h2>
+			<h2>工厂合同汇总列表</h2>
 		
             <table class="emanagergettable">
 				<tr class="emanagergettr">
-                    <td width="50px">项目号</td>
-					<td width="50px">已经支付的金额</td>
-					<td width="70px">已经收回发票的金额</td>
-					<td width="50px">时间</td>
+					<td width="200px">工厂名</td>
+                    <td width="100px">项目号</td>
+					<td width="100px">合同号</td>
+					<td width="100px">已经支付的金额</td>
+					<td width="100px">已经收回发票的金额</td>
+					<td width="100px">时间</td>
 					<td width="50px">采购</td>
 					<td width="50px">销售</td>
 				</tr>
 				<c:forEach items="${factoryPayList}" var="cus" varStatus="i">
 					<tr>
-						<td><a>${cus.caseNo }</a></td>
+
+						<td>${cus.factoryName }</td>
+						<td>${cus.caseNo }</td>
+						<td>${cus.bargainNo }</td>
 						<td><fmt:formatNumber value="${cus.price}" type="number" maxFractionDigits="2"/> </td>
 						<td><fmt:formatNumber value="${cus.endingBalance}" type="number" maxFractionDigits="2"/> </td>
 						<td>${cus.createTime != null ?fn:substring(cus.createTime,0,fn:indexOf(cus.createTime," ")):""}</td>

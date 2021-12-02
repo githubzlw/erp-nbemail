@@ -116,6 +116,9 @@ function uploadFile() {
 					<td width="200px;">已经支付的金额</td>
 					<td width="200px;">已经收回发票的金额</td>
 					<td width="200px;">未回收发票的金额</td>
+					<td width="200px;">时间</td>
+					<td width="200px;">采购</td>
+					<td width="200px;">跟单</td>
 
 					</tr>
 				<c:forEach items="${cusList}" var="cus" varStatus="i">
@@ -124,6 +127,9 @@ function uploadFile() {
 							<td><fmt:formatNumber value="${cus.invoiceAmount}" type="number" maxFractionDigits="2"/></td>
 							<td><fmt:formatNumber value="${cus.allUnacceptableInvoiceAmounts}" type="number" maxFractionDigits="2"/></td>
 							 <td><fmt:formatNumber value="${cus.allUnacceptableInvoiceAmounts1}" type="number" maxFractionDigits="2"/></td>
+							 <td>${cus.startTime != null ?fn:substring(cus.startTime,0,fn:indexOf(cus.startTime," ")):""}</td>
+							 <td>${cus.merchandManager1 }</td>
+							 <td>${cus.merchandManager2 }</td>
 						 </tr>
 				</c:forEach>
 			</table>

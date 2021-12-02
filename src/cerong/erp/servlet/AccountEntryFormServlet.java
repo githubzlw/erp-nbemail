@@ -124,15 +124,15 @@ public class AccountEntryFormServlet extends HttpServlet {
 			if (index1 != false) {
 				request.setAttribute("roleNO", 100);
 			}
-			String bank = request.getParameter("bank");
+//			String bank = request.getParameter("bank");
 			String time1 = request.getParameter("time1");
 			String time2 = request.getParameter("time2");
 			AccountEntryForm accountEntryForm = new AccountEntryForm();
-			if (bank != null && !"".equalsIgnoreCase(bank)) {
-				bank = new String(bank.getBytes("iso-8859-1"), "UTF-8");
-				accountEntryForm.setBeneficiaryAccountBank(bank);
-				request.setAttribute("bank", bank);
-			}
+//			if (bank != null && !"".equalsIgnoreCase(bank)) {
+//				bank = new String(bank.getBytes("iso-8859-1"), "UTF-8");
+//				accountEntryForm.setBeneficiaryAccountBank(bank);
+//				request.setAttribute("bank", bank);
+//			}
 			if (time1 != null && !"".equalsIgnoreCase(time1)) {
 				accountEntryForm.setTransactionDate(time1);
 				request.setAttribute("time1", time1);
@@ -142,12 +142,15 @@ public class AccountEntryFormServlet extends HttpServlet {
 				request.setAttribute("time2", time2);
 			}
 
-			List<AccountEntryForm> list = service.completionOfMoney(accountEntryForm);
+			List<AccountEntryForm> list = service.completionOfMoney(accountEntryForm,"1");
 
 			// excel 下载
 			File storefile = new File(PathUtil.FirstParagraph,"completionData.xls");
 
-			for(int i=0;storefile.exists();i++){
+//			for(int i=0;storefile.exists();i++){
+//				storefile.delete();
+//			}
+			if(storefile.exists()){
 				storefile.delete();
 			}
 			// 第一步，创建一个webbook，对应一个Excel文件
@@ -182,7 +185,12 @@ public class AccountEntryFormServlet extends HttpServlet {
 			cell = row.createCell((short) 6);
 			cell.setCellValue("出口国家");
 			cell.setCellStyle(style);
-
+			cell = row.createCell((short) 7);
+			cell.setCellValue("到款银行");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 8);
+			cell.setCellValue("银行流水号");
+			cell.setCellStyle(style);
 //			cell.setCellValue("原因");
 //			cell.setCellStyle(style);
 
@@ -218,6 +226,8 @@ public class AccountEntryFormServlet extends HttpServlet {
 				List<String> result = new ArrayList(map.keySet());
 				row.createCell((short) 4).setCellValue(StringUtils.strip(result.toString().trim(),"[]").replaceAll(", ","/"));
 
+				row.createCell((short) 7).setCellValue(sc.getBeneficiaryAccountBank());
+				row.createCell((short) 8).setCellValue(sc.getTransactionReferenceNumber());
 
 			}
 			// 第六步，将文件存到指定位置
@@ -233,6 +243,8 @@ public class AccountEntryFormServlet extends HttpServlet {
 			}
 
 
+			//发票明细
+			this.completionOfMoneyInv(accountEntryForm);
 
 
 			request.setAttribute("cusList", list);
@@ -240,6 +252,93 @@ public class AccountEntryFormServlet extends HttpServlet {
 		}
 
 	}
+
+	public void completionOfMoneyInv(AccountEntryForm accountEntryForm)
+			throws ServletException, IOException {
+
+			List<AccountEntryForm> listInv = service.completionOfMoney(accountEntryForm,"2");
+			// excel 下载
+			File storefile = new File(PathUtil.FirstParagraph,"completionDataInv.xls");
+
+
+//			for(int i=0;storefile.exists();i++){
+//				storefile.delete();
+//			}
+			if(storefile.exists()){
+				storefile.delete();
+			}
+			// 第一步，创建一个webbook，对应一个Excel文件
+			HSSFWorkbook wb = new HSSFWorkbook();
+			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+			HSSFSheet sheet = wb.createSheet("美元待核查");
+			// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+			HSSFRow row = sheet.createRow((int) 0);
+			// 第四步，创建单元格，并设置值表头 设置表头居中
+			HSSFCellStyle style = wb.createCellStyle();
+			style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+			HSSFCell cell = row.createCell((short) 0);
+
+			cell.setCellValue("付款人名称");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 1);
+			cell.setCellValue("交易日期");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 2);
+			cell.setCellValue("货币");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 3);
+			cell.setCellValue("总到款");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 4);
+			cell.setCellValue("分到的Invoice号");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 5);
+			cell.setCellValue("出口日期");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 6);
+			cell.setCellValue("出口国家");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 7);
+			cell.setCellValue("到款银行");
+			cell.setCellStyle(style);
+			cell = row.createCell((short) 8);
+			cell.setCellValue("银行流水号");
+			cell.setCellStyle(style);
+		cell = row.createCell((short) 9);
+		cell.setCellValue("分到此Invoice的金额");
+		cell.setCellStyle(style);
+
+			for (int i = 0; i < listInv.size(); i++)
+			{
+				row = sheet.createRow((int) i + 1);
+				AccountEntryForm sc=listInv.get(i);
+				// 第四步，创建单元格，并设置值
+				row.createCell((short) 0).setCellValue(sc.getPayersName());
+				row.createCell((short) 1).setCellValue(sc.getTransactionDate());
+				row.createCell((short) 2).setCellValue(sc.getTradeCurrency());
+				row.createCell((short) 3).setCellValue(sc.getTradeAmount());
+				row.createCell((short) 4).setCellValue(sc.getInvoice());
+				row.createCell((short) 5).setCellValue(sc.getExportYear()+"-"+sc.getExportMonth());
+				row.createCell((short) 6).setCellValue(CheckUtil.getCountyName(sc.getCountry()));
+				row.createCell((short) 7).setCellValue(sc.getBeneficiaryAccountBank());
+				row.createCell((short) 8).setCellValue(sc.getTransactionReferenceNumber());
+				row.createCell((short) 9).setCellValue(sc.getSumMoney());
+
+			}
+			// 第六步，将文件存到指定位置
+			try
+			{
+				FileOutputStream fout = new FileOutputStream(PathUtil.FirstParagraph+File.separator+"completionDataInv.xls");
+				wb.write(fout);
+				fout.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+
+		}
 
 
 	/**

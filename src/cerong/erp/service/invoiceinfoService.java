@@ -28,9 +28,9 @@ public class invoiceinfoService implements  IinvoiceinfoServiceImpl{
 	}
 
 	@Override
-	public invoiceinfo getInvoice(String invoice) {
+	public invoiceinfo getInvoice(String invoice,String flag) {
 		
-		return dao.getInvoice(invoice);
+		return dao.getInvoice(invoice,flag);
 	}
 
 	@Override

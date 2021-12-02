@@ -478,133 +478,222 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 	}
 
 	@Override
-	public List<AccountEntryForm> completionOfMoney(AccountEntryForm account) {
+	public List<AccountEntryForm> completionOfMoney(AccountEntryForm account,String flag) {
 List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 
 		if(StringUtils.isEmpty(account.getTransactionDate()) && StringUtils.isEmpty(account.getTransactionEndDate())){
 			return  list;
 		}
-		Connection conn = null;
-		PreparedStatement stmt = null;
-	    ResultSet rs = null;
-	   String sql = " select * from AccountEntryForm where DataProcessing=1	";
-	   if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
-		   sql+=" and transactionDate >= ?";
-	   }
-		if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
-			sql+=" and transactionDate <= ?";
-		}
-	   if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
-		   sql+=" and (BeneficiaryAccountBank like ? or PayersName like ? or TradeCurrency like ?)";
-	   }
-
-		sql+=" order by transactionDate ";
-		conn = SQLDBhelper.getConnection();
-		try {
-			stmt = conn.prepareStatement(sql);
-			int i=0;
+		if("1".equals(flag)){
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			String sql = " select * from AccountEntryForm where DataProcessing=1	";
 			if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
-				 i++; 
-				 stmt.setString(i, account.getTransactionDate());
-			   }
+				sql+=" and transactionDate >= ?";
+			}
 			if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
-				i++;
-				stmt.setString(i, account.getTransactionEndDate());
+				sql+=" and transactionDate <= ?";
 			}
-			   if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
-				   i++; 
-					 stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
-					 i++; 
-					 stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
-					 i++; 
-					 stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
-			   }
-			rs = stmt.executeQuery();
-			while(rs.next()) {
-				AccountEntryForm con=new AccountEntryForm();
-				int id=rs.getInt("id");
-				con.setId(rs.getInt("id"));
-			    con.setTransactionDate(rs.getString("transactionDate"));
-			    con.setTransactionReferenceNumber(rs.getString("transactionReferenceNumber"));
-			    con.setTradeAmount(rs.getDouble("tradeAmount"));
-			    con.setPayersName(rs.getString("payersName"));
-			    con.setBeneficiaryAccountBank(rs.getString("beneficiaryAccountBank"));
-			    con.setConjecture(rs.getString("conjecture"));
-			    con.setClaimant(rs.getString("claimant"));
-			    con.setClaimTime(rs.getString("claimTime"));
-			    con.setRemark(rs.getString("remark"));
-			    con.setTradeCurrency(rs.getString("tradeCurrency"));
-			    con.setPayeeAccount(rs.getString("payeeAccount"));
-			    con.setnBEmailId(rs.getInt("nBEmailId"));
-			    con.setNewCustomer(rs.getInt("newCustomer"));
-			    
-			   List<AmountClaimForm> list1 = new ArrayList<AmountClaimForm>();
-						Connection conn1 = null;
-						PreparedStatement stmt1 = null;
-					    ResultSet rs1 = null;
-					    String sql1 = " select * from AmountClaimForm where AccountEntryId=?	";
-						conn1= SQLDBhelper.getConnection();
-						try {
-							stmt1 = conn1.prepareStatement(sql1);
-							stmt1.setInt(1, id);
-							rs1 = stmt1.executeQuery();
-							while(rs1.next()) {
-								AmountClaimForm con1=new AmountClaimForm();
-								con1.setInvoice(rs1.getString("invoice"));
-							    con1.setExportYear(rs1.getString("exportYear"));
-							     con1.setExportMonth(rs1.getString("exportMonth"));
-							      con1.setCountry(rs1.getInt("country"));
-							      con1.setState(rs1.getString("state"));
-								list1.add(con1);
-						}		
-						} catch (Exception e) {
-							e.printStackTrace();
-						} finally {
-							if (stmt1 != null) {
-								try {
-									stmt1.close();
-								} catch (SQLException e) {
-									e.printStackTrace();
-								}
-							}
-							if (rs1 != null) {
-								try {
-									rs1.close();
-								} catch (SQLException e) {
-									e.printStackTrace();
-								}
-							}
-							SQLDBhelper.close(conn1,stmt1,rs1);
-							
+			if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+				sql+=" and (BeneficiaryAccountBank like ? or PayersName like ? or TradeCurrency like ?)";
+			}
+
+			sql+=" order by transactionDate ";
+			conn = SQLDBhelper.getConnection();
+			try {
+				stmt = conn.prepareStatement(sql);
+				int i=0;
+				if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
+					i++;
+					stmt.setString(i, account.getTransactionDate());
+				}
+				if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
+					i++;
+					stmt.setString(i, account.getTransactionEndDate());
+				}
+				if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+					i++;
+					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+					i++;
+					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+					i++;
+					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+				}
+				rs = stmt.executeQuery();
+				while(rs.next()) {
+					AccountEntryForm con=new AccountEntryForm();
+					int id=rs.getInt("id");
+					con.setId(rs.getInt("id"));
+					con.setTransactionDate(rs.getString("transactionDate"));
+					con.setTransactionReferenceNumber(rs.getString("transactionReferenceNumber"));
+					con.setTradeAmount(rs.getDouble("tradeAmount"));
+					con.setPayersName(rs.getString("payersName"));
+					con.setBeneficiaryAccountBank(rs.getString("beneficiaryAccountBank"));
+					con.setConjecture(rs.getString("conjecture"));
+					con.setClaimant(rs.getString("claimant"));
+					con.setClaimTime(rs.getString("claimTime"));
+					con.setRemark(rs.getString("remark"));
+					con.setTradeCurrency(rs.getString("tradeCurrency"));
+					con.setPayeeAccount(rs.getString("payeeAccount"));
+					con.setnBEmailId(rs.getInt("nBEmailId"));
+					con.setNewCustomer(rs.getInt("newCustomer"));
+
+					List<AmountClaimForm> list1 = new ArrayList<AmountClaimForm>();
+					Connection conn1 = null;
+					PreparedStatement stmt1 = null;
+					ResultSet rs1 = null;
+					String sql1 = " select * from AmountClaimForm where AccountEntryId=?	";
+					conn1= SQLDBhelper.getConnection();
+					try {
+						stmt1 = conn1.prepareStatement(sql1);
+						stmt1.setInt(1, id);
+						rs1 = stmt1.executeQuery();
+						while(rs1.next()) {
+							AmountClaimForm con1=new AmountClaimForm();
+							con1.setInvoice(rs1.getString("invoice"));
+							con1.setExportYear(rs1.getString("exportYear"));
+							con1.setExportMonth(rs1.getString("exportMonth"));
+							con1.setCountry(rs1.getInt("country"));
+							con1.setState(rs1.getString("state"));
+							list1.add(con1);
 						}
-						if(list1.size()>0){
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						if (stmt1 != null) {
+							try {
+								stmt1.close();
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+						if (rs1 != null) {
+							try {
+								rs1.close();
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+						SQLDBhelper.close(conn1,stmt1,rs1);
+
+					}
+					if(list1.size()>0){
 						con.setAmountClaimForm(list1);
-				   } else{
-					   con.setAmountClaimForm(null);
-				   } 
-				list.add(con);
-		}		
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
+					} else{
+						con.setAmountClaimForm(null);
+					}
+					list.add(con);
 				}
-			}
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (stmt != null) {
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				SQLDBhelper.close(conn,stmt,rs);
+
 			}
-			SQLDBhelper.close(conn,stmt,rs);
-			
+			return list;
+		}else{
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			String sql = " select * from AmountClaimForm a  inner join AccountEntryForm b on a.AccountEntryId=b.id where b.DataProcessing=1	";
+			if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
+				sql+=" and b.transactionDate >= ?";
+			}
+			if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
+				sql+=" and b.transactionDate <= ?";
+			}
+//			if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+//				sql+=" and (BeneficiaryAccountBank like ? or PayersName like ? or TradeCurrency like ?)";
+//			}
+
+			sql+=" order by b.transactionDate ";
+			conn = SQLDBhelper.getConnection();
+			try {
+				stmt = conn.prepareStatement(sql);
+				int i=0;
+				if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
+					i++;
+					stmt.setString(i, account.getTransactionDate());
+				}
+				if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
+					i++;
+					stmt.setString(i, account.getTransactionEndDate());
+				}
+//				if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+//					i++;
+//					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+//					i++;
+//					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+//					i++;
+//					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+//				}
+				rs = stmt.executeQuery();
+				while(rs.next()) {
+					AccountEntryForm con=new AccountEntryForm();
+//					int id=rs.getInt("id");
+					con.setId(rs.getInt("id"));
+					con.setTransactionDate(rs.getString("transactionDate"));
+					con.setTransactionReferenceNumber(rs.getString("transactionReferenceNumber"));
+					con.setTradeAmount(rs.getDouble("tradeAmount"));
+					con.setPayersName(rs.getString("payersName"));
+					con.setBeneficiaryAccountBank(rs.getString("beneficiaryAccountBank"));
+					con.setConjecture(rs.getString("conjecture"));
+					con.setClaimant(rs.getString("claimant"));
+					con.setClaimTime(rs.getString("claimTime"));
+					con.setRemark(rs.getString("remark"));
+					con.setTradeCurrency(rs.getString("tradeCurrency"));
+					con.setPayeeAccount(rs.getString("payeeAccount"));
+					con.setnBEmailId(rs.getInt("nBEmailId"));
+					con.setNewCustomer(rs.getInt("newCustomer"));
+
+					//AmountClaimForm表数据
+					con.setInvoice(rs.getString("invoice"));
+					con.setExportYear(rs.getString("exportYear"));
+					con.setExportMonth(rs.getString("exportMonth"));
+					con.setCountry(rs.getInt("country"));
+					con.setSumMoney(rs.getDouble("SumMoney"));
+//					con.setState(rs.getString("state"));
+
+					list.add(con);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (stmt != null) {
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				SQLDBhelper.close(conn,stmt,rs);
+
+			}
+			return list;
 		}
-		return list;
+
 	}
 
 	@Override

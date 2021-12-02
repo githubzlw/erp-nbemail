@@ -690,6 +690,10 @@ public class CheckLoginFilter implements Filter {
 	    	 chain.doFilter(req, res);
 	    	 return;
 	     }
+//		if(action != null && action.equals("completionOfMoneyInv")) {//审批通过列表页
+//			chain.doFilter(req, res);
+//			return;
+//		}
 	     if(action != null && action.equals("allRefundInterface")) {//退款列表页
 	    	 chain.doFilter(req, res);
 	    	 return;
