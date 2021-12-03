@@ -561,7 +561,7 @@ public class AmountClaimFormServlet extends HttpServlet{
 		if(invoice!=null&&!"".equals(invoice)){
 		invoiceinfo info=inservice.getInvoice(invoice,"1");//查询invoice是否存在
 		AmountClaimForm amount=acervice.getAmount(invoice);//查询invoice是否存在
-			invoiceinfo info1=inservice.getInvoice(invoice,"2");//查询invoice实际到款,预计收款
+//			invoiceinfo info1=inservice.getInvoice(invoice,"2");//查询invoice实际到款,预计收款
 	    if(info!=null){
 	    	/*if(info.getImoneytype()==tradeCurrency1){*/
 	    	 if(amount!=null){
