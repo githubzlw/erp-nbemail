@@ -354,6 +354,9 @@ public class AccountEntryFormServlet extends HttpServlet {
 	public void completionOfMoneyMy(AccountEntryForm accountEntryForm,String rateValue)
 			throws ServletException, IOException {
 
+		if(StringUtils.isEmpty(rateValue)){
+			rateValue="0";
+		}
 		List<AccountEntryForm> listInv = service.completionOfMoney(accountEntryForm,"3");
 		// excel 下载
 		File storefile = new File(PathUtil.FirstParagraph,"completionDataInv.xls");
