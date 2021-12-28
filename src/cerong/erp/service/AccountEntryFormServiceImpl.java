@@ -85,6 +85,14 @@ IAccountEntryFormDao dao=new AccountEntryFormDaoImpl();
 		
 		return dao.updateAccountEntry(entry);
 	}
+
+	@Override
+	public int updateKingdeeInfo(AccountEntryForm entry) {
+
+		return dao.updateKingdeeInfo(entry);
+	}
+
+
 	@Override
 	public List<AccountEntryForm> getAll(String time1) {
 		

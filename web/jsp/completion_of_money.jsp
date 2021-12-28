@@ -151,7 +151,7 @@ function mysubmit(){      //定义调用的块。
 		<form action="/ERP-NBEmail/helpServlet?action=completionOfMoney&className=AccountEntryFormServlet" method="post" name="form1" id="form1">
             <table >
               <tr>
-<%--				<td><input type="text" id="bank" name="bank" value="${bank }"></td>--%>
+
 				<td>日期必须输入<input type="text" readonly class="Wdate" id="time1"
 							   name="time1"  value="${time1 }"
 							   onfocus="WdatePicker({dateFmt:'yyyyMMdd'})" />
@@ -159,6 +159,8 @@ function mysubmit(){      //定义调用的块。
 					<input type="text" readonly class="Wdate" id="time2"
 								name="time2"  value="${time2 }"
 								onfocus="WdatePicker({dateFmt:'yyyyMMdd'})" /></td>
+				  <td>银行：<input type="text" id="bank" name="bank" value="${bank }"></td>
+				  <td>汇率：<input type="text" id="rateValue" name="rateValue" value="${rateValue }"></td>
 				<td><input type="submit"  value="查询">
 					<a
 							href="/ERP-NBEmail/download1?filename=completionData.xls"

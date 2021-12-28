@@ -79,7 +79,57 @@ public class AccountEntryForm {
 
 	/** 发票明细金额 */
 	private Double sumMoney;
+	/**金蝶名*/
+	private String kingdeeName;
 
+	public String getfAccountNum() {
+		return fAccountNum;
+	}
+
+	public void setfAccountNum(String fAccountNum) {
+		this.fAccountNum = fAccountNum;
+	}
+
+	/**金蝶Id*/
+    private String kingdeeId;
+
+	private String fAccountNum;
+
+	public String getfAccountName() {
+		return fAccountName;
+	}
+
+	public void setfAccountName(String fAccountName) {
+		this.fAccountName = fAccountName;
+	}
+
+	private String fAccountName;
+
+	private int fEntryId;
+
+	public int getfEntryId() {
+		return fEntryId;
+	}
+
+	public void setfEntryId(int fEntryId) {
+		this.fEntryId = fEntryId;
+	}
+
+	public String getKingdeeId() {
+        return kingdeeId;
+    }
+
+    public void setKingdeeId(String kingdeeId) {
+        this.kingdeeId = kingdeeId;
+    }
+
+    public String getKingdeeName() {
+		return kingdeeName;
+	}
+
+	public void setKingdeeName(String kingdeeName) {
+		this.kingdeeName = kingdeeName;
+	}
 
 	public Double getSumMoney() {
 		return sumMoney;

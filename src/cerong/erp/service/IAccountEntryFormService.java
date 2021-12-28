@@ -157,6 +157,10 @@ int deleteAccount(int id);
  * @throws
  */
 int updateAccountEntry(AccountEntryForm entry);
+
+
+int updateKingdeeInfo(AccountEntryForm entry);
+
 /**
  * 
  * @Title:IAccountEntryFormService

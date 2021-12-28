@@ -124,15 +124,16 @@ public class AccountEntryFormServlet extends HttpServlet {
 			if (index1 != false) {
 				request.setAttribute("roleNO", 100);
 			}
-//			String bank = request.getParameter("bank");
+			String bank = request.getParameter("bank");
 			String time1 = request.getParameter("time1");
 			String time2 = request.getParameter("time2");
+			String rateValue = request.getParameter("rateValue");
 			AccountEntryForm accountEntryForm = new AccountEntryForm();
-//			if (bank != null && !"".equalsIgnoreCase(bank)) {
-//				bank = new String(bank.getBytes("iso-8859-1"), "UTF-8");
-//				accountEntryForm.setBeneficiaryAccountBank(bank);
-//				request.setAttribute("bank", bank);
-//			}
+			if (bank != null && !"".equalsIgnoreCase(bank)) {
+				bank = new String(bank.getBytes("iso-8859-1"), "UTF-8");
+				accountEntryForm.setBeneficiaryAccountBank(bank);
+				request.setAttribute("bank", bank);
+			}
 			if (time1 != null && !"".equalsIgnoreCase(time1)) {
 				accountEntryForm.setTransactionDate(time1);
 				request.setAttribute("time1", time1);
@@ -191,6 +192,9 @@ public class AccountEntryFormServlet extends HttpServlet {
 			cell = row.createCell((short) 8);
 			cell.setCellValue("银行流水号");
 			cell.setCellStyle(style);
+//			cell = row.createCell((short) 9);
+//			cell.setCellValue("金蝶名");
+//			cell.setCellStyle(style);
 //			cell.setCellValue("原因");
 //			cell.setCellStyle(style);
 
@@ -228,7 +232,7 @@ public class AccountEntryFormServlet extends HttpServlet {
 
 				row.createCell((short) 7).setCellValue(sc.getBeneficiaryAccountBank());
 				row.createCell((short) 8).setCellValue(sc.getTransactionReferenceNumber());
-
+//				row.createCell((short) 9).setCellValue(sc.getKingdeeName());
 			}
 			// 第六步，将文件存到指定位置
 			try
@@ -244,9 +248,12 @@ public class AccountEntryFormServlet extends HttpServlet {
 
 
 			//发票明细
-			this.completionOfMoneyInv(accountEntryForm);
+//			this.completionOfMoneyInv(accountEntryForm);
+
+			this.completionOfMoneyMy(accountEntryForm,rateValue);
 
 
+			request.setAttribute("rateValue", rateValue);
 			request.setAttribute("cusList", list);
 			request.getRequestDispatcher("jsp/completion_of_money.jsp").forward(request, response);
 		}
@@ -308,6 +315,9 @@ public class AccountEntryFormServlet extends HttpServlet {
 		cell = row.createCell((short) 9);
 		cell.setCellValue("分到此Invoice的金额");
 		cell.setCellStyle(style);
+//		cell = row.createCell((short) 10);
+//		cell.setCellValue("金蝶名");
+//		cell.setCellStyle(style);
 
 			for (int i = 0; i < listInv.size(); i++)
 			{
@@ -324,6 +334,7 @@ public class AccountEntryFormServlet extends HttpServlet {
 				row.createCell((short) 7).setCellValue(sc.getBeneficiaryAccountBank());
 				row.createCell((short) 8).setCellValue(sc.getTransactionReferenceNumber());
 				row.createCell((short) 9).setCellValue(sc.getSumMoney());
+//				row.createCell((short) 10).setCellValue(sc.getKingdeeName());
 
 			}
 			// 第六步，将文件存到指定位置
@@ -340,6 +351,214 @@ public class AccountEntryFormServlet extends HttpServlet {
 
 		}
 
+	public void completionOfMoneyMy(AccountEntryForm accountEntryForm,String rateValue)
+			throws ServletException, IOException {
+
+		List<AccountEntryForm> listInv = service.completionOfMoney(accountEntryForm,"3");
+		// excel 下载
+		File storefile = new File(PathUtil.FirstParagraph,"completionDataInv.xls");
+
+
+//			for(int i=0;storefile.exists();i++){
+//				storefile.delete();
+//			}
+		if(storefile.exists()){
+			storefile.delete();
+		}
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("美元待核查");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+		HSSFCell cell = row.createCell((short) 0);
+		cell.setCellValue("FDate");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 1);
+		cell.setCellValue("FYear");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 2);
+		cell.setCellValue("FPeriod");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 3);
+		cell.setCellValue("FGroupID");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 4);
+		cell.setCellValue("FNumber");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 5);
+		cell.setCellValue("FAccountNum");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 6);
+		cell.setCellValue("FAccountName");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 7);
+		cell.setCellValue("FCurrencyNum");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 8);
+		cell.setCellValue("FCurrencyName");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 9);
+		cell.setCellValue("FAmountFor");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 10);
+		cell.setCellValue("FDebit");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 11);
+		cell.setCellValue("FCredit");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 12);
+		cell.setCellValue("FPreparerID");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 13);
+		cell.setCellValue("FCheckerID");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 14);
+		cell.setCellValue("FApproveID");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 15);
+		cell.setCellValue("FCashierID");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 16);
+		cell.setCellValue("FHandler");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 17);
+		cell.setCellValue("FSettleTypeID");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 18);
+		cell.setCellValue("FSettleNo");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 19);
+		cell.setCellValue("FExplanation");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 20);
+		cell.setCellValue("FQuantity");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 21);
+		cell.setCellValue("FMeasureUnitID");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 22);
+		cell.setCellValue("FUnitPrice");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 23);
+		cell.setCellValue("FReference");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 24);
+		cell.setCellValue("FTransDate");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 25);
+		cell.setCellValue("FTransNo");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 26);
+		cell.setCellValue("FAttachments");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 27);
+		cell.setCellValue("FSerialNum");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 28);
+		cell.setCellValue("FObjectName");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 29);
+		cell.setCellValue("FParameter");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 30);
+		cell.setCellValue("FExchangeRate");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 31);
+		cell.setCellValue("FEntryID");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 32);
+		cell.setCellValue("FItem");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 33);
+		cell.setCellValue("FPosted");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 34);
+		cell.setCellValue("FInternalInd");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 35);
+		cell.setCellValue("FCashFlow");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 36);
+
+
+		for(int i = 0; i < listInv.size(); i++){
+			row = sheet.createRow((int) i + 1);
+			AccountEntryForm sc=listInv.get(i);
+			// 第四步，创建单元格，并设置值
+			row.createCell((short) 0).setCellValue(sc.getTransactionDate());
+			row.createCell((short) 1).setCellValue(sc.getTransactionDate().substring(0,4));
+			row.createCell((short) 2).setCellValue(sc.getTransactionDate().substring(4,6));
+			row.createCell((short) 3).setCellValue("银");
+			row.createCell((short) 4).setCellValue("204");
+			row.createCell((short) 5).setCellValue(sc.getfAccountNum());
+			row.createCell((short) 6).setCellValue(sc.getfAccountName());
+			row.createCell((short) 7).setCellValue("USD");
+			row.createCell((short) 8).setCellValue("美元");
+			if(sc.getTradeAmount()!=null){
+				row.createCell((short) 9).setCellValue(sc.getTradeAmount());
+				row.createCell((short) 10).setCellValue((double)Math.round(sc.getTradeAmount()*Double.valueOf(rateValue)*100)/100);
+				row.createCell((short) 11).setCellValue(0);
+			}else{
+				row.createCell((short) 9).setCellValue(sc.getSumMoney());
+				row.createCell((short) 10).setCellValue(0);
+				row.createCell((short) 11).setCellValue((double)Math.round(sc.getSumMoney()*Double.valueOf(rateValue)*100)/100);
+			}
+			row.createCell((short) 12).setCellValue("李思");
+			row.createCell((short) 13).setCellValue("NONE");
+			row.createCell((short) 14).setCellValue("NONE");
+			row.createCell((short) 15).setCellValue("NONE");
+			row.createCell((short) 16).setCellValue("");
+			row.createCell((short) 17).setCellValue("*");
+			row.createCell((short) 18).setCellValue("");
+			// TODO
+			String kingdeeId = sc.getKingdeeId();
+			if(StringUtils.isEmpty(sc.getKingdeeId())){
+				kingdeeId="0000";
+			}
+			if(sc.getTradeAmount()!=null){
+				row.createCell((short) 19).setCellValue("收到UPTEK SOLUTIONS CORP 美元"+sc.getTradeAmount()+"("+kingdeeId+")");
+			}else{
+				row.createCell((short) 19).setCellValue("收到UPTEK SOLUTIONS CORP 美元"+sc.getSumMoney()+"("+kingdeeId+")");
+			}
+
+			row.createCell((short) 20).setCellValue(0);
+			row.createCell((short) 21).setCellValue("*");
+			row.createCell((short) 22).setCellValue("0");
+			row.createCell((short) 23).setCellValue("");
+			row.createCell((short) 24).setCellValue(sc.getTransactionDate());
+			row.createCell((short) 25).setCellValue(sc.getInvoice());
+			row.createCell((short) 26).setCellValue("0");
+			row.createCell((short) 27).setCellValue("13867");
+			row.createCell((short) 28).setCellValue("");
+			row.createCell((short) 29).setCellValue("");
+			row.createCell((short) 30).setCellValue(rateValue);
+			row.createCell((short) 31).setCellValue(sc.getfEntryId());
+			row.createCell((short) 32).setCellValue("预收账款---"+kingdeeId+"---UPTEK SOLUTIONS CORP");
+			row.createCell((short) 33).setCellValue("0");
+			row.createCell((short) 34).setCellValue("");
+			row.createCell((short) 35).setCellValue("");
+
+
+		}
+
+		// 第六步，将文件存到指定位置
+		try
+		{
+			FileOutputStream fout = new FileOutputStream(PathUtil.FirstParagraph+File.separator+"completionDataInv.xls");
+			wb.write(fout);
+			fout.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
 
 	/**
 	 * @param request
@@ -695,6 +914,9 @@ public class AccountEntryFormServlet extends HttpServlet {
 		String id1 = request.getParameter("id");
 		String num1 = request.getParameter("num");
 		String allreason = request.getParameter("allreason");
+//		String kingdeeId = request.getParameter("kingdeeId");
+//        String payersName = request.getParameter("payersName");
+
 
 		AccountEntryForm entry = new AccountEntryForm();
 		int id = 0;
@@ -713,6 +935,14 @@ public class AccountEntryFormServlet extends HttpServlet {
 			allreason = new String(allreason.getBytes("iso-8859-1"), "utf-8");
 			entry.setReason(allreason);
 		}
+//		if(StringUtils.isNotEmpty(kingdeeId)){
+//            kingdeeId = new String(kingdeeId.getBytes("iso-8859-1"), "utf-8");
+//			entry.setKingdeeId(kingdeeId);
+//		}
+//        if(StringUtils.isNotEmpty(payersName)){
+//            payersName = new String(payersName.getBytes("iso-8859-1"), "utf-8");
+//            entry.setKingdeeName(payersName);
+//        }
 		entry.setEntryPerson(EmpEName);
 		int total = service.updateAccountEntry(entry);
 		if (total > 0) {
@@ -721,6 +951,60 @@ public class AccountEntryFormServlet extends HttpServlet {
 			out.write("NO");
 		}
 	}
+
+	//修改金蝶信息
+    public void updateKingdeeInfo(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        PrintWriter out = response.getWriter();
+        String EmpEName = null;
+        String EmpPWD = null;
+        Cookie c[] = request.getCookies();
+        if (c != null) {
+            for (int x = 0; x < c.length; x++) {
+                if (c[x].getName().equals("SESSION_LOGIN_PASSWORD")) {
+                    EmpPWD = c[x].getValue();
+                }
+
+                if (c[x].getName().equals("SESSION_LOGIN_USERNAME")) {
+                    EmpEName = c[x].getValue();
+                }
+            }
+        }
+        EmailUser user1 = new EmailUser();
+        user1.setUserName(EmpEName);
+        user1.setPwd(EmpPWD);
+        request.setAttribute("user", user1);
+        String id1 = request.getParameter("id");
+        String kingdeeId = request.getParameter("kingdeeId");
+        String payersName = request.getParameter("payersName");
+
+
+        AccountEntryForm entry = new AccountEntryForm();
+        int id = 0;
+        if (id1 != null && !"".equals(id1)) {
+            id = Integer.parseInt(id1);
+            entry.setId(id);
+        }
+        if(StringUtils.isNotEmpty(kingdeeId)){
+            kingdeeId = new String(kingdeeId.getBytes("iso-8859-1"), "utf-8");
+            entry.setKingdeeId(kingdeeId);
+        }
+        if(StringUtils.isNotEmpty(payersName)){
+            payersName = new String(payersName.getBytes("iso-8859-1"), "utf-8");
+            entry.setKingdeeName(payersName);
+        }
+        entry.setEntryPerson(EmpEName);
+        int total = service.updateKingdeeInfo(entry);
+        if (total > 0) {
+            out.write("YES");
+        } else {
+            out.write("NO");
+        }
+    }
+
+
+
 
 			/**
              *

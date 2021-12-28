@@ -43,7 +43,15 @@
 	background: #058fd7;
 	color: #fff;
 }
-
+.emanagergettable tr td:nth-child(8) input{
+    width: 100px;
+}
+.emanagergettable tr td:nth-child(9) div {
+    width: 100px !important;
+    white-space:normal;
+    word-break:break-all;
+    word-wrap:break-word;
+}
 .odd {
 	background-color: #eaf5ff
 }
@@ -67,6 +75,7 @@
     cursor: pointer;
     font-size: 13px;
 }
+
 .factoryOffering {position:absolute;top:50px;left:1700px;}
 </style>
 <script type="text/javascript" src="/ERP-NBEmail/js/jquery-1.3.2.min.js"></script>
@@ -231,6 +240,40 @@ var entryReason =function(reason,id){
 		);
 	}
 };
+
+var entryKingdeeName =function(kingdeeId,id,payersName){
+	var flag = confirm("确定录入金蝶ID吗?");
+	if(flag){
+		var kingdeeId=document.getElementById(kingdeeId).value;
+		var params = {
+			"id":id,
+			"kingdeeId":kingdeeId,
+			"payersName":payersName,
+			"action":"updateKingdeeInfo",
+			"className":"AccountEntryFormServlet",
+		};
+		$.ajax({
+					url:'/ERP-NBEmail/helpServlet',
+					type:"post",
+					data:params,
+					success:function(data)
+					{
+
+						if(data == "YES"){
+							window.location.reload();
+
+
+						}else{
+							window.location.reload();
+
+						}
+					},
+				}
+		);
+	}
+};
+
+
 function accAdd(arg1,arg2){
 	var r1,r2,m;
 	try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0}
@@ -361,6 +404,7 @@ var splitAmounty =function(){
 					<td>汇款人名</td>
 					<td>银行</td>
 					<td>其他信息</td>
+					<td>金蝶ID</td>
 					<td>推测客户ID/认领人</td>
 					<td>进账详情</td>
 					<td>未认领理由</td>
@@ -382,9 +426,14 @@ var splitAmounty =function(){
 						<td>${cus.payersName }</td>
 						<td>${cus.beneficiaryAccountBank }</td>
 						<td>${cus.remark }</td>
-						<td><c:if test="${cus.nBEmailId !=0}"><c:if test="${cus.conjecture!='' }">${cus.nBEmailId}/${cus.conjecture }</c:if></c:if>
+						<td>
+							<input type="text" id="kingdeeId${i.count}" name="kingdeeId${i.count}" value="${cus.kingdeeId}">
+							<input type="button"  onclick="entryKingdeeName('kingdeeId${i.count}','${cus.id}','${cus.payersName}');" value="金蝶id录入">
+						</td>
+						<td><div>
+                            <c:if test="${cus.nBEmailId !=0}"><c:if test="${cus.conjecture!='' }">${cus.nBEmailId}/${cus.conjecture }</c:if></c:if>
 						<c:if test="${cus.nBEmailId !=0}"><c:if test="${cus.conjecture=='' }">${cus.nBEmailId}</c:if></c:if>
-					    <c:if test="${cus.reason!=null}">未认领理由:${cus.reason},${cus.entryPerson},<fmt:formatDate value="${cus.entryTime}" pattern="yyyy-MM-dd"/></c:if>
+					    <c:if test="${cus.reason!=null}">未认领理由:${cus.reason},${cus.entryPerson},<fmt:formatDate value="${cus.entryTime}" pattern="yyyy-MM-dd"/></c:if></div>
 						</td>
 						<td><c:forEach items="${cus.accessories}" var="cus1" varStatus="a">
 						${cus1.invoice }，预计到账${cus1.iimoney }，现实际到账${cus1.ifmoney }

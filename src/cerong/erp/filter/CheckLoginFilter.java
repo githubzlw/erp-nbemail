@@ -739,6 +739,10 @@ public class CheckLoginFilter implements Filter {
 	    	 chain.doFilter(req, res);
 	    	 return;
 	     }
+		if(action != null && action.equals("updateKingdeeInfo")) {//修改金蝶信息
+			chain.doFilter(req, res);
+			return;
+		}
 	     if(action != null && action.equals("exportReceiptForm")) {//导出excel表
 	    	 chain.doFilter(req, res);
 	    	 return;

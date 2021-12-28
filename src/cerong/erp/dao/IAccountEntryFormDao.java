@@ -159,6 +159,9 @@ public interface IAccountEntryFormDao {
 	 * @throws
 	 */
 	int updateAccountEntry(AccountEntryForm entry);
+	int updateKingdeeInfo(AccountEntryForm entry);
+
+
 	/**
 	 * 
 	 * @Title:IAccountEntryFormService

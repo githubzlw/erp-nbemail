@@ -28,7 +28,8 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 	    ResultSet rs = null;
-	   String sql = "  select account.*,isnull(pre.salesSubmission,0)salesSubmission from AccountEntryForm account left join (select AmountClaimFormId,min(salesSubmission)salesSubmission from  PreparatorEntryForm group by AmountClaimFormId) pre on account.id=pre.AmountClaimFormId where account.DataProcessing=0	order by account.TransactionDate desc ";
+	   String sql = "  select account.*,isnull(pre.salesSubmission,0)salesSubmission,ji.kingdee_id from AccountEntryForm account left join (select AmountClaimFormId,min(salesSubmission)salesSubmission from  PreparatorEntryForm group by AmountClaimFormId) pre on account.id=pre.AmountClaimFormId " +
+               " left join kingdee_info ji on account.PayersName=ji.kingdee_name where account.DataProcessing=0	order by account.TransactionDate desc ";
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
@@ -53,6 +54,7 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 			    con.setReason(rs.getString("reason"));
 			    con.setEntryPerson(rs.getString("entry_person"));
 			    con.setEntryTime(rs.getDate("entry_time"));
+				con.setKingdeeId(rs.getString("kingdee_id"));
 			    int num=0;
 			    Connection conn2 = null;
 				PreparedStatement stmt2 = null;
@@ -479,12 +481,15 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 
 	@Override
 	public List<AccountEntryForm> completionOfMoney(AccountEntryForm account,String flag) {
-List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 
-		if(StringUtils.isEmpty(account.getTransactionDate()) && StringUtils.isEmpty(account.getTransactionEndDate())){
-			return  list;
-		}
+		List<AccountEntryForm> list = null;
+
 		if("1".equals(flag)){
+			list = new ArrayList<AccountEntryForm>();
+			if(StringUtils.isEmpty(account.getTransactionDate()) && StringUtils.isEmpty(account.getTransactionEndDate())){
+				return  list;
+			}
+
 			Connection conn = null;
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
@@ -495,8 +500,11 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 			if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
 				sql+=" and transactionDate <= ?";
 			}
+//			if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+//				sql+=" and (BeneficiaryAccountBank like ? or PayersName like ? or TradeCurrency like ?)";
+//			}
 			if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
-				sql+=" and (BeneficiaryAccountBank like ? or PayersName like ? or TradeCurrency like ?)";
+				sql+=" and (BeneficiaryAccountBank like ? )";
 			}
 
 			sql+=" order by transactionDate ";
@@ -515,10 +523,10 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 				if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
 					i++;
 					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
-					i++;
-					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
-					i++;
-					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+//					i++;
+//					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+//					i++;
+//					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
 				}
 				rs = stmt.executeQuery();
 				while(rs.next()) {
@@ -538,7 +546,7 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 					con.setPayeeAccount(rs.getString("payeeAccount"));
 					con.setnBEmailId(rs.getInt("nBEmailId"));
 					con.setNewCustomer(rs.getInt("newCustomer"));
-
+//					con.setKingdeeName(rs.getString("kingdee_name"));
 					List<AmountClaimForm> list1 = new ArrayList<AmountClaimForm>();
 					Connection conn1 = null;
 					PreparedStatement stmt1 = null;
@@ -606,7 +614,11 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 
 			}
 			return list;
-		}else{
+		}else if("2".equals(flag)){
+			list = new ArrayList<AccountEntryForm>();
+			if(StringUtils.isEmpty(account.getTransactionDate()) && StringUtils.isEmpty(account.getTransactionEndDate())){
+				return  list;
+			}
 			Connection conn = null;
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
@@ -621,6 +633,10 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 //				sql+=" and (BeneficiaryAccountBank like ? or PayersName like ? or TradeCurrency like ?)";
 //			}
 
+			if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+				sql+=" and (BeneficiaryAccountBank like ? )";
+			}
+
 			sql+=" order by b.transactionDate ";
 			conn = SQLDBhelper.getConnection();
 			try {
@@ -634,14 +650,14 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 					i++;
 					stmt.setString(i, account.getTransactionEndDate());
 				}
-//				if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+				if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+					i++;
+					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
 //					i++;
 //					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
 //					i++;
 //					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
-//					i++;
-//					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
-//				}
+				}
 				rs = stmt.executeQuery();
 				while(rs.next()) {
 					AccountEntryForm con=new AccountEntryForm();
@@ -667,6 +683,7 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 					con.setExportMonth(rs.getString("exportMonth"));
 					con.setCountry(rs.getInt("country"));
 					con.setSumMoney(rs.getDouble("SumMoney"));
+					con.setKingdeeName(rs.getString("kingdee_name"));
 //					con.setState(rs.getString("state"));
 
 					list.add(con);
@@ -692,8 +709,146 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 
 			}
 			return list;
-		}
+		}else if("3".equals(flag)){
 
+			list = new ArrayList<AccountEntryForm>();
+			if(StringUtils.isEmpty(account.getTransactionDate()) && StringUtils.isEmpty(account.getTransactionEndDate())){
+				return  list;
+			}
+			List<AccountEntryForm> list3 = new ArrayList<AccountEntryForm>();
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			String sql = " select af.id,af.transactionDate,af.tradeAmount,kif.kingdee_id from AccountEntryForm af left join kingdee_info kif on af.PayersName = kif.kingdee_name where af.DataProcessing=1	";
+			if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
+				sql+=" and af.transactionDate >= ?";
+			}
+			if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
+				sql+=" and af.transactionDate <= ?";
+			}
+//			if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+//				sql+=" and (BeneficiaryAccountBank like ? or PayersName like ? or TradeCurrency like ?)";
+//			}
+			if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+				sql+=" and (af.BeneficiaryAccountBank like ? )";
+			}
+
+			sql+=" order by af.transactionDate ";
+			conn = SQLDBhelper.getConnection();
+			try {
+				stmt = conn.prepareStatement(sql);
+				int i=0;
+
+				if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
+					i++;
+					stmt.setString(i, account.getTransactionDate());
+				}
+				if(account.getTransactionEndDate()!=null&&!"".equalsIgnoreCase(account.getTransactionEndDate())){
+					i++;
+					stmt.setString(i, account.getTransactionEndDate());
+				}
+				if(account.getBeneficiaryAccountBank()!=null&&!"".equalsIgnoreCase(account.getBeneficiaryAccountBank())){
+					i++;
+					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+//					i++;
+//					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+//					i++;
+//					stmt.setString(i, "%"+account.getBeneficiaryAccountBank()+"%");
+				}
+				rs = stmt.executeQuery();
+
+				while(rs.next()) {
+					List<AccountEntryForm> list1 = new ArrayList<AccountEntryForm>();
+					AccountEntryForm con=new AccountEntryForm();
+					int id=rs.getInt("id");
+					con.setId(rs.getInt("id"));
+					con.setTransactionDate(rs.getString("transactionDate"));
+					con.setTradeAmount(rs.getDouble("tradeAmount"));
+					con.setKingdeeId(rs.getString("kingdee_id"));
+					//FAccountNum
+					con.setfAccountNum("1002.08");
+					//FAccountName
+					con.setfAccountName("中国银行外币帐户");
+					//fEntryId
+					con.setfEntryId(0);
+
+					list1.add(con);
+					list3.addAll(list1);
+
+					Connection conn1 = null;
+					PreparedStatement stmt1 = null;
+					ResultSet rs1 = null;
+					String sql1 = " select invoice,SumMoney from AmountClaimForm where AccountEntryId=?	";
+					conn1= SQLDBhelper.getConnection();
+					try {
+
+						stmt1 = conn1.prepareStatement(sql1);
+						stmt1.setInt(1, id);
+						rs1 = stmt1.executeQuery();
+						int z=1;
+						while(rs1.next()) {
+
+							List<AccountEntryForm> list2 = new ArrayList<AccountEntryForm>();
+							AccountEntryForm con1=new AccountEntryForm();
+							con1.setInvoice(rs1.getString("invoice"));
+							con1.setSumMoney(rs1.getDouble("SumMoney"));
+							con1.setTransactionDate(rs.getString("transactionDate"));
+
+							//FAccountNum
+							con1.setfAccountNum("2203");
+							//FAccountName
+							con1.setfAccountName("预收账款");
+							//fEntryId
+							con1.setfEntryId(z++);
+
+							list2.add(con1);
+							list3.addAll(list2);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						if (stmt1 != null) {
+							try {
+								stmt1.close();
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+						if (rs1 != null) {
+							try {
+								rs1.close();
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+						SQLDBhelper.close(conn1,stmt1,rs1);
+
+					}
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (stmt != null) {
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				SQLDBhelper.close(conn,stmt,rs);
+
+			}
+			return list3;
+		}
+		return list;
 	}
 
 	@Override
@@ -932,8 +1087,12 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 					sql += " newCustomer=?  ";
 				}
 				if(entry.getReason()!=null&&!"".equals(entry.getReason())){
+
 					sql+=" reason=?,entry_person=?,entry_time=getdate() ";
 				}
+//		if(StringUtils.isNotEmpty(entry.getKingdeeName())){
+//			sql+=" kingdee_name=?,entry_time=getdate() ";
+//		}
 				sql+="where id = ? ";
 		conn = SQLDBhelper.getConnection();
 		try {
@@ -950,6 +1109,10 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 				stmt.setString(i,entry.getEntryPerson() );
 
 			}
+//			if(StringUtils.isNotEmpty(entry.getKingdeeName())){
+//				i++;
+//				stmt.setString(i,entry.getKingdeeName() );
+//			}
 
 			stmt.setInt(i+1,entry.getId());
 			result = stmt.executeUpdate();
@@ -974,6 +1137,111 @@ List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
 		}
 		return result;
 	}
+
+    @Override
+    public int updateKingdeeInfo(AccountEntryForm entry) {
+
+        int result = 0;
+
+        if(selectKingdeeInFo(entry.getKingdeeName())>0){
+            result = updateKingdeeId(entry.getKingdeeName(), entry.getKingdeeId());
+        }else{
+            result = insertKingdeeInFo(entry.getKingdeeName(), entry.getKingdeeId());
+        }
+        return result;
+    }
+
+    public int selectKingdeeInFo(String kingdeeName)
+    {
+        int result = 0;
+        ResultSet rs = null;
+        Connection conn = SQLDBhelper.getConnection();
+        String insertErrorSql = "select count(1) cn from kingdee_info where kingdee_name=?";
+        PreparedStatement errorstmt = null;
+        try {
+            errorstmt = conn.prepareStatement(insertErrorSql);
+            errorstmt.setString(1, kingdeeName);
+
+            rs = errorstmt.executeQuery();
+            while(rs.next()) {
+                result = rs.getInt("cn");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                errorstmt.close();
+                SQLDBhelper.returnConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public int insertKingdeeInFo(String kingdeeName, String kingdeeId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int result = 0;
+        String sql = "insert into kingdee_info(kingdee_id,kingdee_name) values(?,?)";
+        conn = SQLDBhelper.getConnection();
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, kingdeeId);
+            stmt.setString(2,kingdeeName);
+
+            result = stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            SQLDBhelper.close(conn,stmt,rs);
+        }
+
+        return result;
+    }
+
+
+
+    public int updateKingdeeId(String kingdeeName, String kingdeeId)
+    {
+        int result = 0;
+        Connection conn = SQLDBhelper.getConnection();
+        String insertErrorSql = "update kingdee_info set kingdee_id=? ,update_time=getdate() where kingdee_name=? ";
+        PreparedStatement errorstmt = null;
+        try {
+            errorstmt = conn.prepareStatement(insertErrorSql);
+
+            errorstmt.setString(1, kingdeeId);
+            errorstmt.setString(2, kingdeeName);
+            result = errorstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                errorstmt.close();
+                SQLDBhelper.returnConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
 
 	@Override
 	public List<cerong.erp.entity.AccountEntryForm> getAll(String time1) {
