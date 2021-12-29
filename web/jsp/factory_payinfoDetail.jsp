@@ -90,6 +90,7 @@
 					<td width="100px">时间</td>
 					<td width="50px">采购</td>
 					<td width="50px">销售</td>
+					<td width="50px">跟单</td>
 				</tr>
 				<c:forEach items="${factoryPayList}" var="cus" varStatus="i">
 					<tr>
@@ -102,6 +103,7 @@
 						<td>${cus.createTime != null ?fn:substring(cus.createTime,0,fn:indexOf(cus.createTime," ")):""}</td>
 						<td>${cus.merchandManager2}</td>
 						<td>${cus.merchandManager1}</td>
+						<td>${cus.merchandising}</td>
 
 					</tr>
 				</c:forEach>

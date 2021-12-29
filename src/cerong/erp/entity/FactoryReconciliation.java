@@ -45,8 +45,20 @@ public class FactoryReconciliation {
 	private Double amountCustomsDeclaration;
 	/** 采购*/
 	private String merchandManager2;
-	/** 跟单*/
+	/** 销售*/
 	private String merchandManager1;
+
+	public String getMerchandising() {
+		return merchandising;
+	}
+
+	public void setMerchandising(String merchandising) {
+		this.merchandising = merchandising;
+	}
+
+	/** 跟单*/
+	private String merchandising;
+
 
 	private String remarks;
 
