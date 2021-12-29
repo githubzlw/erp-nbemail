@@ -673,6 +673,8 @@ public List<FactoryReconciliation> getPayInfo(String factoryName);
 
 public List<FactoryReconciliation> factoryPayInfoDetail(String factoryName);
 
+	List<FactoryInvoice> factoryGetInfoDetail(FactoryInvoiceParam param);
+
 
 /**
  * 

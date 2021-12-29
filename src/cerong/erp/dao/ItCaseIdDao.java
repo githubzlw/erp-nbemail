@@ -14,9 +14,7 @@ import cerong.erp.entity.*;
 import cerong.erp.jdbc.SQLDBhelper;
 import cerong.erp.jdbc.SQLDBhelper1;
 import cerong.erp.jdbc.DBHelper;
-
-
-
+import org.apache.commons.lang.StringUtils;
 
 
 public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
@@ -6359,6 +6357,91 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}
 			}
 			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
+
+
+	@Override
+	public List<FactoryInvoice> factoryGetInfoDetail(FactoryInvoiceParam param) {
+		List<FactoryInvoice> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sql = "Select a.id,a.Factory_id,a.Case_No,a.Date_time,a.Pay_Moeny,a.Get_Moeny,a.Direction,a.Bargain_No," +
+				"a.Lab_No,a.remarks,a.ApNumer,a.createtime,a.Invoice_name,a.remark,a.nonum,a.times," +
+				"(select sum(b.Get_Moeny) from Tab_Factory_Money b where b.Factory_id= a.Factory_id) as total_mo " +
+				"FROM  Tab_Factory_Money a WHERE a.Get_Moeny > 0 ";
+		if (null != param && StringUtils.isNotEmpty(param.getCaseNo())) {
+			sql += " and a.Case_No = ?";
+		}
+		if (null != param && StringUtils.isNotEmpty(param.getFactoryId())) {
+			sql += " and a.Factory_id = ?";
+		}
+		if (null != param && StringUtils.isNotEmpty(param.getLabNo())) {
+			sql += " and a.Lab_No = ?";
+		}
+		if (null != param && StringUtils.isNotEmpty(param.getBeginTime())) {
+			sql += " and a.Date_time >= ?";
+		}
+		if (null != param && StringUtils.isNotEmpty(param.getEndTime())) {
+			sql += " and a.Date_time < ?";
+		}
+		System.err.println(sql);
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			int i = 1;
+
+			if (null != param && StringUtils.isNotEmpty(param.getCaseNo())) {
+				stmt.setString(i++, param.getCaseNo());
+			}
+			if (null != param && StringUtils.isNotEmpty(param.getFactoryId())) {
+				stmt.setString(i++, param.getFactoryId());
+			}
+			if (null != param && StringUtils.isNotEmpty(param.getLabNo())) {
+				stmt.setString(i++, param.getLabNo());
+			}
+			if (null != param && StringUtils.isNotEmpty(param.getBeginTime())) {
+				stmt.setString(i++, param.getBeginTime());
+			}
+			if (null != param && StringUtils.isNotEmpty(param.getEndTime())) {
+				stmt.setString(i++, param.getEndTime());
+			}
+
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				FactoryInvoice con = new FactoryInvoice();
+				con.setFactoryId(rs.getString("Factory_id"));
+				con.setCaseNo(rs.getString("Case_No"));
+				con.setBargainNo(rs.getString("Bargain_No"));
+				con.setPayMoeny(rs.getDouble("Get_Moeny"));
+				con.setTotalAmount(rs.getDouble("total_mo"));
+				con.setDateTime(rs.getString("Date_time"));
+				con.setLabNo(rs.getString("Lab_No"));
+				con.setRemarks(rs.getString("remarks"));
+				con.setInvoiceName(rs.getString("Invoice_name"));
+				list.add(con);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn, stmt, rs);
 		}
 		return list;
 	}

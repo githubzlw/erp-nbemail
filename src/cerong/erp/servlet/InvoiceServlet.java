@@ -1,13 +1,10 @@
 package cerong.erp.servlet;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -21,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cerong.erp.entity.*;
+import cerong.erp.util.*;
 import net.sf.json.JSONObject;
 import cerong.erp.dao.InvinceDaoImpl;
 import cerong.erp.service.EmailUserServiceImpl;
@@ -35,11 +33,8 @@ import cerong.erp.service.InvinceService;
 import cerong.erp.service.ItCaseIdService;
 import cerong.erp.service.ItCaseIdServiceImpl;
 import cerong.erp.service.invoiceinfoService;
-import cerong.erp.util.AccountEntryUpLoad;
-import cerong.erp.util.Client;
-import cerong.erp.util.PathUtil;
-import cerong.erp.util.ReadExcelUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
 
 public class InvoiceServlet extends HttpServlet{
 	
@@ -552,6 +547,150 @@ public class InvoiceServlet extends HttpServlet{
 
     }
 
+	/**
+	 * 获得的发票明细统计
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void factoryGetInfoDetail (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+		FactoryInvoiceParam param = new FactoryInvoiceParam();
+		String factoryId = request.getParameter("factoryId");
+		String caseNo = request.getParameter("caseNo");
+		String labNo = request.getParameter("labNo");
+		String bargainNo = request.getParameter("bargainNo");
+		String beginTime = request.getParameter("beginTime");
+		String endTime = request.getParameter("endTime");
+
+		if (null == param) {
+			param = new FactoryInvoiceParam();
+		}
+		param.setFactoryId(factoryId);
+		param.setCaseNo(caseNo);
+		param.setLabNo(labNo);
+		param.setBargainNo(bargainNo);
+		if (StringUtils.isNotEmpty(beginTime)) {
+			param.setBeginTime(beginTime + " 00:00:00");
+		}
+
+		if (StringUtils.isNotEmpty(endTime)) {
+			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = sdf.parse(endTime);
+			Calendar calendar = new GregorianCalendar();
+			calendar.setTime(date);
+			calendar.add(Calendar.DATE, 1); //把日期往后增加一天,整数  往后推,负数往前移动
+			date = calendar.getTime();
+			param.setEndTime(sdf.format(date) + " 00:00:00");
+		}
+
+		//
+		List<FactoryInvoice> list = service.factoryGetInfoDetail(param);
+
+		factoryGetInfoDetailExcel(list);
+		request.setAttribute("factoryId", factoryId);
+		request.setAttribute("caseNo", caseNo);
+		request.setAttribute("labNo", labNo);
+		request.setAttribute("beginTime", beginTime);
+		request.setAttribute("endTime", endTime);
+		request.setAttribute("bargainNo", bargainNo);
+		request.setAttribute("factoryPayList", list);
+
+		request.getRequestDispatcher("jsp/factory_getinfoDetail.jsp").forward(request, response);
+
+	}
+
+
+	public void factoryGetInfoDetailExcel(List<FactoryInvoice> list) {
+		if (null == list) {
+			list = new ArrayList<>();
+		}
+		String filePath = PathUtil.FirstParagraph + File.separator + "factoryGetInfoDetailExcel.xls";
+		File tempFile = new File(filePath);
+		if(tempFile.exists()) {
+			tempFile.delete();
+		}
+		if(!tempFile.getParentFile().exists() || !tempFile.getParentFile().isDirectory() ){
+			tempFile.getParentFile().mkdirs();
+		}
+		// excel 下载
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("工厂发票列表");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+		HSSFCell cell = row.createCell((short) 0);
+
+		cell.setCellValue("工厂Id");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 1);
+		cell.setCellValue("项目号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 2);
+		cell.setCellValue("时间");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 3);
+		cell.setCellValue("分配金额");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 4);
+		cell.setCellValue("合同号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 5);
+		cell.setCellValue("凭证号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 6);
+		cell.setCellValue("发票名称");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 7);
+		cell.setCellValue("发票总金额");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) 8);
+		cell.setCellValue("备注");
+		cell.setCellStyle(style);
+
+		for (int i = 0; i < list.size(); i++) {
+			row = sheet.createRow((int) i + 1);
+			FactoryInvoice sc = list.get(i);
+			// 第四步，创建单元格，并设置值
+			int j = 0;
+			row.createCell(j++).setCellValue(sc.getFactoryId());
+			row.createCell(j++).setCellValue(sc.getCaseNo());
+			row.createCell(j++).setCellValue(sc.getDateTime());
+			row.createCell(j++).setCellValue(sc.getPayMoeny());
+			row.createCell(j++).setCellValue(sc.getBargainNo());
+			row.createCell(j++).setCellValue(sc.getLabNo());
+			row.createCell(j++).setCellValue(sc.getInvoiceName());
+			row.createCell(j++).setCellValue(sc.getTotalAmount());
+			row.createCell(j++).setCellValue(sc.getRemarks());
+
+		}
+		// 第六步，将文件存到指定位置
+		FileOutputStream fout = null;
+		try {
+			fout = new FileOutputStream(filePath);
+			wb.write(fout);
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(null != fout){
+				try {
+					fout.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
 	public void factoryPayInfoDetail (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, ParseException {
 		String factoryName = request.getParameter("factoryId");
@@ -563,7 +702,6 @@ public class InvoiceServlet extends HttpServlet{
 		request.setAttribute("factoryPayList",list );
 
 		request.getRequestDispatcher("jsp/factory_payinfoDetail.jsp").forward(request, response);
-
 
 	}
 

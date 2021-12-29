@@ -487,6 +487,12 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 		return dao.factoryPayInfoDetail(factoryName);
 	}
 
+	@Override
+	public List<FactoryInvoice> factoryGetInfoDetail(FactoryInvoiceParam param) {
+
+		return dao.factoryGetInfoDetail(param);
+	}
+
 
 
 	@Override

@@ -857,6 +857,10 @@ public class CheckLoginFilter implements Filter {
 			return;
 		}
 
+		if(action != null && action.equals("factoryGetInfoDetail")) {//查询报关名
+			chain.doFilter(req, res);
+			return;
+		}
 
 	     if(action != null && action.equals("search")) {//查询报关名
 	    	 chain.doFilter(req, res);

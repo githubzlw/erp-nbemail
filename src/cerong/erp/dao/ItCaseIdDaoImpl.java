@@ -660,6 +660,8 @@ public List<FactoryReconciliation> factoryPayInfo(String invoiceName);
 
 	public List<FactoryReconciliation> factoryPayInfoDetail(String invoiceName);
 
+	List<FactoryInvoice> factoryGetInfoDetail(FactoryInvoiceParam param);
+
 /**
  * 
  * @Title:ItCaseIdServiceImpl
