@@ -5426,7 +5426,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setStartTime(rs.getString("DateTime"));
 				info.setMerchandManager1(rs.getString("CustomerManager"));
 				info.setMerchandManager2(rs.getString("merchandManager2"));
-				info.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				if(StringUtils.isNotEmpty(rs.getString("Merchandising"))){
+					info.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				}else{
+					info.setMerchandising(rs.getString("merchandManager1"));
+				}
 				list.add(info);
 			}
 		} catch (Exception e) {
@@ -6218,7 +6222,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setCreateTime(rs.getString("minDate_time"));
 				con.setMerchandManager1(rs.getString("CustomerManager"));
 				con.setMerchandManager2(rs.getString("merchandManager2"));
-				con.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				if(StringUtils.isNotEmpty(rs.getString("Merchandising"))){
+					con.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				}else{
+					con.setMerchandising(rs.getString("merchandManager1"));
+				}
 //				con.setCreateTime(rs.getString("createtime"));
 				list.add(con);
 			}
@@ -6340,7 +6348,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setCreateTime(rs.getString("Date_time"));
 				con.setMerchandManager1(rs.getString("CustomerManager"));
 				con.setMerchandManager2(rs.getString("merchandManager2"));
-				con.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				if(StringUtils.isNotEmpty(rs.getString("Merchandising"))){
+					con.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				}else{
+					con.setMerchandising(rs.getString("merchandManager1"));
+				}
 				list.add(con);
 			}
 		} catch (Exception e) {
