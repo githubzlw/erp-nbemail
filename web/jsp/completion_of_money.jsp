@@ -169,7 +169,7 @@ function mysubmit(){      //定义调用的块。
 					&nbsp&nbsp&nbsp&nbsp
 					<a
 							href="/ERP-NBEmail/download1?filename=completionDataInv.xls"
-							title="firstparagraphInv.xls">导出列表数据INV明细</a>
+							title="firstparagraphInv.xls">美元到账凭证数据</a>
 
 <%--					<a href="#" onClick="return mysubmit()" language="javascript">导出列表数据INV明细</a>--%>
 

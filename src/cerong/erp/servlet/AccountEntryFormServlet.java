@@ -518,15 +518,14 @@ public class AccountEntryFormServlet extends HttpServlet {
 			row.createCell((short) 16).setCellValue("");
 			row.createCell((short) 17).setCellValue("*");
 			row.createCell((short) 18).setCellValue("");
-			// TODO
 			String kingdeeId = sc.getKingdeeId();
 			if(StringUtils.isEmpty(sc.getKingdeeId())){
 				kingdeeId="0000";
 			}
 			if(sc.getTradeAmount()!=null){
-				row.createCell((short) 19).setCellValue("收到UPTEK SOLUTIONS CORP 美元"+sc.getTradeAmount()+"("+kingdeeId+")");
+				row.createCell((short) 19).setCellValue("收到UPTEK SOLUTIONS CORP 美元"+sc.getTradeAmount()+" ("+kingdeeId+")");
 			}else{
-				row.createCell((short) 19).setCellValue("收到UPTEK SOLUTIONS CORP 美元"+sc.getSumMoney()+"("+kingdeeId+")");
+				row.createCell((short) 19).setCellValue("收到UPTEK SOLUTIONS CORP 美元"+sc.getSumMoney()+" "+sc.getInvoice().replaceAll("INV","SHS").replaceAll("inv","SHS")+" ("+kingdeeId+")");
 			}
 
 			row.createCell((short) 20).setCellValue(0);
