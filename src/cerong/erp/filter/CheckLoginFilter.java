@@ -852,10 +852,21 @@ public class CheckLoginFilter implements Filter {
 			return;
 		}
 
+		if(action != null && action.equals("casePayInfoNew")) {//
+			chain.doFilter(req, res);
+			return;
+		}
+
 		if(action != null && action.equals("factoryPayInfoDetail")) {//
 			chain.doFilter(req, res);
 			return;
 		}
+
+		if(action != null && action.equals("caseNoByDetail")) {//
+			chain.doFilter(req, res);
+			return;
+		}
+
 
 		if(action != null && action.equals("factoryGetInfoDetail")) {//查询报关名
 			chain.doFilter(req, res);

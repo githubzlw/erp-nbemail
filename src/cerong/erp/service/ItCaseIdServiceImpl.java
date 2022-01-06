@@ -667,11 +667,13 @@ public List<FactoryReconciliation> factoryNameByInvoiceName(String invoiceName);
 
 public List<FactoryReconciliation> factoryPayInfo(String factoryName);
 public List<FactoryReconciliation> factoryPayInfoNew(String factoryName);
+public List<FactoryReconciliation> casePayInfoNew(String caseno);
+
 
 public List<FactoryReconciliation> getPayInfo(String factoryName);
 
 
-public List<FactoryReconciliation> factoryPayInfoDetail(String factoryName);
+public List<FactoryReconciliation> factoryPayInfoDetail(String factoryName,int flag);
 
 	List<FactoryInvoice> factoryGetInfoDetail(FactoryInvoiceParam param);
 

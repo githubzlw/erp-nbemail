@@ -529,6 +529,26 @@ public class InvoiceServlet extends HttpServlet{
 
 	}
 
+
+	public void casePayInfoNew (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+		String caseNo = request.getParameter("caseNo");
+
+		//判断是乱码 (GBK包含全部中文字符；UTF-8则包含全世界所有国家需要用到的字符。)
+//		if (!(java.nio.charset.Charset.forName("GBK").newEncoder().canEncode(factoryName))) {
+//			factoryName = new String(factoryName.getBytes("ISO-8859-1"), "utf-8"); //转码UTF8
+//		}
+		//
+		List<FactoryReconciliation> list=service.casePayInfoNew(caseNo);
+		request.setAttribute("factoryPayList",list );
+		request.setAttribute("caseNo",caseNo );
+
+		request.getRequestDispatcher("jsp/caseno_payinfonew.jsp").forward(request, response);
+
+
+	}
+
+
     public void getPayInfo (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         String fName = request.getParameter("fName");
@@ -698,10 +718,26 @@ public class InvoiceServlet extends HttpServlet{
 		String caseNo = request.getParameter("caseNo");
 
 		//
-		List<FactoryReconciliation> list=service.factoryPayInfoDetail(factoryName+","+caseNo);
+		List<FactoryReconciliation> list=service.factoryPayInfoDetail(factoryName+","+caseNo,1);
 		request.setAttribute("factoryPayList",list );
 
 		request.getRequestDispatcher("jsp/factory_payinfoDetail.jsp").forward(request, response);
+
+	}
+
+	public void caseNoByDetail (HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, ParseException {
+//		String factoryName = request.getParameter("factoryId");
+
+		String caseNo = request.getParameter("caseNo");
+
+		//
+		List<FactoryReconciliation> list=service.factoryPayInfoDetail(caseNo,2);
+		request.setAttribute("factoryPayList",list );
+
+		request.setAttribute("caseNo",caseNo );
+
+		request.getRequestDispatcher("jsp/caseno_payinfoDetail.jsp").forward(request, response);
 
 	}
 

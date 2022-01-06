@@ -473,6 +473,14 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 		return dao.factoryPayInfoNew(factoryName);
 	}
 
+	@Override
+	public List<FactoryReconciliation> casePayInfoNew(String caseNo) {
+
+		return dao.casePayInfoNew(caseNo);
+	}
+
+
+
     @Override
     public List<FactoryReconciliation> getPayInfo(String factoryName) {
 
@@ -482,9 +490,9 @@ public  class ItCaseIdService implements ItCaseIdServiceImpl  {
 
 
 	@Override
-	public List<FactoryReconciliation> factoryPayInfoDetail(String factoryName) {
+	public List<FactoryReconciliation> factoryPayInfoDetail(String factoryName,int flag) {
 
-		return dao.factoryPayInfoDetail(factoryName);
+		return dao.factoryPayInfoDetail(factoryName,flag);
 	}
 
 	@Override

@@ -506,12 +506,14 @@ public class AccountEntryFormServlet extends HttpServlet {
 			row.createCell((short) 8).setCellValue("美元");
 			if(sc.getTradeAmount()!=null){
 				row.createCell((short) 9).setCellValue(sc.getTradeAmount());
-				row.createCell((short) 10).setCellValue((double)Math.round(sc.getTradeAmount()*Double.valueOf(rateValue)*100)/100);
+//				row.createCell((short) 10).setCellValue((double)Math.round(sc.getTradeAmount()*Double.valueOf(rateValue)*100)/100);
+				row.createCell((short) 10).setCellValue(DateUtil.mul(sc.getTradeAmount(),Double.valueOf(rateValue)));
 				row.createCell((short) 11).setCellValue(0);
 			}else{
 				row.createCell((short) 9).setCellValue(sc.getSumMoney());
 				row.createCell((short) 10).setCellValue(0);
-				row.createCell((short) 11).setCellValue((double)Math.round(sc.getSumMoney()*Double.valueOf(rateValue)*100)/100);
+//				row.createCell((short) 11).setCellValue((double)Math.round(sc.getSumMoney()*Double.valueOf(rateValue)*100000)/100000);
+				row.createCell((short) 11).setCellValue(DateUtil.mul(sc.getSumMoney(),Double.valueOf(rateValue)));
 			}
 			row.createCell((short) 12).setCellValue("李思");
 			row.createCell((short) 13).setCellValue("NONE");
@@ -542,7 +544,12 @@ public class AccountEntryFormServlet extends HttpServlet {
 			row.createCell((short) 29).setCellValue("");
 			row.createCell((short) 30).setCellValue(rateValue);
 			row.createCell((short) 31).setCellValue(sc.getfEntryId());
-			row.createCell((short) 32).setCellValue("预收账款---"+kingdeeId+"---"+sc.getPayersName());
+			if(sc.getfEntryId()!=0){
+				row.createCell((short) 32).setCellValue("预收账款---"+kingdeeId+"---"+sc.getPayersName());
+			}else{
+				row.createCell((short) 32).setCellValue("");
+			}
+
 			row.createCell((short) 33).setCellValue("0");
 			row.createCell((short) 34).setCellValue("");
 			row.createCell((short) 35).setCellValue("");
@@ -563,6 +570,7 @@ public class AccountEntryFormServlet extends HttpServlet {
 		}
 
 	}
+
 
 	/**
 	 * @param request
