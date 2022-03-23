@@ -124,6 +124,7 @@
 					<td width="100px">时间</td>
 					<td width="50px">采购</td>
 					<td width="50px">销售</td>
+					<td width="50px">跟单</td>
 					<td width="50px">备注</td>
 					<td width="50px"></td>
 				</tr>
@@ -139,6 +140,7 @@
 						<td>${cus.createTime != null ?fn:substring(cus.createTime,0,fn:indexOf(cus.createTime," ")):""}</td>
 						<td>${cus.merchandManager2}</td>
 						<td>${cus.merchandManager1}</td>
+						<td>${cus.merchandising}</td>
 
 							 <td style="border: 1px solid #BBBABA; width: 80px;">
 								 <input type="text" style="width: 150px;" id="projectnote${i.count}"

@@ -161,6 +161,9 @@ function mysubmit(){      //定义调用的块。
 								onfocus="WdatePicker({dateFmt:'yyyyMMdd'})" /></td>
 				  <td>银行：<input type="text" id="bank" name="bank" value="${bank }"></td>
 				  <td>汇率：<input type="text" id="rateValue" name="rateValue" value="${rateValue }"></td>
+				  <td>数据编号：<input type="text" id="numZ" name="numZ" value="${numZ }"></td>
+
+
 				<td><input type="submit"  value="查询">
 					<a
 							href="/ERP-NBEmail/download1?filename=completionData.xls"

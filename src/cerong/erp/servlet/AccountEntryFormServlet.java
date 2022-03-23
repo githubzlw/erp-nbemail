@@ -3,10 +3,7 @@ package cerong.erp.servlet;
 
 import cerong.erp.entity.*;
 import cerong.erp.service.*;
-import cerong.erp.util.AccountEntryUpLoad;
-import cerong.erp.util.CheckUtil;
-import cerong.erp.util.PathUtil;
-import cerong.erp.util.ReadExcelUtils;
+import cerong.erp.util.*;
 import com.ibm.icu.math.BigDecimal;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -128,6 +125,7 @@ public class AccountEntryFormServlet extends HttpServlet {
 			String time1 = request.getParameter("time1");
 			String time2 = request.getParameter("time2");
 			String rateValue = request.getParameter("rateValue");
+			String numZ = request.getParameter("numZ");
 			AccountEntryForm accountEntryForm = new AccountEntryForm();
 			if (bank != null && !"".equalsIgnoreCase(bank)) {
 				bank = new String(bank.getBytes("iso-8859-1"), "UTF-8");
@@ -141,6 +139,10 @@ public class AccountEntryFormServlet extends HttpServlet {
 			if (time2 != null && !"".equalsIgnoreCase(time2)) {
 				accountEntryForm.setTransactionEndDate(time2);
 				request.setAttribute("time2", time2);
+			}
+			if (numZ != null && !"".equalsIgnoreCase(numZ)) {
+				accountEntryForm.setNumZ(Integer.valueOf(numZ));
+				request.setAttribute("numZ", numZ);
 			}
 
 			List<AccountEntryForm> list = service.completionOfMoney(accountEntryForm,"1");
@@ -493,23 +495,25 @@ public class AccountEntryFormServlet extends HttpServlet {
 			row = sheet.createRow((int) i + 1);
 			AccountEntryForm sc=listInv.get(i);
 			// 第四步，创建单元格，并设置值
-			row.createCell((short) 0).setCellValue(sc.getTransactionDate());
+			row.createCell((short) 0).setCellValue(sc.getTransactionDate().substring(0,4)+"/"+sc.getTransactionDate().substring(4,6)+"/"+sc.getTransactionDate().substring(6,8));
 			row.createCell((short) 1).setCellValue(sc.getTransactionDate().substring(0,4));
 			row.createCell((short) 2).setCellValue(sc.getTransactionDate().substring(4,6));
 			row.createCell((short) 3).setCellValue("银");
-			row.createCell((short) 4).setCellValue("204");
+			row.createCell((short) 4).setCellValue(sc.getNumZ());
 			row.createCell((short) 5).setCellValue(sc.getfAccountNum());
 			row.createCell((short) 6).setCellValue(sc.getfAccountName());
 			row.createCell((short) 7).setCellValue("USD");
 			row.createCell((short) 8).setCellValue("美元");
 			if(sc.getTradeAmount()!=null){
 				row.createCell((short) 9).setCellValue(sc.getTradeAmount());
-				row.createCell((short) 10).setCellValue((double)Math.round(sc.getTradeAmount()*Double.valueOf(rateValue)*100)/100);
+//				row.createCell((short) 10).setCellValue((double)Math.round(sc.getTradeAmount()*Double.valueOf(rateValue)*100)/100);
+				row.createCell((short) 10).setCellValue(DateUtil.mul(sc.getTradeAmount(),Double.valueOf(rateValue)));
 				row.createCell((short) 11).setCellValue(0);
 			}else{
 				row.createCell((short) 9).setCellValue(sc.getSumMoney());
 				row.createCell((short) 10).setCellValue(0);
-				row.createCell((short) 11).setCellValue((double)Math.round(sc.getSumMoney()*Double.valueOf(rateValue)*100)/100);
+//				row.createCell((short) 11).setCellValue((double)Math.round(sc.getSumMoney()*Double.valueOf(rateValue)*100000)/100000);
+				row.createCell((short) 11).setCellValue(DateUtil.mul(sc.getSumMoney(),Double.valueOf(rateValue)));
 			}
 			row.createCell((short) 12).setCellValue("李思");
 			row.createCell((short) 13).setCellValue("NONE");
@@ -523,16 +527,16 @@ public class AccountEntryFormServlet extends HttpServlet {
 				kingdeeId="0000";
 			}
 			if(sc.getTradeAmount()!=null){
-				row.createCell((short) 19).setCellValue("收到UPTEK SOLUTIONS CORP 美元"+sc.getTradeAmount()+" ("+kingdeeId+")");
+				row.createCell((short) 19).setCellValue("收到"+sc.getPayersName()+" 美元"+sc.getTradeAmount()+" ("+kingdeeId+")");
 			}else{
-				row.createCell((short) 19).setCellValue("收到UPTEK SOLUTIONS CORP 美元"+sc.getSumMoney()+" "+sc.getInvoice().replaceAll("INV","SHS").replaceAll("inv","SHS")+" ("+kingdeeId+")");
+				row.createCell((short) 19).setCellValue("收到"+sc.getPayersName()+" 美元"+sc.getSumMoney()+" "+sc.getInvoice().replaceAll("INV","SHS").replaceAll("inv","SHS")+" ("+kingdeeId+")");
 			}
 
 			row.createCell((short) 20).setCellValue(0);
 			row.createCell((short) 21).setCellValue("*");
 			row.createCell((short) 22).setCellValue("0");
 			row.createCell((short) 23).setCellValue("");
-			row.createCell((short) 24).setCellValue(sc.getTransactionDate());
+			row.createCell((short) 24).setCellValue(sc.getTransactionDate().substring(0,4)+"/"+sc.getTransactionDate().substring(4,6)+"/"+sc.getTransactionDate().substring(6,8));
 			row.createCell((short) 25).setCellValue(sc.getInvoice());
 			row.createCell((short) 26).setCellValue("0");
 			row.createCell((short) 27).setCellValue("13867");
@@ -540,7 +544,12 @@ public class AccountEntryFormServlet extends HttpServlet {
 			row.createCell((short) 29).setCellValue("");
 			row.createCell((short) 30).setCellValue(rateValue);
 			row.createCell((short) 31).setCellValue(sc.getfEntryId());
-			row.createCell((short) 32).setCellValue("预收账款---"+kingdeeId+"---UPTEK SOLUTIONS CORP");
+			if(sc.getfEntryId()!=0){
+				row.createCell((short) 32).setCellValue("预收账款---"+kingdeeId+"---"+sc.getPayersName());
+			}else{
+				row.createCell((short) 32).setCellValue("");
+			}
+
 			row.createCell((short) 33).setCellValue("0");
 			row.createCell((short) 34).setCellValue("");
 			row.createCell((short) 35).setCellValue("");
@@ -561,6 +570,7 @@ public class AccountEntryFormServlet extends HttpServlet {
 		}
 
 	}
+
 
 	/**
 	 * @param request

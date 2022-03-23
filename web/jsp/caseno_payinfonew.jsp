@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script language="javascript" type="text/javascript"
 	src="My97DatePicker/WdatePicker.js"></script>
-<title>工厂付款列表</title>
+<title>项目付款列表</title>
 </head>
 <style>
 .usechange {
@@ -23,7 +23,7 @@
 
 .part_01{overflow: hidden;}
 .emanagergettable {
-	width: 1000px;
+	width: 1500px;
 	border: 1px #7D7D7D solid;
 	border-collapse: collapse;
 }
@@ -73,37 +73,95 @@
 <script language="javascript" type="text/javascript"
 	src="My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
+	// function updateRemarks(remarks,factoryId,caseNo){
+	//
+	// 	var remarks=  document.getElementById(remarks).value;
+	// 	remarks = remarks.replace(/\%/g,"%25").replace(/\#/g,"%23").replace(/\&/g,"%26").replace(/\+/g,"%2B");
+	//
+	// 	caseNo = caseNo.replace(/\%/g,"%25").replace(/\#/g,"%23").replace(/\&/g,"%26").replace(/\+/g,"%2B");
+	// 	var params = {
+	// 		"remarks":remarks,
+	// 		"factoryId":factoryId,
+	// 		"caseNo":caseNo,
+	// 		"action":"updateRemarks",
+	// 		"className":"InvoiceServlet",
+	// 	};
+	//
+	// 	$.ajax({
+	// 				url:'/ERP-NBEmail/helpServlet',
+	// 				type:"post",
+	// 				data:params,
+	// 				success:function(data)
+	// 				{
+	// 					if(data == "YES"){
+	// 						alert("成功")
+	// 						window.location.reload();
+	// 					}else{
+	// 						window.location.reload();
+	//
+	// 					}
+	// 				},
+	//
+	// 			}
+	// 	);
+	//
+	//
+	// }
 </script>
 
 <body>
 	<div class="cusalldiv">
 	<div class="usechange">
-			<h2>工厂合同汇总列表</h2>
-		
+			<h2>项目汇总列表</h2>
+
+		<form
+				action="/ERP-NBEmail/helpServlet?action=casePayInfoNew&className=InvoiceServlet"
+				method="post">
+			<table class="usectable">
+				<tr>
+					<td class="usermatd3">项目号:</td>
+					<td class="usermatd1">
+						<div class="userselediv_nor">
+							<input type="text" class="userselein" name="caseNo" value="${caseNo }"/>
+
+						</div>
+					</td>
+
+					<td class="usermatd4"><input type="submit" value="查询"
+												 class="usersearchbtn">
+
+					</td>
+				</tr>
+			</table>
+
+		</form>
+
             <table class="emanagergettable">
 				<tr class="emanagergettr">
-					<td width="200px">工厂名</td>
-                    <td width="100px">项目号</td>
-					<td width="100px">合同号</td>
-					<td width="100px">已经支付的金额</td>
-					<td width="100px">已经收回发票的金额</td>
+                    <td width="50px">项目号</td>
+					<td width="50px">已经支付的金额</td>
+					<td width="70px">已经收回发票的金额</td>
+					<td width="50px">未回收发票的金额</td>
 					<td width="100px">时间</td>
 					<td width="50px">采购</td>
 					<td width="50px">销售</td>
 					<td width="50px">跟单</td>
+
 				</tr>
 				<c:forEach items="${factoryPayList}" var="cus" varStatus="i">
 					<tr>
-
-						<td>${cus.factoryName }</td>
-						<td>${cus.caseNo }</td>
-						<td>${cus.bargainNo }</td>
+						<td><a href="/ERP-NBEmail/helpServlet?action=caseNoByDetail&className=InvoiceServlet&caseNo=${cus.caseNo }" target="_blank">${cus.caseNo }</a></td>
 						<td><fmt:formatNumber value="${cus.price}" type="number" maxFractionDigits="2"/> </td>
 						<td><fmt:formatNumber value="${cus.endingBalance}" type="number" maxFractionDigits="2"/> </td>
+
+						<td><fmt:formatNumber value="${cus.amountCredit}" type="number" maxFractionDigits="2"/> </td>
+
 						<td>${cus.createTime != null ?fn:substring(cus.createTime,0,fn:indexOf(cus.createTime," ")):""}</td>
 						<td>${cus.merchandManager2}</td>
 						<td>${cus.merchandManager1}</td>
 						<td>${cus.merchandising}</td>
+
+
 
 					</tr>
 				</c:forEach>

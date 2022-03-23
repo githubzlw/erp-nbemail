@@ -5401,7 +5401,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sql = " Select b.FactoryName,isnull(sum(a.Pay_Moeny),0) as PayMoney,isnull(sum(a.Get_Moeny),0) as GetMoney ,sum(Pay_Moeny)-sum(Get_Moeny) as amount "
-				+ " ,min(a.Date_time) as DateTime,max(it.merchandManager2) as merchandManager2 ,max(it1.CustomerManager) as CustomerManager  from Tab_Factory_Money a inner join factoryinfo b on a.Factory_id=b.id "
+				+ " ,min(a.Date_time) as DateTime,max(it.merchandManager2) as merchandManager2 ,max(it1.CustomerManager) as CustomerManager ,max(isnull(it.merchandManager1,'')) merchandManager1 ,max(isnull(it.Merchandising,'')) Merchandising  from Tab_Factory_Money a inner join factoryinfo b on a.Factory_id=b.id "
 				+" left join itemcase it on a.Case_No=it.caseno  and it.merchandManager2!=''  and it.merchandManager2 is not null   "
 				+" left join itemcase it1 on a.Case_No=it1.caseno  and   it1.CustomerManager!=''  and it1.CustomerManager is not null ";
 		if(it.getFactoryName()!=null&&!"".equalsIgnoreCase(it.getFactoryName())){
@@ -5426,6 +5426,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				info.setStartTime(rs.getString("DateTime"));
 				info.setMerchandManager1(rs.getString("CustomerManager"));
 				info.setMerchandManager2(rs.getString("merchandManager2"));
+				if(StringUtils.isNotEmpty(rs.getString("Merchandising"))){
+					info.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				}else{
+					info.setMerchandising(rs.getString("merchandManager1"));
+				}
 				list.add(info);
 			}
 		} catch (Exception e) {
@@ -6195,6 +6200,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		String sql = " Select max(a.Factory_id) Factory_id ,max(b.FactoryName) FactoryName ,a.Case_No,sum(isnull(a.Pay_Moeny,0)) as PayMoney,sum(isnull(a.Get_Moeny,0)) as GetMoney, " +
 				"  sum(isnull(Pay_Moeny,0))-sum(isnull(Get_Moeny,0)) as amount, " +
 				"  a.remark,min(a.Date_time) minDate_time ,max(it.merchandManager2) merchandManager2 ,max(it.CustomerManager) CustomerManager " +
+				" ,max(isnull(it.merchandManager1,'')) merchandManager1 ,max(isnull(it.Merchandising,'')) Merchandising "+
 				" from Tab_Factory_Money a inner join factoryinfo b on a.Factory_id=b.id  left join itemcase it on a.Case_No=it.caseno  where b.FactoryName=? " +
 				" group by  a.Case_No,a.remark order by amount desc ";
 
@@ -6216,7 +6222,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setCreateTime(rs.getString("minDate_time"));
 				con.setMerchandManager1(rs.getString("CustomerManager"));
 				con.setMerchandManager2(rs.getString("merchandManager2"));
-//				con.setBargainNo(rs.getString("Bargain_No"));
+				if(StringUtils.isNotEmpty(rs.getString("Merchandising"))){
+					con.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				}else{
+					con.setMerchandising(rs.getString("merchandManager1"));
+				}
 //				con.setCreateTime(rs.getString("createtime"));
 				list.add(con);
 			}
@@ -6242,6 +6252,74 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		return list;
 	}
 
+
+
+	@Override
+	public List<FactoryReconciliation> casePayInfoNew(String  caseNo) {
+		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = " Select a.Case_No,sum(isnull(a.Pay_Moeny,0)) as PayMoney,sum(isnull(a.Get_Moeny,0)) as GetMoney, " +
+				"  sum(isnull(Pay_Moeny,0))-sum(isnull(Get_Moeny,0)) as amount, " +
+				"  min(a.Date_time) minDate_time ,max(it.merchandManager2) merchandManager2 ,max(it.CustomerManager) CustomerManager " +
+				" ,max(isnull(it.merchandManager1,'')) merchandManager1 ,max(isnull(it.Merchandising,'')) Merchandising "+
+				" from Tab_Factory_Money a   left join itemcase it on a.Case_No=it.caseno  " ;
+		if(StringUtils.isNotEmpty(caseNo)){
+			sql+="where a.Case_No=? ";
+		}
+
+		sql+=" group by  a.Case_No order by amount desc ";
+
+		conn = SQLDBhelper.getConnection();
+		try {
+			stmt = conn.prepareStatement(sql);
+			if(StringUtils.isNotEmpty(caseNo)){
+				stmt.setString(1, caseNo);
+			}
+
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				FactoryReconciliation con=new FactoryReconciliation();
+//				con.setBargainNo(rs.getString("Factory_id"));
+//				con.setFactoryName(rs.getString("FactoryName"));
+				con.setCaseNo(rs.getString("Case_No"));
+				con.setPrice(rs.getDouble("PayMoney"));
+				con.setEndingBalance(rs.getDouble("GetMoney"));
+				con.setAmountCredit(rs.getDouble("amount"));
+//				con.setRemarks(rs.getString("remark"));
+				con.setCreateTime(rs.getString("minDate_time"));
+				con.setMerchandManager1(rs.getString("CustomerManager"));
+				con.setMerchandManager2(rs.getString("merchandManager2"));
+				if(StringUtils.isNotEmpty(rs.getString("Merchandising"))){
+					con.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				}else{
+					con.setMerchandising(rs.getString("merchandManager1"));
+				}
+//				con.setCreateTime(rs.getString("createtime"));
+				list.add(con);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			SQLDBhelper.close(conn,stmt,rs);
+		}
+		return list;
+	}
 
 	@Override
 	public List<FactoryReconciliation> getPayInfo(String  factoryName) {
@@ -6302,7 +6380,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 	}
 
 	@Override
-	public List<FactoryReconciliation> factoryPayInfoDetail(String  factoryName) {
+	public List<FactoryReconciliation> factoryPayInfoDetail(String  factoryName,int flag) {
 		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -6315,16 +6393,26 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 //				" order by a.Case_No ,a.Date_time desc  ";
 
 		String sql = "  Select max(b.FactoryName) FactoryName,max(a.Case_No) Case_No,max(a.Bargain_No) Bargain_No,sum(a.Pay_Moeny) Pay_Moeny,sum(a.Get_Moeny) Get_Moeny,min(a.Date_time) Date_time,max(it.merchandManager2) merchandManager2,max(it.CustomerManager) CustomerManager  " +
-				" from Tab_Factory_Money a inner join itemcase it on a.Case_No=it.caseno  left join factoryinfo b on a.Factory_id=b.id    " +
-				" where a.Factory_id=? " +
-				" and  a.Case_No=? " +
-				" group by a.Bargain_No  ";
+				",max(isnull(it.merchandManager1,'')) merchandManager1 ,max(isnull(it.Merchandising,'')) Merchandising "+
+				" from Tab_Factory_Money a inner join itemcase it on a.Case_No=it.caseno  left join factoryinfo b on a.Factory_id=b.id    " ;
+		if(flag==1){
+			sql+=" where a.Factory_id=? and  a.Case_No=? ";
+		}else{
+			sql+=" where  a.Case_No=? ";
+		}
+			sql+=" group by a.Bargain_No  ";
 
 		conn = SQLDBhelper.getConnection();
 		try {
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, factoryName.split(",")[0]);
-			stmt.setString(2, factoryName.split(",")[1]);
+			if(flag==1){
+				stmt.setString(1, factoryName.split(",")[0]);
+				stmt.setString(2, factoryName.split(",")[1]);
+			}else{
+				stmt.setString(1, factoryName);
+
+			}
+
 
 			rs = stmt.executeQuery();
 			while(rs.next()) {
@@ -6337,6 +6425,11 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				con.setCreateTime(rs.getString("Date_time"));
 				con.setMerchandManager1(rs.getString("CustomerManager"));
 				con.setMerchandManager2(rs.getString("merchandManager2"));
+				if(StringUtils.isNotEmpty(rs.getString("Merchandising"))){
+					con.setMerchandising(rs.getString("merchandManager1")+","+rs.getString("Merchandising"));
+				}else{
+					con.setMerchandising(rs.getString("merchandManager1"));
+				}
 				list.add(con);
 			}
 		} catch (Exception e) {

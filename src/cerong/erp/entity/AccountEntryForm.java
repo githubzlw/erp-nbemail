@@ -95,6 +95,16 @@ public class AccountEntryForm {
 
 	private String fAccountNum;
 
+	private int numZ;
+
+	public int getNumZ() {
+		return numZ;
+	}
+
+	public void setNumZ(int numZ) {
+		this.numZ = numZ;
+	}
+
 	public String getfAccountName() {
 		return fAccountName;
 	}

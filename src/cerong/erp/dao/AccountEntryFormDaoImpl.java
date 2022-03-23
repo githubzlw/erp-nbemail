@@ -24,7 +24,8 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 	@Override
 	public List<AccountEntryForm> accounEntry() {
 		List<AccountEntryForm> list = new ArrayList<AccountEntryForm>();
-		
+
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 	    ResultSet rs = null;
@@ -719,7 +720,7 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 			Connection conn = null;
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
-			String sql = " select af.id,af.transactionDate,af.tradeAmount,kif.kingdee_id from AccountEntryForm af left join kingdee_info kif on af.PayersName = kif.kingdee_name where af.DataProcessing=1	";
+			String sql = " select af.id,af.transactionDate,af.tradeAmount,kif.kingdee_id,af.PayersName from AccountEntryForm af left join kingdee_info kif on af.PayersName = kif.kingdee_name where af.DataProcessing=1	";
 			if(account.getTransactionDate()!=null&&!"".equalsIgnoreCase(account.getTransactionDate())){
 				sql+=" and af.transactionDate >= ?";
 			}
@@ -757,6 +758,7 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 				}
 				rs = stmt.executeQuery();
 
+				int num = account.getNumZ()+1;
 				while(rs.next()) {
 					List<AccountEntryForm> list1 = new ArrayList<AccountEntryForm>();
 					AccountEntryForm con=new AccountEntryForm();
@@ -765,12 +767,15 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 					con.setTransactionDate(rs.getString("transactionDate"));
 					con.setTradeAmount(rs.getDouble("tradeAmount"));
 					con.setKingdeeId(rs.getString("kingdee_id"));
+					con.setPayersName(rs.getString("PayersName"));
 					//FAccountNum
 					con.setfAccountNum("1002.08");
 					//FAccountName
 					con.setfAccountName("中国银行外币帐户");
 					//fEntryId
 					con.setfEntryId(0);
+					int fNumber = num++;
+					con.setNumZ(fNumber);
 
 					list1.add(con);
 					list3.addAll(list1);
@@ -793,6 +798,7 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 							con1.setInvoice(rs1.getString("invoice"));
 							con1.setSumMoney(rs1.getDouble("SumMoney"));
 							con1.setTransactionDate(rs.getString("transactionDate"));
+							con1.setPayersName(rs.getString("PayersName"));
 
 							//FAccountNum
 							con1.setfAccountNum("2203");
@@ -800,6 +806,8 @@ public class AccountEntryFormDaoImpl  implements  IAccountEntryFormDao{
 							con1.setfAccountName("预收账款");
 							//fEntryId
 							con1.setfEntryId(z++);
+							//fNumber
+							con1.setNumZ(fNumber);
 
 							list2.add(con1);
 							list3.addAll(list2);

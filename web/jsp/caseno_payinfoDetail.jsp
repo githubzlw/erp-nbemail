@@ -78,8 +78,9 @@
 <body>
 	<div class="cusalldiv">
 	<div class="usechange">
-			<h2>工厂合同汇总列表</h2>
-		
+			<h2>项目合同汇总列表</h2>
+
+
             <table class="emanagergettable">
 				<tr class="emanagergettr">
 					<td width="200px">工厂名</td>
