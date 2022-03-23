@@ -616,7 +616,7 @@ public class InvoiceServlet extends HttpServlet{
 			tempFile.getParentFile().mkdirs();
 		}
 		// excel 下载
-		// 第一步，创建一个webbook，对应一个Excel文件
+		// 第一步，创建一个webbook，对应一个Excel文件，需要处理
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
 		HSSFSheet sheet = wb.createSheet("工厂发票列表");
