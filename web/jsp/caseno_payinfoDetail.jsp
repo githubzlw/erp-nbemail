@@ -23,7 +23,7 @@
 
 .part_01{overflow: hidden;}
 .emanagergettable {
-	width: 1000px;
+	width: 1500px;
 	border: 1px #7D7D7D solid;
 	border-collapse: collapse;
 }
@@ -88,10 +88,14 @@
 					<td width="100px">合同号</td>
 					<td width="100px">已经支付的金额</td>
 					<td width="100px">已经收回发票的金额</td>
+					<td width="100px">出运联系单号</td>
+					<td width="100px">本次出口人民币金额</td>
 					<td width="100px">时间</td>
 					<td width="50px">采购</td>
 					<td width="50px">销售</td>
 					<td width="50px">跟单</td>
+
+
 				</tr>
 				<c:forEach items="${factoryPayList}" var="cus" varStatus="i">
 					<tr>
@@ -101,11 +105,12 @@
 						<td>${cus.bargainNo }</td>
 						<td><fmt:formatNumber value="${cus.price}" type="number" maxFractionDigits="2"/> </td>
 						<td><fmt:formatNumber value="${cus.endingBalance}" type="number" maxFractionDigits="2"/> </td>
+						<td>${cus.proId}</td>
+						<td><fmt:formatNumber value="${cus.ckRmb}" type="number" maxFractionDigits="2"/></td>
 						<td>${cus.createTime != null ?fn:substring(cus.createTime,0,fn:indexOf(cus.createTime," ")):""}</td>
 						<td>${cus.merchandManager2}</td>
 						<td>${cus.merchandManager1}</td>
 						<td>${cus.merchandising}</td>
-
 					</tr>
 				</c:forEach>
 			</table>

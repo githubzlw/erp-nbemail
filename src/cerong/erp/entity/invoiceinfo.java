@@ -54,8 +54,27 @@ public class invoiceinfo {
     /** 是谁上传*/
     private String uploads;
     /** 预计收入和实际收入差距*/
-    private int discrepancy;
-    /** 款项理由*/
+    private double discrepancy;
+
+	public double getDiscrepancy() {
+		return discrepancy;
+	}
+
+	public void setDiscrepancy(double discrepancy) {
+		this.discrepancy = discrepancy;
+	}
+
+	private int discrepancyFlag;
+
+	public int getDiscrepancyFlag() {
+		return discrepancyFlag;
+	}
+
+	public void setDiscrepancyFlag(int discrepancyFlag) {
+		this.discrepancyFlag = discrepancyFlag;
+	}
+
+	/** 款项理由*/
     private String amountMoney;
     /** 质量扣款金额*/
     private double qualityDeductions;
@@ -136,12 +155,12 @@ public class invoiceinfo {
 	public void setExplain(String explain) {
 		this.explain = explain;
 	}
-	public int getDiscrepancy() {
-		return discrepancy;
-	}
-	public void setDiscrepancy(int discrepancy) {
-		this.discrepancy = discrepancy;
-	}
+//	public int getDiscrepancy() {
+//		return discrepancy;
+//	}
+//	public void setDiscrepancy(double discrepancy) {
+//		this.discrepancy = discrepancy;
+//	}
 	public String getUploads() {
 		return uploads;
 	}

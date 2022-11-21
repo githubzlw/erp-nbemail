@@ -213,20 +213,24 @@ public class AccountEntryFormServlet extends HttpServlet {
 				row.createCell((short) 3).setCellValue(sc.getTradeAmount());
 
 
+				System.out.println("wenti"+i);
 				List<AmountClaimForm> amountClaimFormList=sc.getAmountClaimForm();
 				String invoiceS="";
 				HashMap map = new HashMap();
-				for (int j = 0; j < amountClaimFormList.size(); j++){
-					AmountClaimForm amountClaimForm=amountClaimFormList.get(j);
+				if(amountClaimFormList!=null){
+					for (int j = 0; j < amountClaimFormList.size(); j++){
+						AmountClaimForm amountClaimForm=amountClaimFormList.get(j);
 
-					invoiceS = amountClaimForm.getInvoice().replaceAll("INV","SHS").replaceAll("inv","SHS");
-					invoiceS = invoiceS.substring(0,invoiceS.length()-1);
+						invoiceS = amountClaimForm.getInvoice().replaceAll("INV","SHS").replaceAll("inv","SHS");
+						invoiceS = invoiceS.substring(0,invoiceS.length()-1);
 
-					if(!map.containsKey(invoiceS)){
-						map.put(invoiceS,invoiceS);
+						if(!map.containsKey(invoiceS)){
+							map.put(invoiceS,invoiceS);
+						}
+						row.createCell((short) 5).setCellValue(amountClaimForm.getExportYear()+"-"+amountClaimForm.getExportMonth());
+						row.createCell((short) 6).setCellValue(CheckUtil.getCountyName(amountClaimForm.getCountry()));
 					}
-					row.createCell((short) 5).setCellValue(amountClaimForm.getExportYear()+"-"+amountClaimForm.getExportMonth());
-					row.createCell((short) 6).setCellValue(CheckUtil.getCountyName(amountClaimForm.getCountry()));
+
 				}
 
 				List<String> result = new ArrayList(map.keySet());

@@ -62,6 +62,25 @@ public class FactoryReconciliation {
 
 	private String remarks;
 
+	private String proId;
+	private String ckRmb;
+
+	public String getProId() {
+		return proId;
+	}
+
+	public void setProId(String proId) {
+		this.proId = proId;
+	}
+
+	public String getCkRmb() {
+		return ckRmb;
+	}
+
+	public void setCkRmb(String ckRmb) {
+		this.ckRmb = ckRmb;
+	}
+
 	public String getRemarks() {
 		return remarks;
 	}

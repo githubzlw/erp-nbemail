@@ -302,7 +302,8 @@ function OpenDiv(id,projectId){
 							<td>
 							<select name="condition1" class="userselein">
 						<option value="-1" selected="selected">全部</option>
-						   <option  <c:if test="${fyfz==1 }">selected="selected"</c:if> value="1">按预计时间收回</option>
+
+						    <option  <c:if test="${fyfz==1 }">selected="selected"</c:if> value="1">按预计时间收回</option>
 							<option <c:if test="${fyfz==2 }">selected="selected"</c:if> value="2">预计滞后3个月内收回</option>
 							<option <c:if test="${fyfz==3 }">selected="selected"</c:if> value="3">预计滞后6个月内收回</option>
 							<option <c:if test="${fyfz==4 }">selected="selected"</c:if> value="4">预计无法收回全部</option>
@@ -311,6 +312,7 @@ function OpenDiv(id,projectId){
 							<option <c:if test="${fyfz==7 }">selected="selected"</c:if> value="7">未完结还在讨要</option>
 							<option <c:if test="${fyfz==8 }">selected="selected"</c:if> value="8">列入坏账</option>
 							<option <c:if test="${fyfz==9 }">selected="selected"</c:if> value="9">去掉质量扣款后完结</option>
+								<option  <c:if test="${fyfz==0 }">selected="selected"</c:if> value="0">无原因</option>
 					</select></td>
 					<td>
 							<select name="condition2" class="userselein">
@@ -440,6 +442,7 @@ function OpenDiv(id,projectId){
 									<c:when test="${cus.reason==8 }">列入坏账</c:when>
 									<c:when test="${cus.reason==9 }">去掉质量扣款后完结</c:when>
 									<c:when test="${cus.reason==10 }">正常完结</c:when>
+						   			<c:when test="${cus.reason==0 }">无原因</c:when>
 								</c:choose></c:if></td>
 								
 						<td><c:if test="${cus.amountMoney =='去掉质量扣款后完结' }">

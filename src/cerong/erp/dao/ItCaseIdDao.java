@@ -3774,7 +3774,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 				sql1=" select allArrears,discrepancy,uploads,iid,ifmoney,ifdate,imoneytype,iCaseNo,iimoney,iidate,CustomerManager,MerchandManager1,MerchandManager2,Engineer1,Engineer2,Engineer3,Merchandising,outstandingNotes,name"
 						+ ",AmountMoney,QualityDeductions,ReasonsWithholding,explain,createTime,ContractNumber,reason,sort "
-						+ "from  (select isnull(c.iimoney1-c.ifmoney1,0)allArrears,isnull(b.iimoney-b.ifmoney,0)discrepancy,b.sort,b.uploads,b.iid,b.reason,b.ifmoney,b.ifdate,b.imoneytype,b.iCaseNo,b.iimoney,b.iidate,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Engineer1,it.Engineer2,it.Engineer3,it.Merchandising,cus.name,b.outstandingNotes,"
+						+ "from  (select isnull(c.iimoney1-c.ifmoney1,0)allArrears,isnull( b.iimoney,0) -isnull( b.ifmoney, 0 ) discrepancy,b.sort,b.uploads,b.iid,b.reason,b.ifmoney,b.ifdate,b.imoneytype,b.iCaseNo,b.iimoney,b.iidate,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Engineer1,it.Engineer2,it.Engineer3,it.Merchandising,cus.name,b.outstandingNotes,"
 						+ "b.AmountMoney,b.QualityDeductions,b.ReasonsWithholding,b.explain,b.createTime,con.ContractNumber from InvoiceInfo b "
                +" left join itemcase it on it.CaseNo=b.iCaseNo left join customer cus on cus.id=it.customercode left join ContractDeductionForm con on con.QualityId=b.iid "
                + " left join (select isnull(a.iimoney1,0)iimoney1,isnull(a.ifmoney1,0)ifmoney1,a.icaseno from(select sum(iimoney)iimoney1,sum(ifmoney)ifmoney1,icaseno from InvoiceInfo group by iCaseNo)a)c on b.iCaseNo=c.iCaseNo where  iid not in (  select iid from InvoiceInfo where ifmoney is not null and iimoney-ifmoney<50) and  b.iimoney!=0   ";
@@ -3784,7 +3784,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				if(it.getIidate()!=null&&!"".equals(it.getIidate())){
 		        	sql1+="  and  b.iidate <=?  ";
 		        	}
-				if(it.getReason()!=0){
+				if(it.getReason()!=11 && it.getReason()!=-1){
 		        	sql1+="  and  b.reason  =?  ";
 		        	}
 				if(it.getDiscrepancy()!=0){
@@ -3811,13 +3811,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						i++;
 						stmt1.setString(i,it.getIidate() );
 			        	}
-					if(it.getReason()!=0){
+					if(it.getReason()!=11 && it.getReason()!=-1){
 						i++;
 						stmt1.setInt(i,it.getReason() );
 			        	}
 					if(it.getDiscrepancy()!=0){
 						i++;
-						stmt1.setInt(i,it.getDiscrepancy() );
+						stmt1.setInt(i,it.getDiscrepancyFlag() );
 					}
 					rs1 = stmt1.executeQuery();
 					while(rs1.next()) {
@@ -3872,7 +3872,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						info.setIfmoney(rs1.getDouble("ifmoney"));
 						info.setIidate(rs1.getString("iidate"));
 						info.setReason(rs1.getInt("reason"));
-						info.setDiscrepancy(rs1.getInt("discrepancy"));
+						info.setDiscrepancy(rs1.getDouble("discrepancy"));
 						info.setCustomerName(rs1.getString("name"));
 						info.setIfdate(rs1.getString("ifdate"));
 						info.setUploads(rs1.getString("uploads"));
@@ -4036,7 +4036,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 
 				sql1=" select allArrears,discrepancy,uploads,iid,ifmoney,ifdate,imoneytype,iCaseNo,iimoney,iidate,CustomerManager,MerchandManager1,MerchandManager2,Engineer1,Engineer2,Engineer3,Merchandising,outstandingNotes,name"
 						+ ",AmountMoney,QualityDeductions,ReasonsWithholding,explain,createTime,ContractNumber,reason,sort "
-						+ "from  (select isnull(c.iimoney1-c.ifmoney1,0)allArrears,isnull(b.iimoney-b.ifmoney,0)discrepancy,b.uploads,b.sort,b.iid,b.reason,b.ifmoney,b.ifdate,b.imoneytype,b.iCaseNo,b.iimoney,b.iidate,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Engineer1,it.Engineer2,it.Engineer3,it.Merchandising,cus.name,b.outstandingNotes,"
+						+ "from  (select isnull(c.iimoney1-c.ifmoney1,0)allArrears,isnull( b.iimoney,0) -isnull( b.ifmoney, 0 ) discrepancy,b.uploads,b.sort,b.iid,b.reason,b.ifmoney,b.ifdate,b.imoneytype,b.iCaseNo,b.iimoney,b.iidate,it.CustomerManager,it.MerchandManager1,it.MerchandManager2,it.Engineer1,it.Engineer2,it.Engineer3,it.Merchandising,cus.name,b.outstandingNotes,"
 						+ "b.AmountMoney,b.QualityDeductions,b.ReasonsWithholding,b.explain,b.createTime,con.ContractNumber from InvoiceInfo b "
                +" left join itemcase it on it.CaseNo=b.iCaseNo left join customer cus on cus.id=it.customercode left join ContractDeductionForm con on con.QualityId=b.iid"
                + " left join (select isnull(a.iimoney1,0)iimoney1,isnull(a.ifmoney1,0)ifmoney1,a.icaseno from(select sum(iimoney)iimoney1,sum(ifmoney)ifmoney1,icaseno from InvoiceInfo group by iCaseNo)a)c on b.iCaseNo=c.iCaseNo where  iid not in (  select iid from InvoiceInfo where ifmoney is not null and iimoney-ifmoney<50)  and  b.iimoney!=0 ";
@@ -4046,7 +4046,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				if(it.getIidate()!=null&&!"".equals(it.getIidate())){
 		        	sql1+="  and  b.iidate  <=?  ";
 		        	}
-				if(it.getReason()!=0){
+				if(it.getReason()!=11 && it.getReason()!=-1){
 		        	sql1+="  and  b.reason  =?  ";
 		        	}
 				if(it.getDiscrepancy()!=0){
@@ -4073,13 +4073,13 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						i++;
 						stmt1.setString(i,it.getIidate() );
 			        	}
-					if(it.getReason()!=0){
+					if(it.getReason()!=11 && it.getReason()!=-1){
 						i++;
 						stmt1.setInt(i,it.getReason() );
 			        	}
 					if(it.getDiscrepancy()!=0){
 						i++;
-						stmt1.setInt(i,it.getDiscrepancy() );
+						stmt1.setInt(i,it.getDiscrepancyFlag() );
 					}
 					stmt1.setString(i+1,it.getMerchandManager1());
 					stmt1.setString(i+2,it.getMerchandManager1());
@@ -4142,7 +4142,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 						info.setIidate(rs1.getString("iidate"));
 						info.setReason(rs1.getInt("reason"));
 						info.setUploads(rs1.getString("uploads"));
-						info.setDiscrepancy(rs1.getInt("discrepancy"));
+						info.setDiscrepancy(rs1.getDouble("discrepancy"));
 						info.setIfdate(rs1.getString("ifdate"));
 						info.setCustomerName(rs1.getString("name"));
 						info.setAmountMoney(rs1.getString("amountMoney"));
@@ -6384,7 +6384,9 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		List<FactoryReconciliation> list =new ArrayList<FactoryReconciliation>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
 		ResultSet rs = null;
+		ResultSet rs2 = null;
 
 //		String sql = " Select b.FactoryName,a.Case_No,a.Bargain_No,a.Pay_Moeny,a.Get_Moeny,a.Date_time ,it.merchandManager2,it.CustomerManager " +
 //				" from Tab_Factory_Money a inner join itemcase it on a.Case_No=it.caseno  left join factoryinfo b on a.Factory_id=b.id  " +
@@ -6430,6 +6432,19 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 				}else{
 					con.setMerchandising(rs.getString("merchandManager1"));
 				}
+
+				//发票系统在显示工厂欠票的同时，还可以显示 该厂涉及的所有出运联系单
+				con.setProId("N/A");
+				con.setCkRmb("");
+				String sql2 = "select proId,rmb from  reportform.[dbo].contract where purno=?";
+				stmt2 = conn.prepareStatement(sql2);
+				stmt2.setString(1, rs.getString("Bargain_No"));
+				rs2 = stmt2.executeQuery();
+				while(rs2.next()) {
+					con.setProId(rs2.getString("proId"));
+					con.setCkRmb(rs2.getString("rmb"));
+				}
+
 				list.add(con);
 			}
 		} catch (Exception e) {

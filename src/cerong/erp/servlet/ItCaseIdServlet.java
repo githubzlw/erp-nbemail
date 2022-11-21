@@ -2414,7 +2414,7 @@ public class ItCaseIdServlet extends HttpServlet {
 						it.setCaseno(condition.trim());
 					}
 					String condition1 = request.getParameter("condition1");
-					int reason=0;
+					int reason=11;
 					if(condition1!=null&&!"".equals(condition1)){
 						reason=Integer.parseInt(condition1);
 					}
@@ -2424,13 +2424,14 @@ public class ItCaseIdServlet extends HttpServlet {
 						discrepancy=Integer.parseInt(condition2);
 					}
 					if(discrepancy!=-1){
-						it.setDiscrepancy(discrepancy);
+//						it.setDiscrepancy(discrepancy);
+						it.setDiscrepancyFlag(discrepancy);
 						request.setAttribute("fyfx",discrepancy );
 					}
-					if(reason!=-1){
+//					if(reason!=-1){
 					it.setReason(reason);
 					request.setAttribute("fyfz",reason );
-					}
+//					}
 					String time1=request.getParameter("time1");
 					if(time1 != null && !"".equals(time1)){
 					it.setIidate(time1);
@@ -2448,7 +2449,7 @@ public class ItCaseIdServlet extends HttpServlet {
 						it.setCaseno(condition.trim());
 					}
 					String condition1 = request.getParameter("condition1");
-					int reason=0;
+					int reason=11;
 					if(condition1!=null&&!"".equals(condition1)){
 						reason=Integer.parseInt(condition1);
 					}
@@ -2458,13 +2459,14 @@ public class ItCaseIdServlet extends HttpServlet {
 						discrepancy=Integer.parseInt(condition2);
 					}
 					if(discrepancy!=-1){
-						it.setDiscrepancy(discrepancy);
+//						it.setDiscrepancy(discrepancy);
+						it.setDiscrepancyFlag(discrepancy);
 						request.setAttribute("fyfx",discrepancy );
 					}
-					if(reason!=-1){
+//					if(reason!=-1){
 					it.setReason(reason);
 					request.setAttribute("fyfz",reason );
-					}
+//					}
 					String time1=request.getParameter("time1");
 					if(time1 != null && !"".equals(time1)){
 					it.setIidate(time1);
