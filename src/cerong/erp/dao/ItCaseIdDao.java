@@ -5332,7 +5332,7 @@ public  class ItCaseIdDao implements ItCaseIdDaoImpl  {
 		  }
         conn = SQLDBhelper.getConnection();
         try {
-        	sql+=" order by money2 desc";
+        	sql+=" order by money2 desc";AccountEntryFormServlet
 			stmt = conn.prepareStatement(sql);
 			int i=0;
 			if(it.getCustomerManager()!=null&&!"".equalsIgnoreCase(it.getCustomerManager())){
